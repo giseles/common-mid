@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+src/
+.gitignore
+.npmignore
+.idea
+.vscode
+jest.config.json
+tsconfig.json

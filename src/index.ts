@@ -2,5 +2,5 @@
 export { Axios } from "./Axios"
 
 //antd 通用方法
-export { midConfirm } from "./midConfirm"
-export { midMessage } from "./midMessage"
+export { confirm } from "./confirm"
+export { message } from "./message"

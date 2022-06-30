@@ -1,6 +1,6 @@
 //Axios 发送网络请求
-export { Axios } from "./Axios"
+export { Axios } from "./common/Axios"
 
 //antd 通用方法
-export { confirm } from "./confirm"
-export { message } from "./message"
+export { confirm } from "./tip/confirm"
+export { message } from "./tip/message"

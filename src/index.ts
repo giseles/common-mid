@@ -1,6 +1,6 @@
-//antd 通用方法
-export { antdConfirm } from "./antd/antdConfirm"
-export { antdMessage } from "./antd/antdMessage"
+//Axios 发送网络请求
+export { Axios } from "./Axios"
 
-//axios 发送网络请求
-export { Axios } from "./axios"
+//antd 通用方法
+export { midConfirm } from "./midConfirm"
+export { midMessage } from "./midMessage"

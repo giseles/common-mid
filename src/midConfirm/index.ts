@@ -8,13 +8,13 @@ import { ModalType } from "../_interface/antd"
  * @param  {Object} data 数据
  * @param  {Object} type 类型 = "error"
  * @example
- * antdConfirm({msg:'success',data:'成功'})     ---- 成功
- * antdConfirm({msg:'info',data:'信息'})        ---- 信息
- * antdConfirm({msg:'warning',data:'警告'})     ---- 警告
- * antdConfirm({msg:'error',data:'失败'})       ---- 失败
+ * midConfirm({msg:'success',data:'成功'})     ---- 成功
+ * midConfirm({msg:'info',data:'信息'})        ---- 信息
+ * midConfirm({msg:'warning',data:'警告'})     ---- 警告
+ * midConfirm({msg:'error',data:'失败'})       ---- 失败
  */
 
-export const antdConfirm = (
+export const midConfirm = (
   data: LooseObject,
   type: keyof ModalType = "error"
 ) => {

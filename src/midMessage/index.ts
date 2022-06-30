@@ -9,12 +9,12 @@ import { MessageType } from "../_interface/antd"
  * @param  {Number} maxCount 最大显示数 = 1
  * @param  {Number} successCode 成功code码 = 8001
  * @example
- * antdMessage({code:'8001',msg:'成功'})           ---- 成功
- * antdMessage({code:'loading',msg:'加载中'})      ---- 加载中
- * antdMessage({code:'warning',msg:'警告'})        ---- 警告
- * antdMessage({code:'4004',msg:'失败'})           ---- 失败
+ * midMessage({code:'8001',msg:'成功'})           ---- 成功
+ * midMessage({code:'loading',msg:'加载中'})      ---- 加载中
+ * midMessage({code:'warning',msg:'警告'})        ---- 警告
+ * midMessage({code:'4004',msg:'失败'},1,8001)           ---- 失败
  */
-export const antdMessage = (
+export const midMessage = (
   data: LooseObject,
   maxCount: number = 1,
   successCode: number = 8001
@@ -26,7 +26,8 @@ export const antdMessage = (
     [successCode]: "success",
     loading: "loading",
     info: "info",
-    warning: "warning"
+    warning: "warning",
+    error: "error"
   }
   const type: keyof MessageType = list[data.code] || "error"
   message[type](data.msg)

@@ -5,9 +5,10 @@ import { router } from "dva"
 // @ts-ignore
 import { Button, Layout, Result } from "antd"
 
-export const Empty = () => {
+export const Empty = (props) => {
+  const { className } = props
   return (
-    <Layout>
+    <Layout className={className}>
       <Result
         status="404"
         title="404"

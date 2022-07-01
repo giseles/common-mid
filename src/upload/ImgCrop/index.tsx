@@ -16,7 +16,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 //   aspect: 1
 // }
 
-const ImgCrop = (props: any) => {
+export const ImgCrop = (props: any) => {
   const [loading, setLoading] = useState(false)
   let { value, tip = null, limits = {}, imageUploadUrl, fileServerUrl } = props
   limits = { aspect: 1, maxSize: 10, ...limits }
@@ -125,5 +125,3 @@ const ImgCrop = (props: any) => {
     </Fragment>
   )
 }
-
-export default ImgCrop

@@ -1,15 +1,15 @@
 // interface
-export { MessageType, ModalType } from "./_interface/antd"
-export { LooseObject } from "./_interface/LooseObject"
+export * from "./_interface/antd"
+export * from "./_interface/LooseObject"
 
 // common
-export { Axios } from "./common/Axios" //Axios 发送网络请求
-export { IconFont } from "./common/IconFont"
+export * from "./common/Axios" //Axios 发送网络请求
+export * from "./common/IconFont"
 
 // layout
 export * from "./layout/Breadcrumb" //Breadcrumb
 export * from "./layout/Empty" //Breadcrumb
-export { PageHeader } from "./layout/PageHeader"
+export * from "./layout/PageHeader"
 
 // main
 export * from "./main/DescTable"
@@ -18,8 +18,8 @@ export * from "./main/Search"
 export * from "./main/Table"
 
 //tip
-export { confirm } from "./tip/confirm"
-export { message } from "./tip/message"
+export * from "./tip/confirm"
+export * from "./tip/message"
 
 // upload
 export * from "./upload/ImgCrop"

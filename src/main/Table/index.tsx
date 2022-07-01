@@ -9,7 +9,7 @@ import useDeepCompareEffect from "use-deep-compare-effect"
 // @ts-ignore
 import { toEnumArray } from "common-screw"
 
-const Table = (props: { [x: string]: any }) => {
+export const Table = memo((props: { [x: string]: any }) => {
   const {
     current,
     pageSize,
@@ -93,6 +93,4 @@ const Table = (props: { [x: string]: any }) => {
       />
     </>
   )
-}
-
-export default memo(Table)
+})

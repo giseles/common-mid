@@ -34,7 +34,7 @@ import Encrypt from "config/crypto"
 const { Item } = AntdForm
 const { Option } = Select
 
-const Form = ({ ...props }) => {
+export const Form = ({ ...props }) => {
   const {
     type,
     initialValues = {},
@@ -385,4 +385,4 @@ const Form = ({ ...props }) => {
   )
 }
 
-export default memo(Form)
+// export default memo(Form)

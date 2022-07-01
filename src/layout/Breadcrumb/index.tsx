@@ -7,7 +7,7 @@ import { Breadcrumb as AntdBread } from "antd"
 
 const { Link } = router
 
-const Breadcrumb = memo((props: any) => {
+export const Breadcrumb = memo((props: any) => {
   const { pathname, breadcrumbNameMap, pathWithPermission } = props
   const pathSnippets = pathname.split("/").filter((i: any) => i)
   const extraBreadcrumbItems = pathSnippets.map((_: any, index: any) => {
@@ -68,5 +68,3 @@ const Breadcrumb = memo((props: any) => {
     </>
   )
 })
-
-export default Breadcrumb

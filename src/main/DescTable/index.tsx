@@ -5,7 +5,7 @@ import { Descriptions, Tooltip } from "antd"
 // @ts-ignore
 import { isNil } from "common-screw"
 
-const DescTable = (props: any) => {
+export const DescTable = (props: any) => {
   const { column, dataSource, descProps } = props
   return (
     <Descriptions {...descProps}>
@@ -37,5 +37,3 @@ const DescTable = (props: any) => {
     </Descriptions>
   )
 }
-
-export default DescTable

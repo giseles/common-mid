@@ -7,7 +7,7 @@ import { message } from "antd"
 // @ts-ignore
 import BraftEditor from "braft-editor"
 
-const RichText = (props) => {
+export const RichText = (props) => {
   let {
     media: mediaSettings = {},
     value,
@@ -157,5 +157,3 @@ const RichText = (props) => {
     <BraftEditor {...data} />
   )
 }
-
-export default RichText

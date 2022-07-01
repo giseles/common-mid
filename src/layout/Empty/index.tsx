@@ -5,7 +5,7 @@ import { router } from "dva"
 // @ts-ignore
 import { Button, Layout, Result } from "antd"
 
-const Empty = () => {
+export const Empty = () => {
   return (
     <Layout>
       <Result
@@ -29,4 +29,4 @@ const Empty = () => {
   )
 }
 
-export default memo(Empty)
+// export  memo(Empty)

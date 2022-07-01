@@ -12,7 +12,7 @@ import {
   // @ts-ignore
 } from "@ant-design/icons"
 
-const MediaUpload = (props) => {
+export const MediaUpload = (props) => {
   const [loading, setLoading] = useState(false)
   const [isValid, setValidator] = useState(true)
   const {
@@ -229,5 +229,3 @@ const MediaUpload = (props) => {
     </Fragment>
   )
 }
-
-export default MediaUpload

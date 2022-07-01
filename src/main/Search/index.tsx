@@ -61,7 +61,7 @@ const getFlatSearch = (search: any[] | undefined) => {
   return [keys, composeKeys]
 }
 
-const Search = memo((props: SearchProps) => {
+export const Search = memo((props: SearchProps) => {
   const { permissionList } = useSelector((_: any) => _.common)
   const [disabledKeys, setDisable] = useState({})
   const [belongInfo, setBelongInfo] = useState({})
@@ -335,5 +335,3 @@ const Search = memo((props: SearchProps) => {
     </>
   )
 })
-
-export default Search

@@ -3,7 +3,7 @@ import React, { memo } from "react"
 // @ts-ignore
 import { PageHeader as AntdPageHeader } from "antd"
 
-const PageHeader = ({ ...props }) => {
+export const PageHeader = ({ ...props }) => {
   const {
     title,
     subTitle,
@@ -31,4 +31,4 @@ const PageHeader = ({ ...props }) => {
   )
 }
 
-export default memo(PageHeader)
+// export default memo(PageHeader)

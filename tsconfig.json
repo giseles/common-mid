@@ -68,5 +68,5 @@
     "jsx": "react"
   },
   "include": ["./src"],
-  "exclude": ["node_modules", "es", "**/test", "src/_testComponent"]
+  "exclude": ["node_modules", "es", "**/test", "src/_testComponent", "examples"]
 }

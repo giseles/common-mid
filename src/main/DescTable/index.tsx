@@ -7,7 +7,7 @@ import { isNil } from "common-screw"
 import "antd/es/descriptions/style"
 import "antd/es/tooltip/style"
 
-export const DescTable = (props: any) => {
+export const MidDescTable = (props: any) => {
   const { column, dataSource, descProps, className } = props
   return (
     <Descriptions {...descProps} className={className}>

@@ -8,7 +8,7 @@ import "antd/es/breadcrumb/style"
 
 const { Link } = router
 
-export const Breadcrumb = memo((props: any) => {
+export const MidBreadcrumb = memo((props: any) => {
   const { className, pathname, breadcrumbNameMap, pathWithPermission } = props
   const pathSnippets = pathname.split("/").filter((i: any) => i)
   const extraBreadcrumbItems = pathSnippets.map((_: any, index: any) => {

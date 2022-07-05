@@ -1,7 +1,7 @@
 // @ts-ignore
 import React, { useState, useEffect, memo, useRef } from "react"
 import {
-  Form as AntdForm,
+  Form,
   Input,
   Button,
   Space,
@@ -19,10 +19,10 @@ import { LooseObject } from "common-screw"
 import { MediaUpload, ImgCrop, confirm } from "common-mid"
 import "antd/es/form/style"
 
-const { Item } = AntdForm
+const { Item } = Form
 const { Option } = Select
 
-export const Form = memo(({ ...props }) => {
+export const MidForm = memo(({ ...props }) => {
   const {
     className,
     Encrypt,
@@ -45,7 +45,7 @@ export const Form = memo(({ ...props }) => {
   const [formValues, setFormValues] = useState<LooseObject>(initialValues)
 
   const FormRef: any = useRef(null)
-  const [form] = AntdForm.useForm()
+  const [form] = Form.useForm()
 
   let id = type === "edit" ? initialValues.id : 0
   if (type === "edit" && initialValues.time) {
@@ -175,7 +175,7 @@ export const Form = memo(({ ...props }) => {
   }
 
   return (
-    <AntdForm
+    <Form
       className={className}
       name="basic"
       form={form}
@@ -368,6 +368,6 @@ export const Form = memo(({ ...props }) => {
           </Button>
         </Space>
       </Item>
-    </AntdForm>
+    </Form>
   )
 })

@@ -60,7 +60,7 @@ const getFlatSearch = (search: any[] | undefined) => {
   return [keys, composeKeys]
 }
 
-export const Search = memo((props: SearchProps) => {
+export const MidSearch = memo((props: SearchProps) => {
   const [disabledKeys, setDisable] = useState({})
   const [belongInfo, setBelongInfo] = useState({})
   const {

@@ -5,7 +5,7 @@ import { message } from "antd"
 // @ts-ignore
 import BraftEditor from "braft-editor"
 
-export const RichText = (props) => {
+export const MidRichText = (props) => {
   let {
     className,
     media: mediaSettings = {},

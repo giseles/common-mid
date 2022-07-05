@@ -8,7 +8,7 @@ import "antd/es/button/style"
 import "antd/es/layout/style"
 import "antd/es/result/style"
 
-export const Empty = memo((props) => {
+export const MidEmpty = memo((props) => {
   const { className } = props
   return (
     <Layout className={className}>

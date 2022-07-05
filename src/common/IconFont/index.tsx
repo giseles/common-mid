@@ -1,7 +1,7 @@
 // @ts-ignore
 import { createFromIconfontCN } from "@ant-design/icons"
 
-export const IconFont = (scriptUrl) =>
+export const MidIconFont = (props) =>
   createFromIconfontCN({
-    scriptUrl
+    scriptUrl: props.scriptUrl
   })

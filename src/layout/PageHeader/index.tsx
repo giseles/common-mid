@@ -1,10 +1,10 @@
 // @ts-ignore
 import React, { memo } from "react"
 // @ts-ignore
-import { PageHeader as AntdPageHeader } from "antd"
-import "antd/es/pageHeader/style"
+import { PageHeader } from "antd"
+import "antd/es/page-header/style"
 
-export const PageHeader = memo((props) => {
+export const MidPageHeader = memo((props) => {
   const {
     title,
     subTitle,
@@ -22,7 +22,7 @@ export const PageHeader = memo((props) => {
   }
 
   return (
-    <AntdPageHeader
+    <PageHeader
       className={className}
       onBack={userOnBack || (backUrl && onBack)}
       title={title}

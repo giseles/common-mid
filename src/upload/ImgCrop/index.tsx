@@ -14,7 +14,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 //   aspect: 1
 // }
 
-export const ImgCrop = (props: any) => {
+export const MidImgCrop = (props: any) => {
   const [loading, setLoading] = useState(false)
   let {
     className,

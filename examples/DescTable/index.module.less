@@ -1,0 +1,44 @@
+@import '~app.less';
+
+.wrap {
+  padding: 24px 24px 15px;
+
+  :global {
+    .anticon {
+      margin-right: 10px;
+      font-size: 24px;
+    }
+    .ant-descriptions-item-container {
+      align-items: center;
+    }
+
+    .ant-descriptions-item-label {
+      float: left;
+      align-items: center;
+      margin-right: 5px;
+      color: @text-color-secondary;
+    }
+
+    .ant-descriptions-row > th {
+      padding-bottom: 5px;
+    }
+
+    .ant-descriptions-item-content {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      span {
+        overflow: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+.bgGary {
+  border-radius: @mid-radius;
+  background: @gray-color;
+}

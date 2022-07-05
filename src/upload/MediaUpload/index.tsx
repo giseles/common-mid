@@ -10,7 +10,7 @@ import {
   // @ts-ignore
 } from "@ant-design/icons"
 
-export const MediaUpload = (props) => {
+export const MidMediaUpload = (props) => {
   const [loading, setLoading] = useState(false)
   const [isValid, setValidator] = useState(true)
   const {

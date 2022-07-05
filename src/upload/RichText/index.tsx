@@ -1,17 +1,17 @@
 // @ts-ignore
 import React from "react"
 // @ts-ignore
-import { useSelector } from "dva"
-// @ts-ignore
 import { message } from "antd"
 // @ts-ignore
 import BraftEditor from "braft-editor"
 
 export const RichText = (props) => {
   let {
+    className,
     media: mediaSettings = {},
     value,
     videoUploadUrl,
+    fileServerUrl,
     axios,
     ...rest
   } = props
@@ -19,11 +19,6 @@ export const RichText = (props) => {
   if (typeof value === "string") {
     value = BraftEditor.createEditorState(value)
   }
-
-  const { currentLocale = "", intl } = useSelector((_) => _.global)
-  const { fileServerUrl } = useSelector((_) => _.common)
-
-  const language = currentLocale.indexOf("en") < 0 ? "zh" : "en"
 
   const handleUpload = (param) => {
     const progressFn = (event) => {
@@ -70,10 +65,10 @@ export const RichText = (props) => {
   const handleValidate = (file) => {
     let type = file.type.split("/")[0]
     if (!type || types.indexOf(file.type) < 0) {
-      message.error(intl.get("TYPE_ERROR"))
+      message.error("此文件格式暂时不支持")
       return false
     } else if (maxSize[type] && file.size > maxSize[type] * 1024) {
-      message.error(intl.get("SIZE_ERROR"))
+      message.error("此文件大小超过最大设置")
       return false
     } else {
       return true
@@ -141,14 +136,14 @@ export const RichText = (props) => {
       for (let [k, v] of Object.entries(maxCount)) {
         let type = k.toUpperCase()
         if (v < current[type] + now[type]) {
-          message.error(intl.get("COUNT_ERROR"))
+          message.error("此类文件数量超过最大设置")
           return false
         }
       }
     }
   }
 
-  const data = { media, value, language, ...rest, hooks }
+  const data = { className, media, value, ...rest, hooks }
   const readOnlyData = { ...data, controls: [] }
 
   return props.readOnly ? (

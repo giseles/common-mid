@@ -1,16 +1,16 @@
 // @ts-ignore
-import React, { useEffect, memo, useState } from "react"
-// @ts-ignore
-import { useSelector } from "dva"
+import React, { memo, useState } from "react"
 // @ts-ignore
 import { Button, Table as AntdTable, Space } from "antd"
 // @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
 // @ts-ignore
 import { toEnumArray } from "common-screw"
+import "antd/es/table/style"
 
 export const Table = memo((props: { [x: string]: any }) => {
   const {
+    className,
     current,
     pageSize,
     total,
@@ -73,24 +73,23 @@ export const Table = memo((props: { [x: string]: any }) => {
   }, [permissionList, columns])
 
   return (
-    <>
-      <AntdTable
-        bordered
-        pagination={{
-          defaultCurrent: 1,
-          defaultPageSize: 10,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total: any) => `共 ${total} 条记录`,
-          current,
-          pageSize,
-          total
-        }}
-        columns={newColumns}
-        rowKey={(record: any) => record.id}
-        scroll={{ x: true }}
-        {...restProps}
-      />
-    </>
+    <AntdTable
+      className={className}
+      bordered
+      pagination={{
+        defaultCurrent: 1,
+        defaultPageSize: 10,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showTotal: (total: any) => `共 ${total} 条记录`,
+        current,
+        pageSize,
+        total
+      }}
+      columns={newColumns}
+      rowKey={(record: any) => record.id}
+      scroll={{ x: true }}
+      {...restProps}
+    />
   )
 })

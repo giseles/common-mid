@@ -1,8 +1,6 @@
 // @ts-ignore
 import React, { Fragment, useState } from "react"
 // @ts-ignore
-import { useSelector } from "dva"
-// @ts-ignore
 import { Upload, message, Button } from "antd"
 // @ts-ignore
 import {
@@ -16,6 +14,7 @@ export const MediaUpload = (props) => {
   const [loading, setLoading] = useState(false)
   const [isValid, setValidator] = useState(true)
   const {
+    className,
     type,
     beforeUpload: bfUp,
     value,
@@ -210,7 +209,7 @@ export const MediaUpload = (props) => {
   }
 
   return (
-    <Fragment>
+    <Fragment className={className}>
       <Upload
         // name={isImage ? 'image' : 'file'}
         name={isImage ? "file" : "file"}

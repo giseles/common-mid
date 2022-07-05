@@ -2,8 +2,9 @@
 import React, { memo } from "react"
 // @ts-ignore
 import { PageHeader as AntdPageHeader } from "antd"
+import "antd/es/pageHeader/style"
 
-export const PageHeader = ({ ...props }) => {
+export const PageHeader = memo((props) => {
   const {
     title,
     subTitle,
@@ -12,7 +13,8 @@ export const PageHeader = ({ ...props }) => {
     avatar,
     border,
     style,
-    userOnBack = null
+    userOnBack = null,
+    className
   } = props
 
   const onBack = () => {
@@ -21,6 +23,7 @@ export const PageHeader = ({ ...props }) => {
 
   return (
     <AntdPageHeader
+      className={className}
       onBack={userOnBack || (backUrl && onBack)}
       title={title}
       subTitle={subTitle}
@@ -29,6 +32,4 @@ export const PageHeader = ({ ...props }) => {
       style={style}
     />
   )
-}
-
-// export default memo(PageHeader)
+})

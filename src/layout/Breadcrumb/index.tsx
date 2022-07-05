@@ -1,14 +1,15 @@
 // @ts-ignore
 import React, { memo } from "react"
 // @ts-ignore
-import { router, useSelector } from "dva"
+import { router } from "dva"
 // @ts-ignore
 import { Breadcrumb as AntdBread } from "antd"
+import "antd/es/breadcrumb/style"
 
 const { Link } = router
 
 export const Breadcrumb = memo((props: any) => {
-  const { pathname, breadcrumbNameMap, pathWithPermission } = props
+  const { className, pathname, breadcrumbNameMap, pathWithPermission } = props
   const pathSnippets = pathname.split("/").filter((i: any) => i)
   const extraBreadcrumbItems = pathSnippets.map((_: any, index: any) => {
     if (_ === "form") {
@@ -53,18 +54,16 @@ export const Breadcrumb = memo((props: any) => {
   })
 
   return (
-    <>
-      <AntdBread separator=">">
-        {breadcrumbNameMap["/home"] && (
-          <AntdBread.Item href="/home">
-            首页
-            {/* <IconFont type={`icon-menu-sy1`} /> */}
-          </AntdBread.Item>
-        )}
-        {pathname !== "/home" &&
-          pathWithPermission.includes(pathname) &&
-          extraBreadcrumbItems}
-      </AntdBread>
-    </>
+    <AntdBread separator=">" className={className}>
+      {breadcrumbNameMap["/home"] && (
+        <AntdBread.Item href="/home">
+          首页
+          {/* <IconFont type={`icon-menu-sy1`} /> */}
+        </AntdBread.Item>
+      )}
+      {pathname !== "/home" &&
+        pathWithPermission.includes(pathname) &&
+        extraBreadcrumbItems}
+    </AntdBread>
   )
 })

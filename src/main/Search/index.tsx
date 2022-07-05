@@ -1,8 +1,6 @@
 // @ts-ignore
 import React, { useState, memo, useEffect } from "react"
 // @ts-ignore
-import { useSelector } from "dva"
-// @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
 // @ts-ignore
 import { isNil } from "common-screw"
@@ -42,6 +40,7 @@ export interface SearchProps {
   addHandle?: any
   btnGroup?: any
   style?: any
+  className?: any
 }
 
 // 扁平化search
@@ -62,7 +61,6 @@ const getFlatSearch = (search: any[] | undefined) => {
 }
 
 export const Search = memo((props: SearchProps) => {
-  const { permissionList } = useSelector((_: any) => _.common)
   const [disabledKeys, setDisable] = useState({})
   const [belongInfo, setBelongInfo] = useState({})
   const {
@@ -71,7 +69,8 @@ export const Search = memo((props: SearchProps) => {
     addBtn = null,
     addHandle,
     btnGroup = null,
-    style = {}
+    style = {},
+    className
   } = props
   const [form] = Form.useForm()
   useDeepCompareEffect(() => {
@@ -311,7 +310,7 @@ export const Search = memo((props: SearchProps) => {
   }
 
   return (
-    <>
+    <div className={className}>
       <Form autoComplete="off" form={form}>
         <Row gutter={24} justify="start">
           {renderItem()}
@@ -332,6 +331,6 @@ export const Search = memo((props: SearchProps) => {
           {props.add}
         </Button>
       )}
-    </>
+    </div>
   )
 })

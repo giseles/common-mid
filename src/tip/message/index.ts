@@ -1,6 +1,7 @@
 // @ts-ignore
 import { message as AntdMessage } from "antd"
 import { MessageType, LooseObject } from "../../index"
+import "antd/es/message/style"
 /**
  *
  * @name 统一返回数据提示

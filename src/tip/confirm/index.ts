@@ -1,6 +1,7 @@
 // @ts-ignore
 import { Modal } from "antd"
 import { ModalType, LooseObject } from "../../index"
+import "antd/es/modal/style"
 /**
  * @name 统一返回信息提示框
  * @param  {Object} data 数据

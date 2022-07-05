@@ -6,36 +6,26 @@ import {
   Button,
   Space,
   Select,
-  DatePicker,
-  Upload,
-  Radio,
-  Cascader
+  DatePicker
   // @ts-ignore
 } from "antd"
 // @ts-ignore
 import moment from "moment"
 // @ts-ignore
-import { useSelector } from "dva"
-// @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
-// @ts-ignore
-import { InboxOutlined } from "@ant-design/icons"
 // @ts-ignore
 import { LooseObject } from "common-screw"
 // @ts-ignore
-import { throwConfirm, throwMessage } from "utils"
-// @ts-ignore
-import { MediaUpload } from "components"
-// @ts-ignore
-import { ImgCrop } from "componentTs"
-// @ts-ignore
-import Encrypt from "config/crypto"
+import { MediaUpload, ImgCrop, confirm } from "common-mid"
+import "antd/es/form/style"
 
 const { Item } = AntdForm
 const { Option } = Select
 
-export const Form = ({ ...props }) => {
+export const Form = memo(({ ...props }) => {
   const {
+    className,
+    Encrypt,
     type,
     initialValues = {},
     mustValues = null,
@@ -86,8 +76,8 @@ export const Form = ({ ...props }) => {
       values["passwordAgain"] &&
       values["password"] !== values["passwordAgain"]
     ) {
-      throwConfirm({
-        msg: "提交失败",
+      confirm({
+        msg: "error",
         data: "两次密码不一致,请检查后再提交"
       })
       setLoading(false)
@@ -185,204 +175,199 @@ export const Form = ({ ...props }) => {
   }
 
   return (
-    <>
-      <AntdForm
-        name="basic"
-        form={form}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 12 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-        size="large"
-        initialValues={initialValues}
-        onValuesChange={onValuesChange}
-        ref={FormRef}
-      >
-        {formList &&
-          formList.map((item: any) => {
-            let { type, placeholder = `请输入${item.label}` } = item
-            const itemProps = {
-              key: item.name,
-              label: item.label,
-              name: item.name,
-              rules: item.rules
-                ? [...typeRules[type], ...item.rules]
-                : typeRules[type]
+    <AntdForm
+      className={className}
+      name="basic"
+      form={form}
+      labelCol={{ span: 4 }}
+      wrapperCol={{ span: 12 }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+      size="large"
+      initialValues={initialValues}
+      onValuesChange={onValuesChange}
+      ref={FormRef}
+    >
+      {formList &&
+        formList.map((item: any) => {
+          let { type, placeholder = `请输入${item.label}` } = item
+          const itemProps = {
+            key: item.name,
+            label: item.label,
+            name: item.name,
+            rules: item.rules
+              ? [...typeRules[type], ...item.rules]
+              : typeRules[type]
+          }
+          let pickPlaceholder = `请选择${item.label}`
+          if (type === "password" || type === "newPassword") {
+            if (type === "newPassword")
+              placeholder = placeholder + "，若不修改 请留空"
+            return toItem(
+              itemProps,
+              <Input.Password
+                placeholder={placeholder}
+                autoComplete="new-password"
+              />
+            )
+          } else if (type === "select" || type === "selectNoRequired") {
+            const optionList = item.optionList || []
+            const keyValue = item.keyValue || ["id", "value"]
+            if (item.isHide) {
+              return ""
             }
-            let pickPlaceholder = `请选择${item.label}`
-            if (type === "password" || type === "newPassword") {
-              if (type === "newPassword")
-                placeholder = placeholder + "，若不修改 请留空"
-              return toItem(
-                itemProps,
-                <Input.Password
-                  placeholder={placeholder}
-                  autoComplete="new-password"
-                />
-              )
-            } else if (type === "select" || type === "selectNoRequired") {
-              const optionList = item.optionList || []
-              const keyValue = item.keyValue || ["id", "value"]
-              if (item.isHide) {
-                return ""
-              }
 
-              const returnItem = (
-                <Item {...itemProps}>
-                  <Select
-                    placeholder={pickPlaceholder}
-                    allowClear
-                    disabled={item.disabled}
-                    onChange={(e) => {
-                      item.onChange && item.onChange(e)
-                      item.clearValue &&
-                        form.setFieldsValue({ [item.clearValue]: "" })
-                    }}
-                  >
-                    {optionList.map((r: any) => {
-                      // if (dependencies && current && r[type] !== current) return ''
-                      return (
-                        <Option key={r[keyValue[0]]} value={r[keyValue[0]]}>
-                          {r[keyValue[1]]}
-                        </Option>
-                      )
-                    })}
-                  </Select>
-                </Item>
-              )
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return formValues[dependencies.name] === dependencies.value
-                  ? returnItem
-                  : null
-              }
-              return returnItem
-            } else if (type === "remark") {
-              return toItem(
-                itemProps,
-                <Input.TextArea allowClear placeholder={placeholder} />
-              )
-            } else if (type === "disabled") {
-              return toItem(
-                itemProps,
-                <Input placeholder={placeholder} disabled />
-              )
-            } else if (type === "time") {
-              const returnItem = toItem(
-                itemProps,
-                <DatePicker
-                  // showTime
+            const returnItem = (
+              <Item {...itemProps}>
+                <Select
                   placeholder={pickPlaceholder}
-                  format="YYYY-MM-DD"
-                  // disabledDate={disabledDate}
-                  style={{ width: "100%" }}
-                />
-              )
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return (
-                  formValues[dependencies.name] === dependencies.value &&
-                  returnItem
-                )
-              }
-              return returnItem
-            } else if (type === "dateAndTime") {
-              const returnItem = toItem(
-                itemProps,
-                <DatePicker
-                  showTime
-                  placeholder={pickPlaceholder}
-                  disabledDate={disabledDate}
-                />
-              )
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return formValues[dependencies.name] &&
-                  formValues[dependencies.name] === dependencies.value
-                  ? returnItem
-                  : null
-              }
-              return returnItem
-            } else if (type === "image") {
-              return toItem(
-                itemProps,
-                <MediaUpload
-                  type="image"
-                  limits={item.limits}
-                  extra={item.extra}
-                />
-              )
-            } else if (type === "media") {
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return (
-                  formValues[dependencies.name] === dependencies.value &&
-                  toItem(
-                    itemProps,
-                    <MediaUpload
-                      type={item.mediaType}
-                      limits={item.limits}
-                      extra={item.extra}
-                    />
-                  )
-                )
-              }
-            } else if (type === "fileUrl") {
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return (
-                  formValues[dependencies.name] === dependencies.value &&
-                  toItem(
-                    itemProps,
-                    <MediaUpload
-                      type="file"
-                      limits={item.limits}
-                      extra={item.extra}
-                    />
-                  )
-                )
-              }
-            } else if (type === "imgCrop") {
-              return item.isHide
-                ? null
-                : toItem(
-                    itemProps,
-                    <ImgCrop limits={item.limits} tip={item.tip} />
-                  )
-            } else {
-              const returnItem = toItem(
-                itemProps,
-                <Input
                   allowClear
-                  placeholder={placeholder}
-                  onChange={(e) =>
-                    item.onChange && item.onChange(e.target.value)
-                  }
-                />
-              )
-              if (item.dependencies) {
-                const dependencies = item.dependencies
-                return formValues[dependencies.name] === dependencies.value
-                  ? returnItem
-                  : ""
-              }
-              return returnItem
+                  disabled={item.disabled}
+                  onChange={(e) => {
+                    item.onChange && item.onChange(e)
+                    item.clearValue &&
+                      form.setFieldsValue({ [item.clearValue]: "" })
+                  }}
+                >
+                  {optionList.map((r: any) => {
+                    // if (dependencies && current && r[type] !== current) return ''
+                    return (
+                      <Option key={r[keyValue[0]]} value={r[keyValue[0]]}>
+                        {r[keyValue[1]]}
+                      </Option>
+                    )
+                  })}
+                </Select>
+              </Item>
+            )
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return formValues[dependencies.name] === dependencies.value
+                ? returnItem
+                : null
             }
-          })}
+            return returnItem
+          } else if (type === "remark") {
+            return toItem(
+              itemProps,
+              <Input.TextArea allowClear placeholder={placeholder} />
+            )
+          } else if (type === "disabled") {
+            return toItem(
+              itemProps,
+              <Input placeholder={placeholder} disabled />
+            )
+          } else if (type === "time") {
+            const returnItem = toItem(
+              itemProps,
+              <DatePicker
+                // showTime
+                placeholder={pickPlaceholder}
+                format="YYYY-MM-DD"
+                // disabledDate={disabledDate}
+                style={{ width: "100%" }}
+              />
+            )
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return (
+                formValues[dependencies.name] === dependencies.value &&
+                returnItem
+              )
+            }
+            return returnItem
+          } else if (type === "dateAndTime") {
+            const returnItem = toItem(
+              itemProps,
+              <DatePicker
+                showTime
+                placeholder={pickPlaceholder}
+                disabledDate={disabledDate}
+              />
+            )
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return formValues[dependencies.name] &&
+                formValues[dependencies.name] === dependencies.value
+                ? returnItem
+                : null
+            }
+            return returnItem
+          } else if (type === "image") {
+            return toItem(
+              itemProps,
+              <MediaUpload
+                type="image"
+                limits={item.limits}
+                extra={item.extra}
+              />
+            )
+          } else if (type === "media") {
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return (
+                formValues[dependencies.name] === dependencies.value &&
+                toItem(
+                  itemProps,
+                  <MediaUpload
+                    type={item.mediaType}
+                    limits={item.limits}
+                    extra={item.extra}
+                  />
+                )
+              )
+            }
+          } else if (type === "fileUrl") {
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return (
+                formValues[dependencies.name] === dependencies.value &&
+                toItem(
+                  itemProps,
+                  <MediaUpload
+                    type="file"
+                    limits={item.limits}
+                    extra={item.extra}
+                  />
+                )
+              )
+            }
+          } else if (type === "imgCrop") {
+            return item.isHide
+              ? null
+              : toItem(
+                  itemProps,
+                  <ImgCrop limits={item.limits} tip={item.tip} />
+                )
+          } else {
+            const returnItem = toItem(
+              itemProps,
+              <Input
+                allowClear
+                placeholder={placeholder}
+                onChange={(e) => item.onChange && item.onChange(e.target.value)}
+              />
+            )
+            if (item.dependencies) {
+              const dependencies = item.dependencies
+              return formValues[dependencies.name] === dependencies.value
+                ? returnItem
+                : ""
+            }
+            return returnItem
+          }
+        })}
 
-        {props.children}
-        <Item wrapperCol={{ span: 16 }}>
-          <Space size="large">
-            {showReturn && <Button onClick={onBack}>{cancelText}</Button>}
-            <Button type="primary" htmlType="submit" loading={loading}>
-              提交
-            </Button>
-          </Space>
-        </Item>
-      </AntdForm>
-    </>
+      {props.children}
+      <Item wrapperCol={{ span: 16 }}>
+        <Space size="large">
+          {showReturn && <Button onClick={onBack}>{cancelText}</Button>}
+          <Button type="primary" htmlType="submit" loading={loading}>
+            提交
+          </Button>
+        </Space>
+      </Item>
+    </AntdForm>
   )
-}
-
-// export default memo(Form)
+})

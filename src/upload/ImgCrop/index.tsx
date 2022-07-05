@@ -1,8 +1,6 @@
 // @ts-ignore
 import React, { Fragment, useState } from "react"
 // @ts-ignore
-import { useSelector } from "dva"
-// @ts-ignore
 import AntdImgCrop from "antd-img-crop"
 // @ts-ignore
 import { Upload, message } from "antd"
@@ -18,7 +16,14 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 export const ImgCrop = (props: any) => {
   const [loading, setLoading] = useState(false)
-  let { value, tip = null, limits = {}, imageUploadUrl, fileServerUrl } = props
+  let {
+    className,
+    value,
+    tip = null,
+    limits = {},
+    imageUploadUrl,
+    fileServerUrl
+  } = props
   limits = { aspect: 1, maxSize: 10, ...limits }
   const headers = {
     // authorization: JSON.parse(localStorage.getItem('token')).data
@@ -88,7 +93,7 @@ export const ImgCrop = (props: any) => {
   }
 
   return (
-    <Fragment>
+    <Fragment className={className}>
       <AntdImgCrop
         grid
         rotate
@@ -114,7 +119,6 @@ export const ImgCrop = (props: any) => {
             <>
               {loading ? <LoadingOutlined /> : <PlusOutlined />}
               <div className="ant-upload-text">
-                {" "}
                 {loading ? "上传中" : "上传"}
               </div>
             </>

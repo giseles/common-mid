@@ -4,8 +4,11 @@ import React, { memo } from "react"
 import { router } from "dva"
 // @ts-ignore
 import { Button, Layout, Result } from "antd"
+import "antd/es/button/style"
+import "antd/es/layout/style"
+import "antd/es/result/style"
 
-export const Empty = (props) => {
+export const Empty = memo((props) => {
   const { className } = props
   return (
     <Layout className={className}>
@@ -28,6 +31,4 @@ export const Empty = (props) => {
       />
     </Layout>
   )
-}
-
-// export  memo(Empty)
+})

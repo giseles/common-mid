@@ -4,21 +4,24 @@ import React from "react"
 import { Descriptions, Tooltip } from "antd"
 // @ts-ignore
 import { isNil } from "common-screw"
+import "antd/es/descriptions/style"
+import "antd/es/tooltip/style"
 
 export const DescTable = (props: any) => {
-  const { column, dataSource, descProps } = props
+  const { column, dataSource, descProps, className } = props
   return (
-    <Descriptions {...descProps}>
+    <Descriptions {...descProps} className={className}>
       {column.map((item: any, index: number) => {
         const { dataIndex, render, icon, ...rest } = item
-        let label = item.label
-        if (icon)
-          label = (
-            <div>
-              {icon}
-              {label}
-            </div>
-          )
+        let label = icon ? (
+          <>
+            {icon}
+            {item.label}
+          </>
+        ) : (
+          item.label
+        )
+
         const show = render
           ? render(dataSource[dataIndex], dataSource)
           : dataSource[dataIndex]

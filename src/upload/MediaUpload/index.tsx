@@ -1,13 +1,9 @@
-// @ts-ignore
 import React, { Fragment, useState } from "react"
-// @ts-ignore
 import { Upload, message, Button } from "antd"
-// @ts-ignore
 import {
   LoadingOutlined,
   PlusOutlined,
   UploadOutlined
-  // @ts-ignore
 } from "@ant-design/icons"
 
 export const MidMediaUpload = (props) => {

@@ -1,22 +1,8 @@
-// @ts-ignore
 import React, { useState, useEffect, memo, useRef } from "react"
-import {
-  Form,
-  Input,
-  Button,
-  Space,
-  Select,
-  DatePicker
-  // @ts-ignore
-} from "antd"
-// @ts-ignore
+import { Form, Input, Button, Space, Select, DatePicker } from "antd"
 import moment from "moment"
-// @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
-// @ts-ignore
 import { LooseObject } from "common-screw"
-// @ts-ignore
-import { MediaUpload, ImgCrop, confirm } from "common-mid"
 import "antd/es/form/style"
 
 const { Item } = Form
@@ -39,9 +25,12 @@ export const MidForm = memo(({ ...props }) => {
     cancelText = "返回",
     propChangeValue = false,
     propChangeValueHandle,
-    permissionList
+    permissionList,
+    MidMediaUpload,
+    MidImgCrop,
+    confirm
   } = props
-
+  // @ts-ignore
   const [formValues, setFormValues] = useState<LooseObject>(initialValues)
 
   const FormRef: any = useRef(null)
@@ -297,7 +286,7 @@ export const MidForm = memo(({ ...props }) => {
           } else if (type === "image") {
             return toItem(
               itemProps,
-              <MediaUpload
+              <MidMediaUpload
                 type="image"
                 limits={item.limits}
                 extra={item.extra}
@@ -310,7 +299,7 @@ export const MidForm = memo(({ ...props }) => {
                 formValues[dependencies.name] === dependencies.value &&
                 toItem(
                   itemProps,
-                  <MediaUpload
+                  <MidMediaUpload
                     type={item.mediaType}
                     limits={item.limits}
                     extra={item.extra}
@@ -325,7 +314,7 @@ export const MidForm = memo(({ ...props }) => {
                 formValues[dependencies.name] === dependencies.value &&
                 toItem(
                   itemProps,
-                  <MediaUpload
+                  <MidMediaUpload
                     type="file"
                     limits={item.limits}
                     extra={item.extra}
@@ -338,7 +327,7 @@ export const MidForm = memo(({ ...props }) => {
               ? null
               : toItem(
                   itemProps,
-                  <ImgCrop limits={item.limits} tip={item.tip} />
+                  <MidImgCrop limits={item.limits} tip={item.tip} />
                 )
           } else {
             const returnItem = toItem(

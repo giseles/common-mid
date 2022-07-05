@@ -1,8 +1,5 @@
-// @ts-ignore
 import React from "react"
-// @ts-ignore
 import { Descriptions, Tooltip } from "antd"
-// @ts-ignore
 import { isNil } from "common-screw"
 import "antd/es/descriptions/style"
 import "antd/es/tooltip/style"

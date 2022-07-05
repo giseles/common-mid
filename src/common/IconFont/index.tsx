@@ -1,4 +1,3 @@
-// @ts-ignore
 import { createFromIconfontCN } from "@ant-design/icons"
 
 export const MidIconFont = (props) =>

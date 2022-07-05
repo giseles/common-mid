@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Modal } from "antd"
 import { ModalType, LooseObject } from "../../index"
 import "antd/es/modal/style"

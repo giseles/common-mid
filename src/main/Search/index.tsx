@@ -1,10 +1,6 @@
-// @ts-ignore
 import React, { useState, memo, useEffect } from "react"
-// @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
-// @ts-ignore
 import { isNil } from "common-screw"
-// @ts-ignore
 import {
   Row,
   Col,
@@ -15,9 +11,7 @@ import {
   Cascader,
   Checkbox,
   Button
-  // @ts-ignore
 } from "antd"
-// @ts-ignore
 import { SearchOutlined, PlusOutlined } from "@ant-design/icons"
 
 interface InputProps {

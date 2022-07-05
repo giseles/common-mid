@@ -1,10 +1,6 @@
-// @ts-ignore
 import React, { Fragment, useState } from "react"
-// @ts-ignore
 import AntdImgCrop from "antd-img-crop"
-// @ts-ignore
 import { Upload, message } from "antd"
-// @ts-ignore
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 // const limits = {

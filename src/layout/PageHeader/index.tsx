@@ -1,6 +1,4 @@
-// @ts-ignore
 import React, { memo } from "react"
-// @ts-ignore
 import { PageHeader } from "antd"
 import "antd/es/page-header/style"
 

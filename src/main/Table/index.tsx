@@ -1,10 +1,6 @@
-// @ts-ignore
 import React, { memo, useState } from "react"
-// @ts-ignore
 import { Button, Table, Space } from "antd"
-// @ts-ignore
 import useDeepCompareEffect from "use-deep-compare-effect"
-// @ts-ignore
 import { toEnumArray } from "common-screw"
 import "antd/es/table/style"
 

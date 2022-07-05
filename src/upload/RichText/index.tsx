@@ -1,8 +1,5 @@
-// @ts-ignore
 import React from "react"
-// @ts-ignore
 import { message } from "antd"
-// @ts-ignore
 import BraftEditor from "braft-editor"
 
 export const MidRichText = (props) => {

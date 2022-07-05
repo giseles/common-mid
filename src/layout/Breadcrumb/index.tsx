@@ -1,8 +1,5 @@
-// @ts-ignore
 import React, { memo } from "react"
-// @ts-ignore
 import { router } from "dva"
-// @ts-ignore
 import { Breadcrumb as AntdBread } from "antd"
 import "antd/es/breadcrumb/style"
 

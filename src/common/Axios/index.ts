@@ -1,7 +1,7 @@
 // @ts-ignore
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios"
 import { storage } from "common-screw"
-import { message } from "../../index"
+import { message } from "common-mid"
 
 /**
  *

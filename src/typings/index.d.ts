@@ -1,5 +1,6 @@
 declare module "react"
 declare module "antd"
+declare module "common-mid"
 declare module "common-screw"
 declare module "antd"
 declare module "moment"

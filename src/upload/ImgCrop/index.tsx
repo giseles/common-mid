@@ -1,6 +1,7 @@
-import React, { Fragment, useState } from "react"
+import React, { memo, useState } from "react"
 import AntdImgCrop from "antd-img-crop"
-import { Upload, message } from "antd"
+import { Upload } from "antd"
+import { message } from "common-mid"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 // const limits = {
@@ -10,20 +11,18 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 //   aspect: 1
 // }
 
-export const MidImgCrop = (props: any) => {
+export const MidImgCrop = memo((props: any) => {
   const [loading, setLoading] = useState(false)
   let {
     className,
     value,
     tip = null,
     limits = {},
-    imageUploadUrl,
-    fileServerUrl
+    headers,
+    uploadUrl,
+    serverUrl
   } = props
   limits = { aspect: 1, maxSize: 10, ...limits }
-  const headers = {
-    // authorization: JSON.parse(localStorage.getItem('token')).data
-  }
 
   const beforeCrop = (file: any) => {
     const { imgType } = limits
@@ -31,7 +30,7 @@ export const MidImgCrop = (props: any) => {
       file.type.indexOf("image") < 0 ||
       (imgType && file.type.indexOf(imgType) < 0)
     ) {
-      message.error("文件格式错误")
+      message({ msg: "文件格式错误" })
       return false
     }
 
@@ -41,11 +40,11 @@ export const MidImgCrop = (props: any) => {
     const { maxSize, width } = limits
     // @ts-ignore
     if (width && width > (await getImageSize(file)).width) {
-      message.error(`图片宽度应大于${width}px`)
+      message({ msg: `图片宽度应大于${width}px` })
       return false
     }
     if (file.size > maxSize * 1024 * 1024) {
-      message.error(`图片大小应小于${maxSize}MB`)
+      message({ msg: `图片大小应小于${maxSize}MB` })
       return false
     }
     return true
@@ -80,7 +79,7 @@ export const MidImgCrop = (props: any) => {
       let { code, msg, data } = response
 
       if (code !== "8001") {
-        message.error(msg)
+        message({ msg })
       } else {
         props.onChange(data && data.path ? data.path : data)
       }
@@ -89,7 +88,7 @@ export const MidImgCrop = (props: any) => {
   }
 
   return (
-    <Fragment className={className}>
+    <div className={className}>
       <AntdImgCrop
         grid
         rotate
@@ -100,17 +99,13 @@ export const MidImgCrop = (props: any) => {
         <Upload
           listType="picture-card"
           showUploadList={false}
-          action={imageUploadUrl}
+          action={uploadUrl}
           headers={headers}
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
           {value ? (
-            <img
-              src={fileServerUrl + value}
-              alt="图片"
-              style={{ width: "100%" }}
-            />
+            <img src={serverUrl + value} alt="图片" style={{ width: "100%" }} />
           ) : (
             <>
               {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -122,6 +117,6 @@ export const MidImgCrop = (props: any) => {
         </Upload>
       </AntdImgCrop>
       {tip && <div>{tip}</div>}
-    </Fragment>
+    </div>
   )
-}
+})

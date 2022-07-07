@@ -1,14 +1,14 @@
-import React from "react"
-import { message } from "antd"
+import React, { memo } from "react"
+import { message } from "common-mid"
 import BraftEditor from "braft-editor"
 
-export const MidRichText = (props) => {
+export const MidRichText = memo((props) => {
   let {
     className,
     media: mediaSettings = {},
     value,
-    videoUploadUrl,
-    fileServerUrl,
+    uploadUrl,
+    serverUrl,
     axios,
     ...rest
   } = props
@@ -28,7 +28,7 @@ export const MidRichText = (props) => {
       param.error({
         msg: response.msg
       })
-      message.error(response.msg)
+      message({ msg: "response.msg" })
     }
 
     let data = new FormData()
@@ -39,15 +39,15 @@ export const MidRichText = (props) => {
       onUploadProgress: progressFn
     }
 
-    axios.post(videoUploadUrl, req).then((r) => {
+    axios.post(uploadUrl, req).then((r) => {
       if (r.code !== "8001") {
         errorFn(r)
       } else {
         const filePath = r.data.path
         param.success({
-          url: fileServerUrl + filePath,
+          url: serverUrl + filePath,
           meta: {
-            id: fileServerUrl + filePath,
+            id: serverUrl + filePath,
             maxWidth: "100%",
             style: { maxWidth: "100%", display: "block", margin: "10px auto" },
             loop: true, // 指定音视频是否循环播放
@@ -62,10 +62,10 @@ export const MidRichText = (props) => {
   const handleValidate = (file) => {
     let type = file.type.split("/")[0]
     if (!type || types.indexOf(file.type) < 0) {
-      message.error("此文件格式暂时不支持")
+      message({ msg: "此文件格式暂时不支持" })
       return false
     } else if (maxSize[type] && file.size > maxSize[type] * 1024) {
-      message.error("此文件大小超过最大设置")
+      message({ msg: "此文件大小超过最大设置" })
       return false
     } else {
       return true
@@ -133,19 +133,21 @@ export const MidRichText = (props) => {
       for (let [k, v] of Object.entries(maxCount)) {
         let type = k.toUpperCase()
         if (v < current[type] + now[type]) {
-          message.error("此类文件数量超过最大设置")
+          message({ msg: "此类文件数量超过最大设置" })
           return false
         }
       }
     }
   }
 
-  const data = { className, media, value, ...rest, hooks }
-  const readOnlyData = { ...data, controls: [] }
+  const data = {
+    className,
+    media,
+    value,
+    ...rest,
+    hooks,
+    controls: props.readOnly && []
+  }
 
-  return props.readOnly ? (
-    <BraftEditor {...readOnlyData} />
-  ) : (
-    <BraftEditor {...data} />
-  )
-}
+  return <BraftEditor {...data} />
+})

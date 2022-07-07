@@ -1,0 +1,57 @@
+@import '~app.less';
+
+.header {
+  margin-bottom: 30px;
+  border: 1px solid rgb(235, 237, 240);
+
+  :global {
+    .ant-avatar {
+      flex-shrink: 0;
+      background: none;
+    }
+
+    .ant-avatar.ant-avatar-icon > .anticon {
+      font-size: 40px;
+    }
+
+    .ant-page-header-heading-title {
+      color: @text-color;
+    }
+  }
+}
+
+.headerNoBorder {
+  margin-bottom: 30px;
+
+  :global {
+    .ant-avatar {
+      flex-shrink: 0;
+      background: none;
+    }
+
+    .ant-avatar.ant-avatar-icon > .anticon {
+      font-size: 40px;
+    }
+
+    .ant-page-header-heading-title {
+      color: @text-color;
+    }
+
+    .ant-btn-lg,
+    .ant-select-lg {
+      justify-content: center;
+      width: 138px !important;
+      font-size: 14px;
+
+      .anticon {
+        float: left;
+        height: 20px;
+        font-size: 20px;
+      }
+    }
+
+    .ant-picker.ant-picker-borderless {
+      background-color: @mid-gray-color !important;
+    }
+  }
+}

@@ -23,5 +23,5 @@ export * from "./tip/message" // message 全局提示
 
 // upload
 export * from "./upload/ImgCrop" // ImgCrop 裁切图片并上传
-export * from "./upload/MediaUpload" // MediaUpload 上传视频、文件等
+export * from "./upload/BaseUpload" // BaseUpload 上传视频、文件等
 export * from "./upload/RichText" // RichText 富文本

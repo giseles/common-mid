@@ -9,62 +9,42 @@ import {
 
 export const MidBaseUpload = memo((props: any) => {
   const [loading, setLoading] = useState(false)
-  const [isValid, setValidator] = useState(true)
   const {
     className,
-    type,
     typeName,
     value,
-    limits = {},
+    limits,
     uploadUrl,
     serverUrl,
     headers,
     tip = null,
-    isImage,
-    isVideo,
-    isFile
+    isImage = false,
+    isVideo = false,
+    isFile = false
   } = props
   const beforeUpload = (file: any) => {
-    const { maxSize, fileType } = limits
-    if (fileType && file.type.indexOf(fileType) < 0) {
-      // reject('文件格式错误')
-      message({ msg: "文件格式错误" })
-      return false
-    }
-    if (file.size > maxSize * 1024 * 1024) {
-      // reject(`${typeName}大小应小于${maxSize}MB`)
-      message({ msg: `${typeName}大小应小于${maxSize}MB` })
-      return false
-    }
-    return true
-    // const test = new Promise((resolve, reject) => {
-    //   const { maxSize, fileType } = limits
-    //   if (fileType && file.type.indexOf(fileType) < 0) {
-    //     reject('文件格式错误')
-    //   }
-    //   if (file.size > maxSize * 1024 * 1024) {
-    //     reject(`${typeName}大小应小于${maxSize}MB`)
-    //   }
-    //   resolve(true)
-    // })
-    // return test
-    //   .then(() => setValidator(true))
-    //   .catch(e => {
-    //     message({ msg: e })
-    //     setValidator(false)
-    //   })
+    return new Promise((resolve, reject) => {
+      const { maxSize, fileType } = limits
+      if (fileType && file.type.indexOf(fileType) < 0) {
+        message({ msg: `${typeName}格式错误` })
+        reject()
+      }
+      if (file.size > maxSize * 1024 * 1024) {
+        message({ msg: `${typeName}应小于${maxSize}MB` })
+        reject()
+      }
+      resolve(true)
+    })
   }
 
   const handleChange = (info: any) => {
     const { file } = info
-    console.log(info)
     const { status, response } = file
     if (status === "uploading") {
       setLoading(true)
     } else if (status === "done") {
       setLoading(false)
       let { code, msg, data } = response
-      console.log(code, msg, data)
       if (code === "8001") {
         props.onChange(data && data.path ? data.path : data)
       } else {
@@ -86,7 +66,7 @@ export const MidBaseUpload = memo((props: any) => {
       // 文件
       show = (
         <Button>
-          {tipIcon} {tipDes}
+          {loading ? <LoadingOutlined /> : <UploadOutlined />} {tipDes}
         </Button>
       )
     } else if (isImage && value) {
@@ -104,14 +84,12 @@ export const MidBaseUpload = memo((props: any) => {
   return (
     <div className={className}>
       <Upload
-        // name={isImage ? 'image' : 'file'}
-        // {...props}
-        name={type}
+        name="file"
         listType={isFile ? "text" : "picture-card"}
-        // className={!isFile ? 'avatar-upload' : ''}
         showUploadList={isFile}
         action={uploadUrl}
         headers={headers}
+        // @ts-ignore
         beforeUpload={beforeUpload}
         onChange={handleChange}
       >

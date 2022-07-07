@@ -7,7 +7,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 // const limits = {
 //   width: 700,
 //   maxSize: 10,
-//   imgType: 'png',
+//   fileType: 'png',
 //   aspect: 1
 // }
 
@@ -17,23 +17,18 @@ export const MidImgCrop = memo((props: any) => {
     className,
     value,
     tip = null,
-    limits = {},
+    limits,
     headers,
     uploadUrl,
     serverUrl
   } = props
-  limits = { aspect: 1, maxSize: 10, ...limits }
 
   const beforeCrop = (file: any) => {
-    const { imgType } = limits
-    if (
-      file.type.indexOf("image") < 0 ||
-      (imgType && file.type.indexOf(imgType) < 0)
-    ) {
-      message({ msg: "文件格式错误" })
+    const { fileType } = limits
+    if (file.type.indexOf(fileType) < 0) {
+      message({ msg: "图片格式错误" })
       return false
     }
-
     return file
   }
   const beforeUpload = async (file: any) => {
@@ -44,7 +39,7 @@ export const MidImgCrop = memo((props: any) => {
       return false
     }
     if (file.size > maxSize * 1024 * 1024) {
-      message({ msg: `图片大小应小于${maxSize}MB` })
+      message({ msg: `图片应小于${maxSize}MB` })
       return false
     }
     return true
@@ -77,7 +72,6 @@ export const MidImgCrop = memo((props: any) => {
     if (status === "done") {
       setLoading(false)
       let { code, msg, data } = response
-
       if (code !== "8001") {
         message({ msg })
       } else {

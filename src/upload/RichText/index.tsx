@@ -28,7 +28,7 @@ export const MidRichText = memo((props) => {
       param.error({
         msg: response.msg
       })
-      message({ msg: "response.msg" })
+      message("response.msg")
     }
 
     let data = new FormData()
@@ -62,10 +62,10 @@ export const MidRichText = memo((props) => {
   const handleValidate = (file) => {
     let type = file.type.split("/")[0]
     if (!type || types.indexOf(file.type) < 0) {
-      message({ msg: "此文件格式暂时不支持" })
+      message("此文件格式暂时不支持")
       return false
     } else if (maxSize[type] && file.size > maxSize[type] * 1024) {
-      message({ msg: "此文件大小超过最大设置" })
+      message("此文件大小超过最大设置")
       return false
     } else {
       return true
@@ -133,7 +133,7 @@ export const MidRichText = memo((props) => {
       for (let [k, v] of Object.entries(maxCount)) {
         let type = k.toUpperCase()
         if (v < current[type] + now[type]) {
-          message({ msg: "此类文件数量超过最大设置" })
+          message("此类文件数量超过最大设置")
           return false
         }
       }

@@ -26,7 +26,7 @@ export const MidImgCrop = memo((props: any) => {
   const beforeCrop = (file: any) => {
     const { fileType } = limits
     if (file.type.indexOf(fileType) < 0) {
-      message({ msg: "图片格式错误" })
+      message("图片格式错误")
       return false
     }
     return file
@@ -35,11 +35,11 @@ export const MidImgCrop = memo((props: any) => {
     const { maxSize, width } = limits
     // @ts-ignore
     if (width && width > (await getImageSize(file)).width) {
-      message({ msg: `图片宽度应大于${width}px` })
+      message(`图片宽度应大于${width}px`)
       return false
     }
     if (file.size > maxSize * 1024 * 1024) {
-      message({ msg: `图片应小于${maxSize}MB` })
+      message(`图片应小于${maxSize}MB`)
       return false
     }
     return true
@@ -73,7 +73,7 @@ export const MidImgCrop = memo((props: any) => {
       setLoading(false)
       let { code, msg, data } = response
       if (code !== "8001") {
-        message({ msg })
+        message(msg)
       } else {
         props.onChange(data && data.path ? data.path : data)
       }

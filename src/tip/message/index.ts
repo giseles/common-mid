@@ -1,5 +1,6 @@
 import { message as AntdMessage } from "antd"
-import { MessageType, LooseObject } from "../../index"
+import { isString } from "common-screw"
+import { MessageType } from "../../index"
 import "antd/es/message/style"
 /**
  *
@@ -11,10 +12,11 @@ import "antd/es/message/style"
  * message({code:'8001',msg:'成功'})           ---- 成功
  * message({code:'loading',msg:'加载中'})      ---- 加载中
  * message({code:'warning',msg:'警告'})        ---- 警告
- * message({code:'4004',msg:'失败'},1,8001)           ---- 失败
+ * message({code:'4004',msg:'失败'},1,8001)    ---- 失败
+ * message('失败')                             ---- 失败
  */
 export const message = (
-  data: LooseObject,
+  data: any,
   maxCount: number = 1,
   successCode: number = 8001
 ) => {
@@ -28,6 +30,9 @@ export const message = (
     warning: "warning",
     error: "error"
   }
+  if (isString(data)) {
+    return AntdMessage.error(data)
+  }
   const type: keyof MessageType = list[data.code] || "error"
-  AntdMessage[type](data.msg)
+  return AntdMessage[type](data.msg)
 }

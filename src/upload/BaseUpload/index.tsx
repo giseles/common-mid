@@ -26,11 +26,11 @@ export const MidBaseUpload = memo((props: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
       if (fileType && file.type.indexOf(fileType) < 0) {
-        message({ msg: `${typeName}格式错误` })
+        message(`${typeName}格式错误`)
         reject()
       }
       if (file.size > maxSize * 1024 * 1024) {
-        message({ msg: `${typeName}应小于${maxSize}MB` })
+        message(`${typeName}应小于${maxSize}MB`)
         reject()
       }
       resolve(true)
@@ -48,7 +48,7 @@ export const MidBaseUpload = memo((props: any) => {
       if (code === "8001") {
         props.onChange(data && data.path ? data.path : data)
       } else {
-        message({ msg })
+        message(msg)
       }
     }
   }

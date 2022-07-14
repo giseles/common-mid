@@ -1,6 +1,5 @@
 import React, { memo, useState } from "react"
 import { Upload, Button } from "antd"
-import { message } from "common-mid"
 import {
   LoadingOutlined,
   PlusOutlined,
@@ -10,6 +9,7 @@ import {
 export const MidBaseUpload = memo((props: any) => {
   const [loading, setLoading] = useState(false)
   const {
+    message,
     className,
     typeName,
     value,

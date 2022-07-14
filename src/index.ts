@@ -18,8 +18,8 @@ export * from "./main/Search" // Search 搜索栏
 export * from "./main/Table" // Table 表格
 
 //tip
-export * from "./tip/confirm" // confirm 信息提示
-export * from "./tip/message" // message 全局提示
+export * from "./tip/Confirm" // confirm 信息提示
+export * from "./tip/Message" // message 全局提示
 
 // upload
 export * from "./upload/ImgCrop" // ImgCrop 裁切图片并上传

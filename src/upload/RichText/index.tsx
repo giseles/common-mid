@@ -1,9 +1,9 @@
 import React, { memo } from "react"
-import { message } from "common-mid"
 import BraftEditor from "braft-editor"
 
 export const MidRichText = memo((props) => {
   let {
+    message,
     className,
     media: mediaSettings = {},
     value,

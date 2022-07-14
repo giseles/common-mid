@@ -1,7 +1,7 @@
 // @ts-ignore
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios"
 import { storage } from "common-screw"
-import { message } from "common-mid"
+import { MidMessage } from "common-mid"
 
 /**
  *
@@ -22,7 +22,7 @@ const defaultConfig = {
   axiosConfig: { timeout: 5000 }, //超时时间
   exceptTokenUrls: [], //无需token的url
   noNeedCodeUrls: [], //无需code成功码的url
-  errorMessage: message, //错误提示
+  errorMessage: MidMessage, //错误提示
   token: () => storage.getItem("token"), //token
   showTime: true //显示请求耗时
 }

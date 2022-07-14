@@ -1,4 +1,5 @@
 import { Modal } from "antd"
+import { isString } from "common-screw"
 import { ModalType, LooseObject } from "../../index"
 import "antd/es/modal/style"
 /**
@@ -12,9 +13,27 @@ import "antd/es/modal/style"
  * confirm({msg:'error',data:'失败'})       ---- 失败
  */
 
-export const confirm = (data: LooseObject, type: keyof ModalType = "error") => {
-  Modal[type]({
-    title: data.msg,
-    content: data.data
-  })
+export const MidConfirm = (
+  data: LooseObject,
+  type: keyof ModalType = "warning",
+  successCode: number = 8001
+) => {
+  const list: any = {
+    [successCode]: "success",
+    success: "success",
+    loading: "loading",
+    info: "info",
+    warning: "warning",
+    error: "error"
+  }
+
+  if (isString(data)) {
+    return Modal.warning(data)
+  } else {
+    const showType = type || list[data.code] || "error"
+    Modal[showType]({
+      title: data.msg,
+      content: data.data
+    })
+  }
 }

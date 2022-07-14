@@ -15,16 +15,15 @@ import "antd/es/message/style"
  * message({code:'4004',msg:'失败'},1,8001)    ---- 失败
  * message('失败')                             ---- 失败
  */
-export const message = (
+export const MidMessage = (
   data: any,
-  maxCount: number = 1,
+  config: any = { maxCount: 1 },
   successCode: number = 8001
 ) => {
-  AntdMessage.config({
-    maxCount
-  })
+  AntdMessage.config(config)
   const list: any = {
     [successCode]: "success",
+    success: "success",
     loading: "loading",
     info: "info",
     warning: "warning",
@@ -32,7 +31,8 @@ export const message = (
   }
   if (isString(data)) {
     return AntdMessage.error(data)
+  } else {
+    const type: keyof MessageType = list[data.code] || "error"
+    return AntdMessage[type](data.msg)
   }
-  const type: keyof MessageType = list[data.code] || "error"
-  return AntdMessage[type](data.msg)
 }

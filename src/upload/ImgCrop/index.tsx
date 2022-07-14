@@ -1,7 +1,6 @@
 import React, { memo, useState } from "react"
 import AntdImgCrop from "antd-img-crop"
 import { Upload } from "antd"
-import { message } from "common-mid"
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 // const limits = {
@@ -14,6 +13,7 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 export const MidImgCrop = memo((props: any) => {
   const [loading, setLoading] = useState(false)
   let {
+    message,
     className,
     value,
     tip = null,

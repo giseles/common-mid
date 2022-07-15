@@ -4,6 +4,7 @@ export * from "./_interface/LooseObject"
 
 // common
 export * from "./common/Axios" // Axios 发送网络请求
+export * from "./common/BtnGroup" // BtnGroup 按钮群组
 export * from "./common/IconFont" // IconFont 自定义icon字体
 
 // layout

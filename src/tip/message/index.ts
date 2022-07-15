@@ -1,5 +1,4 @@
 import { message as AntdMessage } from "antd"
-import { isString } from "common-screw"
 import { MessageType } from "../../index"
 import "antd/es/message/style"
 /**
@@ -17,10 +16,10 @@ import "antd/es/message/style"
  */
 export const MidMessage = (
   data: any,
-  config: any = { maxCount: 1 },
+  config: any,
   successCode: number = 8001
 ) => {
-  AntdMessage.config(config)
+  if (config) AntdMessage.config(config)
   const list: any = {
     [successCode]: "success",
     success: "success",
@@ -29,10 +28,8 @@ export const MidMessage = (
     warning: "warning",
     error: "error"
   }
-  if (isString(data)) {
-    return AntdMessage.error(data)
-  } else {
-    const type: keyof MessageType = list[data.code] || "error"
-    return AntdMessage[type](data.msg)
-  }
+
+  const type: keyof MessageType = list[data?.code || "warning"]
+  const msg = data?.msg || data
+  return AntdMessage[type](msg)
 }

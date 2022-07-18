@@ -1,10 +1,9 @@
 import React, { memo, useState } from "react"
 import { Button, Table, Space } from "antd"
-import useDeepCompareEffect from "use-deep-compare-effect"
-import { toEnumArray } from "common-screw"
-import "antd/es/table/style"
+import { useDeepCompareEffect } from "common-hook"
+import { isNil } from "common-screw"
 
-export const MidTable = memo((props: { [x: string]: any }) => {
+export const MidTable = memo((props: any) => {
   const {
     className,
     current,
@@ -12,80 +11,166 @@ export const MidTable = memo((props: { [x: string]: any }) => {
     total,
     columns,
     onHandle,
-    selection,
-    onHandleAll,
+    selection = false,
     showPage = true,
+    onHandleAll,
+    TableBtnList,
     permissionList,
-    BUTTON_LIST,
+    btnProperty = {},
     ...restProps
   } = props
   const [newColumns, setNewColumns] = useState(columns)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([])
   useDeepCompareEffect(() => {
-    // console.log('修改表格列表');
+    // 修改表格列表
     if (columns.length === 0) return
     let newColumns: any = [...columns]
     if (columns[columns.length - 1].key !== "operate") {
+      // 表格中最后一列key不为operate
       setNewColumns(newColumns)
       return
     }
-    const list = { ...permissionList }
-    const buttonList = toEnumArray(list || {})
-    let btnNum: any = 1
-    const render = (_: any, item: any) => {
-      const res = buttonList.map((data: any) => {
-        const type = data.id
-        if (type === "able") {
-          btnNum++
-          return (
-            <Button
-              key={type}
-              type="primary"
-              size="small"
-              onClick={() => onHandle(type, item)}
-            >
-              {item.state === 0 ? "禁用" : "启用"}
-            </Button>
-          )
-        } else if (BUTTON_LIST.hasOwnProperty(type)) {
-          btnNum++
-          return (
-            <Button
-              key={type}
-              type="primary"
-              size="small"
-              onClick={() => onHandle(type, item)}
-            >
-              {BUTTON_LIST[type]}
-            </Button>
-          )
-        } else return null
-      })
-      return <Space>{res}</Space>
+    const tablePermission = toTablePer(permissionList, TableBtnList)
+    if (isNil(tablePermission)) {
+      // 表格无操作权限
+      newColumns.pop()
+      setNewColumns(newColumns)
+      return
     }
-    // console.log(render)
+
+    const render = (_: any, item: any) => {
+      const btnList = columns[columns.length - 1].btnList
+      const specialList: any = []
+      const special =
+        btnList &&
+        btnList.map((btnItem: any) => {
+          specialList.push(btnItem.type)
+          return (
+            <Button
+              key={btnItem.type}
+              {...btnProperty}
+              onClick={() => btnItem.onClick(btnItem.type, item)}
+            >
+              {btnItem.name}
+            </Button>
+          )
+        })
+      const res = tablePermission.map((type: any) => {
+        if (!specialList.includes(type)) {
+          const value = TableBtnList[type]
+          let showName = ""
+          let disabled = false
+
+          switch (value.type) {
+            case "able":
+              showName =
+                item[value.key] === value.ableValue
+                  ? value.ableName
+                  : value.disAbleName
+              break
+            case "revoke":
+              showName = value.name
+              disabled = value.isEqual
+                ? item[value.key] === value.value
+                : item[value.key] !== value.value
+              break
+            default:
+              showName = value.name
+          }
+          return (
+            <Button
+              key={type}
+              disabled={disabled}
+              {...btnProperty}
+              onClick={() => onHandle(type, item)}
+            >
+              {showName}
+            </Button>
+          )
+        }
+        return null
+      })
+
+      return (
+        <Space>
+          {special}
+          {res}
+        </Space>
+      )
+    }
     newColumns[newColumns.length - 1].render = render
-    newColumns[newColumns.length - 1].width = btnNum * 80
+    newColumns[newColumns.length - 1].width = 50
     setNewColumns(newColumns)
   }, [permissionList, columns])
 
+  const toTablePer = (permissionList: any, TableBtnList: any) => {
+    const per: any = []
+    Object.keys(permissionList).forEach((key) => {
+      if (TableBtnList.hasOwnProperty(key)) {
+        per.push(key)
+      }
+    })
+    return per
+  }
+  useDeepCompareEffect(() => {
+    // 清空全选数据
+    selection && setSelectedRowKeys([])
+  }, [restProps.dataSource, selection])
+
+  const rowSelection = {
+    // 全选属性
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any) => {
+      setSelectedRowKeys(selectedRowKeys)
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: TableBtnList["revoke"].isEqual
+        ? record[TableBtnList["revoke"].key] === TableBtnList["revoke"].value
+        : record[TableBtnList["revoke"].key] !== TableBtnList["revoke"].value
+    })
+  }
+
   return (
-    <Table
-      className={className}
-      bordered
-      pagination={{
-        defaultCurrent: 1,
-        defaultPageSize: 10,
-        showSizeChanger: true,
-        showQuickJumper: true,
-        showTotal: (total: any) => `共 ${total} 条记录`,
-        current,
-        pageSize,
-        total
-      }}
-      columns={newColumns}
-      rowKey={(record: any) => record.id}
-      scroll={{ x: true }}
-      {...restProps}
-    />
+    <div className={className}>
+      {selection && (
+        <div style={{ marginBottom: 16 }}>
+          <Button
+            type="primary"
+            disabled={selectedRowKeys.length <= 0}
+            onClick={() => {
+              onHandleAll(selectedRowKeys)
+            }}
+          >
+            撤销
+          </Button>
+          <span style={{ marginLeft: 8 }}>
+            {selectedRowKeys.length > 0
+              ? `已选择 ${selectedRowKeys.length} 项数据`
+              : ""}
+          </span>
+        </div>
+      )}
+
+      <Table
+        bordered
+        pagination={
+          showPage && {
+            defaultCurrent: 1,
+            defaultPageSize: 10,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total: any) => `共 ${total} 条记录`,
+            current,
+            pageSize,
+            total
+          }
+        }
+        columns={newColumns}
+        rowKey={(record) => record.id}
+        scroll={{ x: true }}
+        rowSelection={selection && rowSelection}
+        {...restProps}
+      />
+    </div>
   )
 })

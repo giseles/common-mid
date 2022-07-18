@@ -1,66 +1,60 @@
 import React, { memo } from "react"
 import { router } from "dva"
 import { Breadcrumb as AntdBread } from "antd"
-import "antd/es/breadcrumb/style"
+// import "antd/es/breadcrumb/style"
 
 const { Link } = router
 
 export const MidBreadcrumb = memo((props: any) => {
-  const { className, pathname, breadcrumbNameMap, pathWithPermission } = props
+  const {
+    className,
+    pathname,
+    AllPathInfo,
+    AllPathPermission,
+    IconFont,
+    property,
+    specialList
+  } = props
   const pathSnippets = pathname.split("/").filter((i: any) => i)
   const extraBreadcrumbItems = pathSnippets.map((_: any, index: any) => {
-    if (_ === "form") {
-      return <AntdBread.Item key={"form" + index}>表单</AntdBread.Item>
-    } else if (_ === "info") {
-      return <AntdBread.Item key={"info" + index}>个人中心</AntdBread.Item>
+    const { noJumpList, jumpList, noShowList } = specialList
+    if (noJumpList[_]) {
+      return <AntdBread.Item key={index}>{noJumpList[_]}</AntdBread.Item>
     }
 
-    const jumpUrlList: any = {
-      ec: null,
-      oc: null,
-      sc: null,
-      market: "/sc/market/agent",
-      employee: "/sc/employee/role",
-      content: "/oc/content/notice",
-      card: "/oc/card/scheme"
-    }
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`
     let toUrl = url
-    if (Object.keys(jumpUrlList).includes(_)) {
-      toUrl = jumpUrlList[_]
+    if (Object.keys(jumpList).includes(_)) {
+      toUrl = jumpList[_]
     }
-    if (
-      !breadcrumbNameMap[url]?.name &&
-      (_ === "add" || _ === "edit" || _ === "detail")
-    ) {
+    if (!AllPathInfo[url]?.name || noShowList.includes(_)) {
+      // 无路径名称或 不显示路径
       return ""
     }
     const content = (
       <>
-        {/* {breadcrumbNameMap[url]?.icon && (
-          <IconFont type={`icon-${breadcrumbNameMap[url]?.icon}1`} />
-        )} */}
-        {breadcrumbNameMap[url]?.name}
+        {property.isShowIcon && AllPathInfo[url]?.icon && (
+          <IconFont type={`icon-${AllPathInfo[url]?.icon}1`} />
+        )}
+        {AllPathInfo[url]?.name}
       </>
     )
     return (
-      <AntdBread.Item key={_ + url}>
+      <AntdBread.Item key={url}>
         {toUrl ? <Link to={toUrl}>{content}</Link> : content}
       </AntdBread.Item>
     )
   })
 
   return (
-    <AntdBread separator=">" className={className}>
-      {breadcrumbNameMap["/home"] && (
-        <AntdBread.Item href="/home">
+    <AntdBread separator={property.separator} className={className}>
+      {AllPathPermission.includes(property.homeUrl) && (
+        <AntdBread.Item href={property.homeUrl}>
+          {property.isShowIcon && <IconFont type={property.homeIcon} />}
           首页
-          {/* <IconFont type={`icon-menu-sy1`} /> */}
         </AntdBread.Item>
       )}
-      {pathname !== "/home" &&
-        pathWithPermission.includes(pathname) &&
-        extraBreadcrumbItems}
+      {AllPathPermission.includes(pathname) && extraBreadcrumbItems}
     </AntdBread>
   )
 })

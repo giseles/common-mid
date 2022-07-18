@@ -60,7 +60,6 @@ export const MidSearch = memo((props: SearchProps) => {
   const [renderItem, setRenderItem] = useState(<></>)
   useDeepCompareEffect(() => {
     // 渲染search
-    console.log("渲染search渲染search渲染search")
     const show: any = search?.map((item: any, index: any) => {
       const { hide = false } = item
       return !hide && <Col key={index}>{formInputRender(item)}</Col>
@@ -72,13 +71,10 @@ export const MidSearch = memo((props: SearchProps) => {
     let elem: any = <></>
     const { name, type, valueEnum, itemProps } = item
     const { defaultValue, ...restProps } = itemProps
-    // eslint-disable-next-line no-nested-ternary
-    const newType =
-      type !== "text"
-        ? type
-        : type === "text" && valueEnum
-        ? "select"
-        : "search"
+    let newType = type
+    if (type === "text") {
+      newType = valueEnum ? "select" : "search"
+    }
     switch (newType) {
       case "search":
         elem = (

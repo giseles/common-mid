@@ -103,15 +103,16 @@ export const MidTable = memo((props: any) => {
     newColumns[newColumns.length - 1].render = render
     newColumns[newColumns.length - 1].width = 50
     setNewColumns(newColumns)
-  }, [permissionList, columns])
+  }, [permissionList, columns, tableBtnList])
 
   const toTablePer = (permissionList: any, tableBtnList: any) => {
     const per: any = []
-    Object.keys(permissionList).forEach((key) => {
-      if (tableBtnList.hasOwnProperty(key)) {
-        per.push(key)
-      }
-    })
+    tableBtnList &&
+      Object.keys(permissionList).forEach((key) => {
+        if (tableBtnList.hasOwnProperty(key)) {
+          per.push(key)
+        }
+      })
     return per
   }
   useDeepCompareEffect(() => {

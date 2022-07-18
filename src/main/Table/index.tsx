@@ -2,6 +2,7 @@ import React, { memo, useState } from "react"
 import { Button, Table, Space } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isNil } from "common-screw"
+import "antd/es/table/style"
 
 export const MidTable = memo((props: any) => {
   const {
@@ -14,7 +15,7 @@ export const MidTable = memo((props: any) => {
     selection = false,
     showPage = true,
     onHandleAll,
-    TableBtnList,
+    tableBtnList,
     permissionList,
     btnProperty = {},
     ...restProps
@@ -30,7 +31,7 @@ export const MidTable = memo((props: any) => {
       setNewColumns(newColumns)
       return
     }
-    const tablePermission = toTablePer(permissionList, TableBtnList)
+    const tablePermission = toTablePer(permissionList, tableBtnList)
     if (isNil(tablePermission)) {
       // 表格无操作权限
       newColumns.pop()
@@ -57,7 +58,7 @@ export const MidTable = memo((props: any) => {
         })
       const res = tablePermission.map((type: any) => {
         if (!specialList.includes(type)) {
-          const value = TableBtnList[type]
+          const value = tableBtnList[type]
           let showName = ""
           let disabled = false
 
@@ -82,6 +83,7 @@ export const MidTable = memo((props: any) => {
               key={type}
               disabled={disabled}
               {...btnProperty}
+              {...value.btnProperty}
               onClick={() => onHandle(type, item)}
             >
               {showName}
@@ -103,10 +105,10 @@ export const MidTable = memo((props: any) => {
     setNewColumns(newColumns)
   }, [permissionList, columns])
 
-  const toTablePer = (permissionList: any, TableBtnList: any) => {
+  const toTablePer = (permissionList: any, tableBtnList: any) => {
     const per: any = []
     Object.keys(permissionList).forEach((key) => {
-      if (TableBtnList.hasOwnProperty(key)) {
+      if (tableBtnList.hasOwnProperty(key)) {
         per.push(key)
       }
     })
@@ -124,9 +126,9 @@ export const MidTable = memo((props: any) => {
       setSelectedRowKeys(selectedRowKeys)
     },
     getCheckboxProps: (record: any) => ({
-      disabled: TableBtnList["revoke"].isEqual
-        ? record[TableBtnList["revoke"].key] === TableBtnList["revoke"].value
-        : record[TableBtnList["revoke"].key] !== TableBtnList["revoke"].value
+      disabled: tableBtnList["revoke"].isEqual
+        ? record[tableBtnList["revoke"].key] === tableBtnList["revoke"].value
+        : record[tableBtnList["revoke"].key] !== tableBtnList["revoke"].value
     })
   }
 

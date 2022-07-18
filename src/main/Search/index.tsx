@@ -1,6 +1,5 @@
-import React, { useState, memo, useEffect } from "react"
-import useDeepCompareEffect from "use-deep-compare-effect"
-import { isNil } from "common-screw"
+import React, { useState, memo } from "react"
+import { useDeepCompareEffect } from "common-hook"
 import {
   Row,
   Col,
@@ -9,21 +8,17 @@ import {
   DatePicker,
   Select,
   Cascader,
-  Checkbox,
   Button
 } from "antd"
-import { SearchOutlined, PlusOutlined } from "@ant-design/icons"
 
 interface InputProps {
   name?: string | string[]
   type?: any
   hide?: boolean
   valueEnum?: any[]
-  selectCompose?: any
-  checkboxChildren?: any
   itemProps?: any
 }
-export interface SearchProps {
+interface SearchProps {
   searchText?: string | "查询"
   resetText?: string | "重置"
   onChange?: (values: object) => void
@@ -32,265 +27,173 @@ export interface SearchProps {
   addClick?: any
   addBtn?: any
   addHandle?: any
-  btnGroup?: any
   style?: any
   className?: any
+  addProps?: any
+  children?: any
+  searchIcon?: any
 }
 
 // 扁平化search
 const getFlatSearch = (search: any[] | undefined) => {
   let keys: any = {}
-  let composeKeys: any = {}
   if (search) {
     search.forEach((item) => {
       const name = String(item.name)
       keys[name] = { ...item }
-      if (item.selectCompose) {
-        composeKeys[item.selectCompose.name] = { ...item.selectCompose }
-        Object.assign(keys, getFlatSearch([item.selectCompose])[0])
-      }
     })
   }
-  return [keys, composeKeys]
+  return keys
 }
 
 export const MidSearch = memo((props: SearchProps) => {
-  const [disabledKeys, setDisable] = useState({})
-  const [belongInfo, setBelongInfo] = useState({})
   const {
     search,
     onChange,
-    addBtn = null,
-    addHandle,
-    btnGroup = null,
+    addProps,
+    className,
     style = {},
-    className
+    children,
+    searchIcon
   } = props
   const [form] = Form.useForm()
+  const [renderItem, setRenderItem] = useState(<></>)
   useDeepCompareEffect(() => {
-    const subs = getFlatSearch(search)[1]
-    let disabledKeys: any = {}
-    Object.keys(subs).forEach((i) => {
-      if (subs[i].itemProps?.hasOwnProperty("defaultDisabled")) {
-        disabledKeys[i] = subs[i].itemProps
-      } else {
-        disabledKeys[i] = false
-      }
+    // 渲染search
+    console.log("渲染search渲染search渲染search")
+    const show: any = search?.map((item: any, index: any) => {
+      const { hide = false } = item
+      return !hide && <Col key={index}>{formInputRender(item)}</Col>
     })
-    setDisable(disabledKeys)
+    setRenderItem(show)
   }, [search])
-
-  const getSelect = ({ valueEnum, itemProps, onChange }: any) => {
-    return (
-      <Select
-        placeholder="请选择"
-        allowClear
-        onChange={onChange || onValuesChange}
-        {...itemProps}
-      >
-        <Select.Option key="" value="">
-          {`${itemProps.placeholder} - 全部`}
-        </Select.Option>
-        {(valueEnum || []).map((data: any) => (
-          <Select.Option key={data.id} value={data.id}>
-            {data.value}
-          </Select.Option>
-        ))}
-      </Select>
-    )
-  }
 
   const formInputRender = (item: InputProps) => {
     let elem: any = <></>
-    const {
-      name,
-      type,
-      valueEnum,
-      checkboxChildren,
-      selectCompose,
-      itemProps
-    } = item
+    const { name, type, valueEnum, itemProps } = item
     const { defaultValue, ...restProps } = itemProps
-    if (type === "text") {
-      if (valueEnum) {
-        if (selectCompose) {
-          return (
-            <Row>
-              <Col>
-                {wrapFormItem({
-                  defaultValue,
-                  name,
-                  checkboxChildren,
-                  dom: getSelect({
-                    valueEnum,
-                    itemProps: restProps,
-                    onChange: (value: any) => {
-                      setDisable({
-                        ...disabledKeys,
-                        [selectCompose.name]: value === undefined
-                      })
-                      const subValue = form.getFieldValue(
-                        String(selectCompose.name)
-                      )
-                      if (value === undefined) {
-                        form.setFieldsValue({
-                          [String(selectCompose.name)]: undefined
-                        })
-                      }
-                      if (subValue) {
-                        onValuesChange()
-                      }
-                    }
-                  })
-                })}
-              </Col>
-              <Col>
-                {renderFormColItem({
-                  ...selectCompose,
-                  itemProps: {
-                    ...selectCompose.itemProps
-                    // disabled: disabledKeys[selectCompose.name],
-                  }
-                })}
-              </Col>
-            </Row>
-          )
-        }
-        elem = getSelect({
-          valueEnum,
-          itemProps: restProps,
-          onChange: onValuesChange
-        })
-      } else if (checkboxChildren) {
-        elem = <Checkbox>{checkboxChildren}</Checkbox>
-      } else {
+    // eslint-disable-next-line no-nested-ternary
+    const newType =
+      type !== "text"
+        ? type
+        : type === "text" && valueEnum
+        ? "select"
+        : "search"
+    switch (newType) {
+      case "search":
         elem = (
           <Input
             placeholder="关键字"
             allowClear
-            onChange={({ target }: any) => {
+            onChange={({ target }) => {
               !target.value && onValuesChange()
             }}
-            prefix={
-              <SearchOutlined
-                className="site-form-item-icon"
-                style={{ color: "#3082F9" }}
-              />
-            }
+            prefix={searchIcon}
             onPressEnter={onValuesChange}
             {...restProps}
           />
         )
-      }
+        break
+      case "select":
+        elem = (
+          <Select
+            placeholder="请选择"
+            allowClear
+            onChange={onValuesChange}
+            {...itemProps}
+          >
+            <Select.Option key="0" value="">
+              {itemProps.placeholder} - 全部
+            </Select.Option>
+            {valueEnum?.map((data: any) => (
+              <Select.Option key={data.id} value={data.id}>
+                {data.value}
+              </Select.Option>
+            ))}
+          </Select>
+        )
+        break
+      case "dateRange":
+        elem = (
+          <DatePicker.RangePicker
+            onChange={onValuesChange}
+            placeholder={["开始时间", "结束时间"]}
+            {...restProps}
+          />
+        )
+        break
+      case "monthRange":
+        elem = (
+          <DatePicker.MonthPicker
+            onChange={onValuesChange}
+            placeholder="请选择"
+            {...restProps}
+          />
+        )
+        break
+      case "cascader":
+        elem = (
+          <Cascader
+            options={valueEnum}
+            changeOnSelect
+            onChange={onValuesChange}
+            placeholder="请选择"
+            {...restProps}
+          />
+        )
+        break
+      default:
     }
-    if (type === "dateRange") {
-      elem = (
-        <DatePicker.RangePicker
-          onChange={onValuesChange}
-          placeholder={["开始时间", "结束时间"]}
-          {...restProps}
-        />
-      )
-    }
-    if (type === "monthRange") {
-      elem = (
-        <DatePicker.MonthPicker
-          onChange={onValuesChange}
-          placeholder="请选择"
-          {...restProps}
-        />
-      )
-    }
-    if (type === "cascader") {
-      elem = (
-        <Cascader
-          onChange={onValuesChange}
-          placeholder="请选择"
-          {...restProps}
-        />
-      )
-    }
-    return wrapFormItem({ defaultValue, name, checkboxChildren, dom: elem })
-  }
-  const onChangeBelong = (value: any) => {
-    setBelongInfo(value)
-  }
-  useEffect(() => {
-    if (!isNil(belongInfo)) {
-      onValuesChange()
-    }
-  }, [belongInfo])
-  const wrapFormItem = ({ defaultValue, name, checkboxChildren, dom }: any) => {
+
     return (
-      <Form.Item
-        initialValue={defaultValue}
-        name={String(name)}
-        valuePropName={checkboxChildren ? "checked" : "value"}
-      >
-        {dom}
+      <Form.Item initialValue={defaultValue} name={String(name)}>
+        {elem}
       </Form.Item>
-    )
-  }
-
-  const renderFormColItem = (item: InputProps) => {
-    const dom = formInputRender(item)
-    if (!dom) {
-      return null
-    }
-    return dom
-  }
-
-  const renderItem = () => {
-    return (
-      search?.map((item, index) => {
-        const { hide = false } = item
-        return hide ? null : <Col key={index}>{renderFormColItem(item)}</Col>
-      }) || []
     )
   }
 
   // 表单数据处理
   const handleFields = (values: { [x: string]: any }) => {
-    let result: any = { ...belongInfo }
-    const searchData = getFlatSearch(search)[0]
+    let result: any = {}
+    const searchData = getFlatSearch(search)
     Object.keys(values).forEach((name) => {
       const item = searchData[name]
       const type = item.type
       const itemValue = values[name]
 
-      if (["dateRange", "monthRange", "cascader"].indexOf(type) === -1) {
-        result[name] = itemValue
-        return
-      }
-      // 日期
-      if (type === "dateRange") {
-        if (Array.isArray(itemValue) && itemValue.length === 2) {
-          result[item.name[0]] = itemValue[0].format("YYYY-MM-DD") + " 00:00:00"
-          result[item.name[1]] = itemValue[1].format("YYYY-MM-DD") + " 23:59:59"
-        } else {
-          // 没有值时，也要保留表单key
-          result[item.name[0]] = undefined
-          result[item.name[1]] = undefined
-        }
-        return
-      }
-      if (type === "monthRange") {
-        if (Array.isArray(itemValue) && itemValue.length === 2) {
-          result[item.name[0]] = itemValue[0].format("YYYY-MM")
-          result[item.name[1]] = itemValue[1].format("YYYY-MM")
-        } else {
-          // 没有值时，也要保留表单key
-          result[item.name[0]] = undefined
-          result[item.name[1]] = undefined
-        }
-        return
-      }
-      if (type === "cascader") {
-        // 取最后一个国标码
-        result[name] =
-          Array.isArray(itemValue) && itemValue.length > 0
-            ? itemValue[itemValue.length - 1]
-            : undefined
+      switch (type) {
+        case "dateRange":
+          // 日期
+          if (Array.isArray(itemValue) && itemValue.length === 2) {
+            result[item.name[0]] =
+              itemValue[0].format("YYYY-MM-DD") + " 00:00:00"
+            result[item.name[1]] =
+              itemValue[1].format("YYYY-MM-DD") + " 23:59:59"
+          } else {
+            // 没有值时，也要保留表单key
+            result[item.name[0]] = undefined
+            result[item.name[1]] = undefined
+          }
+          break
+        case "monthRange":
+          if (Array.isArray(itemValue) && itemValue.length === 2) {
+            result[item.name[0]] = itemValue[0].format("YYYY-MM")
+            result[item.name[1]] = itemValue[1].format("YYYY-MM")
+          } else {
+            // 没有值时，也要保留表单key
+            result[item.name[0]] = undefined
+            result[item.name[1]] = undefined
+          }
+          break
+        case "cascader":
+          // 级联选择
+          const { valueName } = item
+          valueName.forEach((childItem: any, childIndex: any) => {
+            result[childItem] = itemValue?.[childIndex] || undefined
+          })
+          break
+        default:
+          result[name] = itemValue
       }
     })
     return result
@@ -298,33 +201,23 @@ export const MidSearch = memo((props: SearchProps) => {
 
   const onValuesChange = () => {
     const values = form.getFieldsValue()
-    if (onChange) {
-      onChange(handleFields(values))
-    }
+    onChange && onChange(handleFields(values))
   }
 
   return (
-    <div className={className}>
+    <section className={className} style={style}>
       <Form autoComplete="off" form={form}>
         <Row gutter={24} justify="start">
-          {renderItem()}
+          {renderItem}
         </Row>
-
-        {btnGroup}
+        {children}
       </Form>
-      {addBtn && (
-        <Button onClick={addHandle} icon={<PlusOutlined />}>
-          {addBtn}
+      {/* 添加按钮 */}
+      {addProps.isShow && (
+        <Button onClick={addProps.onClick} icon={addProps.icon}>
+          {addProps.name}
         </Button>
       )}
-      {props.add && (
-        <Button
-          onClick={() => props.addClick("add", null)}
-          icon={<PlusOutlined />}
-        >
-          {props.add}
-        </Button>
-      )}
-    </div>
+    </section>
   )
 })

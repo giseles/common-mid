@@ -39,11 +39,11 @@ export const MidSearch = memo((props: SearchProps) => {
   const {
     search,
     onChange,
-    addProps,
     className,
     style = {},
     children,
-    searchIcon
+    searchIcon,
+    addProps
   } = props
   const [form] = Form.useForm()
   const [renderItem, setRenderItem] = useState(<></>)

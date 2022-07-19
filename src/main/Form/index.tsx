@@ -13,15 +13,15 @@ export const MidForm = memo((props: any) => {
     initialValues = {},
     formList,
     formRules,
-    formProperty,
-    componentProperty,
-    btnProperty = {
+    formProps,
+    componentProps,
+    btnProps = {
       submitName: "提交",
       returnName: "返回",
       isShowReturn: true
     }
   } = props
-  const { BaseUpload, Encrypt } = componentProperty
+  const { BaseUpload, Encrypt } = componentProps
 
   const [renderItem, setRenderItem] = useState(<></>)
   const FormRef: any = useRef(null)
@@ -36,7 +36,7 @@ export const MidForm = memo((props: any) => {
   }, [formList])
 
   const onFinish = (values: any) => {
-    btnProperty.setLoading(true)
+    btnProps.setLoading(true)
     const flatForm = getFlatData(formList)
     Object.keys(values).forEach((key) => {
       console.log(key)
@@ -57,7 +57,7 @@ export const MidForm = memo((props: any) => {
         default:
       }
     })
-    btnProperty.onSubmit(values)
+    btnProps.onSubmit(values)
   }
 
   const onFinishFailed = (errorInfo: any) => {
@@ -69,7 +69,7 @@ export const MidForm = memo((props: any) => {
   }
 
   const onValuesChange = (vs: any, values: any) => {
-    btnProperty.loading && btnProperty.setLoading(false)
+    btnProps.loading && btnProps.setLoading(false)
   }
 
   const toRenderItem = (formList: any) => {
@@ -178,21 +178,21 @@ export const MidForm = memo((props: any) => {
       onValuesChange={onValuesChange}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      {...formProperty}
+      {...formProps}
     >
       {renderItem}
       {props.children}
       <Item
         style={{ textAlign: "center" }}
         wrapperCol={{
-          span: formProperty.labelCol.span + formProperty.wrapperCol.span
+          span: formProps.labelCol.span + formProps.wrapperCol.span
         }}
       >
-        {btnProperty.isShowReturn && (
-          <Button onClick={btnProperty.onBack}>{btnProperty.returnName}</Button>
+        {btnProps.isShowReturn && (
+          <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
         )}
-        <Button type="primary" htmlType="submit" loading={btnProperty.loading}>
-          {btnProperty.submitName}
+        <Button type="primary" htmlType="submit" loading={btnProps.loading}>
+          {btnProps.submitName}
         </Button>
       </Item>
     </Form>

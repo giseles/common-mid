@@ -11,9 +11,9 @@ export const MidTable = memo((props: any) => {
     onHandle,
     tableBtnList,
     permissionList,
-    btnProperty = {},
-    selectionProperty = { isShow: false },
-    pageProperty = { showPage: true },
+    btnProps = {},
+    pageProps = { showPage: true },
+    selectionProps = { isShow: false },
     ...restProps
   } = props
   const [newColumns, setNewColumns] = useState(columns)
@@ -48,8 +48,8 @@ export const MidTable = memo((props: any) => {
         return (
           <Button
             key={btnItem.type}
-            {...btnProperty}
-            {...btnItem.btnProperty}
+            {...btnProps}
+            {...btnItem.btnProps}
             onClick={() => btnItem.onClick(btnItem.type, item)}
           >
             {btnItem.name}
@@ -82,8 +82,8 @@ export const MidTable = memo((props: any) => {
             <Button
               key={type}
               disabled={disabled}
-              {...btnProperty}
-              {...value.btnProperty}
+              {...btnProps}
+              {...value.btnProps}
               onClick={() => onHandle(type, item)}
             >
               {showName}
@@ -120,8 +120,8 @@ export const MidTable = memo((props: any) => {
   }
   useDeepCompareEffect(() => {
     // 清空全选数据
-    selectionProperty.isShow && setSelectedRowKeys([])
-  }, [restProps.dataSource, selectionProperty.isShow])
+    selectionProps.isShow && setSelectedRowKeys([])
+  }, [restProps.dataSource, selectionProps.isShow])
 
   const rowSelection = {
     // 全选属性
@@ -138,16 +138,16 @@ export const MidTable = memo((props: any) => {
 
   return (
     <div className={className}>
-      {selectionProperty.isShow && (
+      {selectionProps.isShow && (
         <div style={{ marginBottom: 16 }}>
           <Button
             type="primary"
             disabled={selectedRowKeys.length <= 0}
             onClick={() => {
-              selectionProperty.onHandle(selectedRowKeys)
+              selectionProps.onHandle(selectedRowKeys)
             }}
           >
-            {selectionProperty.name}
+            {selectionProps.name}
           </Button>
           <span style={{ marginLeft: 8 }}>
             {selectedRowKeys.length > 0
@@ -160,21 +160,21 @@ export const MidTable = memo((props: any) => {
       <Table
         bordered
         pagination={
-          pageProperty.showPage && {
+          pageProps.showPage && {
             defaultCurrent: 1,
             defaultPageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total: any) => `共 ${pageProperty.total} 条记录`,
-            current: pageProperty.current,
-            pageSize: pageProperty.pageSize,
-            total: pageProperty.total
+            showTotal: (total: any) => `共 ${total} 条记录`,
+            current: pageProps.current,
+            pageSize: pageProps.pageSize,
+            total: pageProps.total
           }
         }
         columns={newColumns}
         rowKey={(record) => record.id}
         scroll={{ x: true }}
-        rowSelection={selectionProperty.isShow && rowSelection}
+        rowSelection={selectionProps.isShow && rowSelection}
         {...restProps}
       />
     </div>

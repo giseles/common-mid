@@ -10,6 +10,7 @@ import {
   Cascader,
   Button
 } from "antd"
+import { getFlatData } from "../../_utils"
 
 interface InputProps {
   name?: string | string[]
@@ -32,18 +33,6 @@ interface SearchProps {
   addProps?: any
   children?: any
   searchIcon?: any
-}
-
-// 扁平化search
-const getFlatSearch = (search: any[] | undefined) => {
-  let keys: any = {}
-  if (search) {
-    search.forEach((item) => {
-      const name = String(item.name)
-      keys[name] = { ...item }
-    })
-  }
-  return keys
 }
 
 export const MidSearch = memo((props: SearchProps) => {
@@ -151,7 +140,7 @@ export const MidSearch = memo((props: SearchProps) => {
   // 表单数据处理
   const handleFields = (values: { [x: string]: any }) => {
     let result: any = {}
-    const searchData = getFlatSearch(search)
+    const searchData = getFlatData(search)
     Object.keys(values).forEach((name) => {
       const item = searchData[name]
       const type = item.type

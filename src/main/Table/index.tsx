@@ -7,17 +7,13 @@ import "antd/es/table/style"
 export const MidTable = memo((props: any) => {
   const {
     className,
-    current,
-    pageSize,
-    total,
     columns,
     onHandle,
-    selection = false,
-    showPage = true,
-    onHandleAll,
     tableBtnList,
     permissionList,
     btnProperty = {},
+    selectionProperty = { isShow: false },
+    pageProperty = { showPage: true },
     ...restProps
   } = props
   const [newColumns, setNewColumns] = useState(columns)
@@ -25,7 +21,12 @@ export const MidTable = memo((props: any) => {
   useDeepCompareEffect(() => {
     // 修改表格列表
     if (columns.length === 0) return
-    let newColumns: any = [...columns]
+    let newColumns: any = []
+
+    columns.forEach((item: any) => {
+      !item.isHide && newColumns.push(item)
+    })
+
     if (columns[columns.length - 1].key !== "operate") {
       // 表格中最后一列key不为operate
       setNewColumns(newColumns)
@@ -42,20 +43,19 @@ export const MidTable = memo((props: any) => {
     const render = (_: any, item: any) => {
       const btnList = columns[columns.length - 1].btnList
       const specialList: any = []
-      const special =
-        btnList &&
-        btnList.map((btnItem: any) => {
-          specialList.push(btnItem.type)
-          return (
-            <Button
-              key={btnItem.type}
-              {...btnProperty}
-              onClick={() => btnItem.onClick(btnItem.type, item)}
-            >
-              {btnItem.name}
-            </Button>
-          )
-        })
+      const special = btnList?.map((btnItem: any) => {
+        specialList.push(btnItem.type)
+        return (
+          <Button
+            key={btnItem.type}
+            {...btnProperty}
+            {...btnItem.btnProperty}
+            onClick={() => btnItem.onClick(btnItem.type, item)}
+          >
+            {btnItem.name}
+          </Button>
+        )
+      })
       const res = tablePermission.map((type: any) => {
         if (!specialList.includes(type)) {
           const value = tableBtnList[type]
@@ -92,7 +92,6 @@ export const MidTable = memo((props: any) => {
         }
         return null
       })
-
       return (
         <Space>
           {special}
@@ -100,8 +99,12 @@ export const MidTable = memo((props: any) => {
         </Space>
       )
     }
-    newColumns[newColumns.length - 1].render = render
-    newColumns[newColumns.length - 1].width = 50
+    newColumns[newColumns.length - 1] = {
+      width: 50,
+      render,
+      fixed: "right",
+      ...newColumns[newColumns.length - 1]
+    }
     setNewColumns(newColumns)
   }, [permissionList, columns, tableBtnList])
 
@@ -117,8 +120,8 @@ export const MidTable = memo((props: any) => {
   }
   useDeepCompareEffect(() => {
     // 清空全选数据
-    selection && setSelectedRowKeys([])
-  }, [restProps.dataSource, selection])
+    selectionProperty.isShow && setSelectedRowKeys([])
+  }, [restProps.dataSource, selectionProperty.isShow])
 
   const rowSelection = {
     // 全选属性
@@ -135,16 +138,16 @@ export const MidTable = memo((props: any) => {
 
   return (
     <div className={className}>
-      {selection && (
+      {selectionProperty.isShow && (
         <div style={{ marginBottom: 16 }}>
           <Button
             type="primary"
             disabled={selectedRowKeys.length <= 0}
             onClick={() => {
-              onHandleAll(selectedRowKeys)
+              selectionProperty.onHandle(selectedRowKeys)
             }}
           >
-            撤销
+            {selectionProperty.name}
           </Button>
           <span style={{ marginLeft: 8 }}>
             {selectedRowKeys.length > 0
@@ -157,21 +160,21 @@ export const MidTable = memo((props: any) => {
       <Table
         bordered
         pagination={
-          showPage && {
+          pageProperty.showPage && {
             defaultCurrent: 1,
             defaultPageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total: any) => `共 ${total} 条记录`,
-            current,
-            pageSize,
-            total
+            showTotal: (total: any) => `共 ${pageProperty.total} 条记录`,
+            current: pageProperty.current,
+            pageSize: pageProperty.pageSize,
+            total: pageProperty.total
           }
         }
         columns={newColumns}
         rowKey={(record) => record.id}
         scroll={{ x: true }}
-        rowSelection={selection && rowSelection}
+        rowSelection={selectionProperty.isShow && rowSelection}
         {...restProps}
       />
     </div>

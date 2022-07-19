@@ -8,10 +8,10 @@ export const MidBtnGroup = memo((props: any) => {
     <Button.Group className={className} {...property}>
       {!isNil(list) &&
         list.map((item: any, index: any) => {
-          const { type, isShow = true } = item
+          const { type, isHide = false } = item
           if (type === "btn") {
             return (
-              isShow && (
+              !isHide && (
                 <Button
                   key={index}
                   icon={item.icon}
@@ -23,7 +23,7 @@ export const MidBtnGroup = memo((props: any) => {
               )
             )
           } else {
-            return isShow && item.content
+            return !isHide && item.content
           }
         })}
       {children}

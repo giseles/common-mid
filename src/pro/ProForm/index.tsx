@@ -19,9 +19,9 @@ export const ProForm = memo((props: any) => {
       {headerProps.subTitle && <Header {...headerProps} />}
       <Form
         {...formProps}
-        onSubmit={useCallback((data: any) => onSubmit(data), [onSubmit])}
+        onSubmit={useCallback(onSubmit, [])}
         onBack={onBack}
-        setLoading={useCallback((data: any) => setLoading(data), [setLoading])}
+        setLoading={useCallback(setLoading, [])}
       >
         {props.children}
       </Form>

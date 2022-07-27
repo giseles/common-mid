@@ -18,6 +18,10 @@ export * from "./main/Form" // Form 表单
 export * from "./main/Search" // Search 搜索栏
 export * from "./main/Table" // Table 表格
 
+// pro
+export * from "./pro/ProForm" // ProForm 表单
+export * from "./pro/ProTable" // ProTable 表格
+
 //tip
 export * from "./tip/Confirm" // confirm 信息提示
 export * from "./tip/Message" // message 全局提示

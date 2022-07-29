@@ -29,33 +29,33 @@ import { Search, Table } from "common-mid"
 
 #### &emsp;&emsp;[Axios](https://github.com/giseles/common-mid/blob/main/src/common/Axios/index.ts) &emsp;&emsp;&emsp;发送网络请求
 
-#### &emsp;&emsp;[BtnGroup](https://github.com/giseles/common-mid/blob/main/src/common/BtnGroup/index.ts) &emsp;&emsp;&emsp;按钮群组
+#### &emsp;&emsp;[BtnGroup](https://github.com/giseles/common-mid/blob/main/src/common/BtnGroup/index.tsx) &emsp;&emsp;&emsp;按钮群组
 
-#### &emsp;&emsp;[IconFont](https://github.com/giseles/common-mid/blob/main/src/common/IconFont/index.ts) &emsp;&emsp;&emsp;自定义 icon 字体
+#### &emsp;&emsp;[IconFont](https://github.com/giseles/common-mid/blob/main/src/common/IconFont/index.tsx) &emsp;&emsp;&emsp;自定义 icon 字体
 
 ### Layout 类组件
 
-#### &emsp;&emsp;[Breadcrumb](https://github.com/giseles/common-mid/blob/main/src/layout/Breadcrumb/index.ts) &emsp;&emsp;&emsp;面包屑导航
+#### &emsp;&emsp;[Breadcrumb](https://github.com/giseles/common-mid/blob/main/src/layout/Breadcrumb/index.tsx) &emsp;&emsp;&emsp;面包屑导航
 
-#### &emsp;&emsp;[Empty](https://github.com/giseles/common-mid/blob/main/src/layout/Empty/index.ts) &emsp;&emsp;&emsp;空状态
+#### &emsp;&emsp;[Empty](https://github.com/giseles/common-mid/blob/main/src/layout/Empty/index.tsx) &emsp;&emsp;&emsp;空状态
 
-#### &emsp;&emsp;[PageHeader](https://github.com/giseles/common-mid/blob/main/src/layout/PageHeader/index.ts) &emsp;&emsp;&emsp;页头
+#### &emsp;&emsp;[PageHeader](https://github.com/giseles/common-mid/blob/main/src/layout/PageHeader/index.tsx) &emsp;&emsp;&emsp;页头
 
 ### Main 类组件
 
-#### &emsp;&emsp;[DescTable](https://github.com/giseles/common-mid/blob/main/src/DescTable/index.ts) &emsp;&emsp;&emsp;描述列表
+#### &emsp;&emsp;[DescTable](https://github.com/giseles/common-mid/blob/main/src/DescTable/index.tsx) &emsp;&emsp;&emsp;描述列表
 
-#### &emsp;&emsp;[Form](https://github.com/giseles/common-mid/blob/main/src/Form/index.ts) &emsp;&emsp;&emsp;表单
+#### &emsp;&emsp;[Form](https://github.com/giseles/common-mid/blob/main/src/Form/index.tsx) &emsp;&emsp;&emsp;表单
 
-#### &emsp;&emsp;[Search](https://github.com/giseles/common-mid/blob/main/src/Search/index.ts) &emsp;&emsp;&emsp;搜索栏
+#### &emsp;&emsp;[Search](https://github.com/giseles/common-mid/blob/main/src/Search/index.tsx) &emsp;&emsp;&emsp;搜索栏
 
-#### &emsp;&emsp;[Table](https://github.com/giseles/common-mid/blob/main/src/Table/index.ts) &emsp;&emsp;&emsp;表格
+#### &emsp;&emsp;[Table](https://github.com/giseles/common-mid/blob/main/src/Table/index.tsx) &emsp;&emsp;&emsp;表格
 
 ### Pro 类组件
 
-#### &emsp;&emsp;[ProForm](https://github.com/giseles/common-mid/blob/main/src/pro/ProForm/index.ts) &emsp;&emsp;&emsp;高阶表单
+#### &emsp;&emsp;[ProForm](https://github.com/giseles/common-mid/blob/main/src/pro/ProForm/index.tsx) &emsp;&emsp;&emsp;高阶表单
 
-#### &emsp;&emsp;[ProTable](https://github.com/giseles/common-mid/blob/main/src/pro/ProTable/index.ts) &emsp;&emsp;&emsp;高阶表格
+#### &emsp;&emsp;[ProTable](https://github.com/giseles/common-mid/blob/main/src/pro/ProTable/index.tsx) &emsp;&emsp;&emsp;高阶表格
 
 ### Tip 类组件
 
@@ -65,10 +65,10 @@ import { Search, Table } from "common-mid"
 
 ### Upload 类组件
 
-#### &emsp;&emsp;[ImgCrop](https://github.com/giseles/common-mid/blob/main/src/upload/ImgCrop/index.ts) &emsp;&emsp;&emsp;裁切图片并上传
+#### &emsp;&emsp;[ImgCrop](https://github.com/giseles/common-mid/blob/main/src/upload/ImgCrop/index.tsx) &emsp;&emsp;&emsp;裁切图片并上传
 
-#### &emsp;&emsp;[BaseUpload](https://github.com/giseles/common-mid/blob/main/src/BaseUpload/Message/index.ts) &emsp;&emsp;&emsp;上传图片、视频、文件等
+#### &emsp;&emsp;[BaseUpload](https://github.com/giseles/common-mid/blob/main/src/BaseUpload/Message/index.tsx) &emsp;&emsp;&emsp;上传图片、视频、文件等
 
-#### &emsp;&emsp;[RichText](https://github.com/giseles/common-mid/blob/main/src/upload/RichText/index.ts) &emsp;&emsp;&emsp;富文本
+#### &emsp;&emsp;[RichText](https://github.com/giseles/common-mid/blob/main/src/upload/RichText/index.tsx) &emsp;&emsp;&emsp;富文本
 
-#### &emsp;&emsp;[Upload](https://github.com/giseles/common-mid/blob/main/src/upload/Upload/index.ts) &emsp;&emsp;&emsp;集合多种上传
+#### &emsp;&emsp;[Upload](https://github.com/giseles/common-mid/blob/main/src/upload/Upload/index.tsx) &emsp;&emsp;&emsp;集合多种上传

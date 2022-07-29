@@ -1,3 +1,7 @@
+export interface LooseObject {
+  [key: string]: any
+}
+
 export interface MessageType {
   success: "success"
   loading: "loading"

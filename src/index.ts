@@ -1,33 +1,20 @@
-// interface
-export * from "./_interface/antd"
-export * from "./_interface/LooseObject"
+// utils
+export * from "./_utils"
 
-// common
-export * from "./common/Axios" // Axios 发送网络请求
-export * from "./common/BtnGroup" // BtnGroup 按钮群组
-export * from "./common/IconFont" // IconFont 自定义icon字体
+// Common 类组件: 发送网络请求 按钮群组 自定义icon字体
+export * from "./common"
 
-// layout
-export * from "./layout/Breadcrumb" // Breadcrumb 面包屑导航
-export * from "./layout/Empty" //Empty 空状态
-export * from "./layout/PageHeader" // PageHeader 页头
+// Layout 类组件: 面包屑导航 空状态 页头
+export * from "./layout"
 
-// main
-export * from "./main/DescTable" // DescTable 描述列表
-export * from "./main/Form" // Form 表单
-export * from "./main/Search" // Search 搜索栏
-export * from "./main/Table" // Table 表格
+// Main 类组件: 描述列表 表单 搜索栏 表格
+export * from "./main"
 
-// pro
-export * from "./pro/ProForm" // ProForm 表单
-export * from "./pro/ProTable" // ProTable 表格
+// Pro 类组件: 高阶表单 高阶表格
+export * from "./pro"
 
-//tip
-export * from "./tip/Confirm" // confirm 信息提示
-export * from "./tip/Message" // message 全局提示
+//Tip 类组件: 信息提示 全局提示
+export * from "./tip"
 
-// upload
-export * from "./upload/ImgCrop" // ImgCrop 裁切图片并上传
-export * from "./upload/BaseUpload" // BaseUpload 上传图片、视频、文件等
-export * from "./upload/RichText" // RichText 富文本
-export * from "./upload/Upload" // Upload 集合多种上传
+// Upload 类组件: 集合多种上传 裁切图片并上传 上传图片、视频、文件等 富文本
+export * from "./upload"

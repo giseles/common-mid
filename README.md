@@ -67,7 +67,7 @@ import { Search, Table } from "common-mid"
 
 #### &emsp;&emsp;[ImgCrop](https://github.com/giseles/common-mid/blob/main/src/upload/ImgCrop/index.tsx) &emsp;&emsp;&emsp;裁切图片并上传
 
-#### &emsp;&emsp;[BaseUpload](https://github.com/giseles/common-mid/blob/main/src/BaseUpload/Message/index.tsx) &emsp;&emsp;&emsp;上传图片、视频、文件等
+#### &emsp;&emsp;[BaseUpload](https://github.com/giseles/common-mid/blob/main/src/upload/BaseUpload/index.tsx) &emsp;&emsp;&emsp;上传图片、视频、文件等
 
 #### &emsp;&emsp;[RichText](https://github.com/giseles/common-mid/blob/main/src/upload/RichText/index.tsx) &emsp;&emsp;&emsp;富文本
 

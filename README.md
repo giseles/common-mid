@@ -43,13 +43,13 @@ import { Search, Table } from "common-mid"
 
 ### Main 类组件
 
-#### &emsp;&emsp;[DescTable](https://github.com/giseles/common-mid/blob/main/src/DescTable/index.tsx) &emsp;&emsp;&emsp;描述列表
+#### &emsp;&emsp;[DescTable](https://github.com/giseles/common-mid/blob/main/src/main/DescTable/index.tsx) &emsp;&emsp;&emsp;描述列表
 
-#### &emsp;&emsp;[Form](https://github.com/giseles/common-mid/blob/main/src/Form/index.tsx) &emsp;&emsp;&emsp;表单
+#### &emsp;&emsp;[Form](https://github.com/giseles/common-mid/blob/main/src/main/Form/index.tsx) &emsp;&emsp;&emsp;表单
 
-#### &emsp;&emsp;[Search](https://github.com/giseles/common-mid/blob/main/src/Search/index.tsx) &emsp;&emsp;&emsp;搜索栏
+#### &emsp;&emsp;[Search](https://github.com/giseles/common-mid/blob/main/src/main/Search/index.tsx) &emsp;&emsp;&emsp;搜索栏
 
-#### &emsp;&emsp;[Table](https://github.com/giseles/common-mid/blob/main/src/Table/index.tsx) &emsp;&emsp;&emsp;表格
+#### &emsp;&emsp;[Table](https://github.com/giseles/common-mid/blob/main/src/main/Table/index.tsx) &emsp;&emsp;&emsp;表格
 
 ### Pro 类组件
 

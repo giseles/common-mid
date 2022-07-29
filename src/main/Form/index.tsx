@@ -21,7 +21,7 @@ export const MidForm = memo((props: any) => {
       isShowReturn: true
     }
   } = props
-  const { BaseUpload, Encrypt } = componentProps
+  const { BaseUpload, Encrypt, RichText } = componentProps
 
   const [renderItem, setRenderItem] = useState(<></>)
   const FormRef: any = useRef(null)
@@ -39,7 +39,6 @@ export const MidForm = memo((props: any) => {
     btnProps.setLoading(true)
     const flatForm = getFlatData(formList)
     Object.keys(values).forEach((key) => {
-      console.log(key)
       const value = values[key]
       const formValue = flatForm[key]
       const type = formValue.type
@@ -53,6 +52,9 @@ export const MidForm = memo((props: any) => {
         case "password":
         case "passwordAgain":
           values[key] = Encrypt(value)
+          break
+        case "richText":
+          values[key] = value.toHTML ? value.toHTML() : value
           break
         default:
       }
@@ -157,6 +159,9 @@ export const MidForm = memo((props: any) => {
           break
         case "cascader":
           ele = <Cascader options={item.optionList} />
+          break
+        case "richText":
+          ele = <RichText />
           break
         default:
           ele = (

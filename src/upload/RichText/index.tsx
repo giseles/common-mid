@@ -48,7 +48,6 @@ export const MidRichText = memo((props) => {
           url: serverUrl + filePath,
           meta: {
             id: serverUrl + filePath,
-            maxWidth: "100%",
             style: { maxWidth: "100%", display: "block", margin: "10px auto" },
             loop: true, // 指定音视频是否循环播放
             autoPlay: true, // 指定音视频是否自动播放

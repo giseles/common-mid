@@ -88,6 +88,7 @@ export const MidForm = memo((props: any) => {
 
   const toRenderItem = (formList: any) => {
     return formList?.map((item: any) => {
+      if (item.hide) return null
       let { type, rules = [], placeholder = `请输入${item.label}` } = item
 
       const itemProps = {

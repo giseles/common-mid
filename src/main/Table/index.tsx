@@ -24,7 +24,7 @@ export const MidTable = memo((props: any) => {
     let newColumns: any = []
 
     columns.forEach((item: any) => {
-      !item.isHide && newColumns.push(item)
+      !item.hide && newColumns.push(item)
     })
 
     if (columns[columns.length - 1].key !== "operate") {

@@ -1,5 +1,19 @@
 import React, { useCallback, memo } from "react"
 
+/**
+ * @name  高阶表单
+ * @param  {Object} 配置项
+ * @example
+ * <ProForm
+    className={styles.wrap}
+    componentProps={componentProps}
+    headerProps={headerProps}
+    formProps={formProps}
+    onSubmit={useCallback((data: any) => onSubmit(data), [])}
+    onBack={onBack}
+    setLoading={useCallback((data: any) => setLoading(data), [])}
+  />
+ */
 export const ProForm = memo((props: any) => {
   const {
     className,

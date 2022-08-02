@@ -46,7 +46,7 @@ import { Search, Table } from "common-mid"
 
 ### Main 类组件
 
-#### &emsp;&emsp;[DescTable](https://github.com/giseles/common-mid/blob/main/src/main/DescTable/index.tsx) &emsp;&emsp;&emsp;描述列表
+#### &emsp;&emsp;[Description](https://github.com/giseles/common-mid/blob/main/src/main/Description/index.tsx) &emsp;&emsp;&emsp;描述列表
 
 #### &emsp;&emsp;[Form](https://github.com/giseles/common-mid/blob/main/src/main/Form/index.tsx) &emsp;&emsp;&emsp;表单
 

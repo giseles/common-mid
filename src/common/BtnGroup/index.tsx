@@ -2,6 +2,17 @@ import React, { memo } from "react"
 import { Button } from "antd"
 import { isNil } from "common-screw"
 
+/**
+ * @name  按钮群组
+ * @param  {Object} config MidBtnGroup 配置
+ * @example
+ * <MidBtnGroup
+    className={styles.group}
+    list={list}
+    children={children}
+    property={{ size: 'large' }}
+  />
+ */
 export const MidBtnGroup = memo((props: any) => {
   const { className, list, children, property } = props
   return (

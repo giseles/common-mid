@@ -5,6 +5,20 @@ import { Breadcrumb as AntdBread } from "antd"
 
 const { Link } = router
 
+/**
+ * @name  面包屑导航
+ * @param  {Object} 配置项
+ * @example
+ * <MidBreadcrumb
+    className={styles.antdBread}
+    pathname={pathname}
+    AllPathInfo={breadcrumbList}
+    AllPathPermission={ablePathList}
+    IconFont={IconFont}
+    property={property}
+    specialList={specialList}
+  />
+ */
 export const MidBreadcrumb = memo((props: any) => {
   const {
     className,

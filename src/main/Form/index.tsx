@@ -8,6 +8,18 @@ import { getFlatData } from "../../_utils"
 const { Item } = Form
 const { Option } = Select
 
+/**
+ * @name  表单
+ * @param  {Object} 配置项
+ * @example
+ * <MidForm
+    formRules={formRules}
+    componentProps={componentProps}
+    formProps={formProps}
+    btnProps={btnProps}
+    {...restProps}
+  />
+ */
 export const MidForm = memo((props: any) => {
   const {
     initialValues = {},

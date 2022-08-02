@@ -5,6 +5,12 @@ import "antd/es/button/style"
 import "antd/es/layout/style"
 import "antd/es/result/style"
 
+/**
+ * @name  空状态
+ * @param  {Object} 配置项
+ * @example
+ * <MidEmpty className={styles.layout} />
+ */
 export const MidEmpty = memo((props) => {
   const { className } = props
   return (

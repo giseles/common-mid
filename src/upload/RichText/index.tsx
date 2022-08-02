@@ -1,6 +1,18 @@
 import React, { memo } from "react"
 import BraftEditor from "braft-editor"
 
+/**
+ * @name  富文本
+ * @param  {Object} 配置项
+ * @example
+ * <MidRichText
+    {...props}
+    axios={axios}
+    message={Message}
+    serverUrl={fileServerUrl}
+    uploadUrl={videoUploadUrl}
+  />
+ */
 export const MidRichText = memo((props) => {
   let {
     message,

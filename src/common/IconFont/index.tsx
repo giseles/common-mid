@@ -1,6 +1,9 @@
 import { createFromIconfontCN } from "@ant-design/icons"
 
-export const MidIconFont = (props) =>
-  createFromIconfontCN({
-    scriptUrl: props.scriptUrl
-  })
+/**
+ * @name  自定义Font图标
+ * @param  {Object} 配置项
+ * @example
+ * MidIconFont({ scriptUrl: '/font/iconfont.js' ,extraCommonProps:{}})
+ */
+export const MidIconFont = (props) => createFromIconfontCN(props)

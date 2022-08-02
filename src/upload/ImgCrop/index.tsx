@@ -10,6 +10,12 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 //   aspect: 1
 // }
 
+/**
+ * @name  裁切图片并上传
+ * @param  {Object} 配置项
+ * @example
+ * <MidImgCrop {...props} />
+ */
 export const MidImgCrop = memo((props: any) => {
   const [loading, setLoading] = useState(false)
   let {

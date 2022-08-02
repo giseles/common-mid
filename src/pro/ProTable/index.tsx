@@ -1,5 +1,21 @@
 import React, { useCallback, memo } from "react"
 
+/**
+ * @name  高阶表格
+ * @param  {Object} 配置项
+ * @example
+ * <ProTable
+      componentProps={componentProps}
+      searchProps={searchProps}
+      tableProps={tableProps}
+      searchChange={useCallback(
+        (value: any) => onSearch({ ...value, page: 1, pageSize: searchParams.pageSize }),[])}
+      searchHandle={useCallback(onHandle, [])}
+      tableChange={useCallback(
+        ({ current, pageSize }: any) => onSearch({ page: current, pageSize }),[])}
+      tableHandle={useCallback((type: any, item: any) => onHandle(type, item), [])}
+    />
+ */
 export const ProTable = memo((props: any) => {
   const {
     className,

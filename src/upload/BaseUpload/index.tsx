@@ -6,6 +6,12 @@ import {
   UploadOutlined
 } from "@ant-design/icons"
 
+/**
+ * @name  上传图片、视频、文件等
+ * @param  {Object} 配置项
+ * @example
+ * <MidBaseUpload {...props} />
+ */
 export const MidBaseUpload = memo((props: any) => {
   const [loading, setLoading] = useState(false)
   const {

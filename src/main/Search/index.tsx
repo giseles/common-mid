@@ -35,6 +35,12 @@ interface SearchProps {
   searchIcon?: any
 }
 
+/**
+ * @name  搜索栏
+ * @param  {Object} 配置项
+ * @example
+ * <MidSearch className={styles.section} addProps={addProps} searchIcon={searchIcon} {...props} />
+ */
 export const MidSearch = memo((props: SearchProps) => {
   const {
     search,

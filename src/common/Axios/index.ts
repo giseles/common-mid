@@ -4,7 +4,6 @@ import { storage } from "common-screw"
 import { MidMessage } from "common-mid"
 
 /**
- *
  * @name  axios发送网络请求
  * @param  {Object} config Axios 配置 = defaultConfig
  * @example

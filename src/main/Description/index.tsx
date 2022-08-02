@@ -4,7 +4,13 @@ import { isNil } from "common-screw"
 import "antd/es/descriptions/style"
 import "antd/es/tooltip/style"
 
-export const MidDescTable = (props: any) => {
+/**
+ * @name  描述列表
+ * @param  {Object} 配置项
+ * @example
+ * <MidDescription {...props} className={styles.wrap} />)
+ */
+export const MidDescription = (props: any) => {
   const { column, dataSource, descProps, className } = props
   return (
     <Descriptions {...descProps} className={className}>

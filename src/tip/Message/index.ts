@@ -1,6 +1,7 @@
 import { message as AntdMessage } from "antd"
 import { MessageType } from "../../index"
 import "antd/es/message/style"
+
 /**
  *
  * @name 统一返回数据提示
@@ -8,11 +9,11 @@ import "antd/es/message/style"
  * @param  {Number} maxCount 最大显示数 = 1
  * @param  {Number} successCode 成功code码 = 8001
  * @example
- * message({code:'8001',msg:'成功'})           ---- 成功
- * message({code:'loading',msg:'加载中'})      ---- 加载中
- * message({code:'warning',msg:'警告'})        ---- 警告
- * message({code:'4004',msg:'失败'},1,8001)    ---- 失败
- * message('失败')                             ---- 失败
+ * MidMessage({code:'8001',msg:'成功'})           ---- 成功
+ * MidMessage({code:'loading',msg:'加载中'})      ---- 加载中
+ * MidMessage({code:'warning',msg:'警告'})        ---- 警告
+ * MidMessage({code:'4004',msg:'失败'},1,8001)    ---- 失败
+ * MidMessage('失败')                             ---- 失败
  */
 export const MidMessage = (
   data: any,

@@ -55,11 +55,11 @@ export const MidSearch = memo((props: SearchProps) => {
   const [renderItem, setRenderItem] = useState(<></>)
   useDeepCompareEffect(() => {
     // 渲染search
-    const show: any = search?.map((item: any, index: any) => {
+    const content: any = search?.map((item: any, index: any) => {
       const { hide = false } = item
       return !hide && <Col key={index}>{formInputRender(item)}</Col>
     })
-    setRenderItem(show)
+    setRenderItem(content)
   }, [search])
 
   const formInputRender = (item: InputProps) => {

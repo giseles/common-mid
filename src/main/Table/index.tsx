@@ -59,24 +59,24 @@ export const MidTable = memo((props: any) => {
       const res = tablePermission.map((type: any) => {
         if (!specialList.includes(type)) {
           const value = tableBtnList[type]
-          let showName = ""
+          let name = ""
           let disabled = false
 
           switch (value.type) {
             case "able":
-              showName =
+              name =
                 item[value.key] === value.ableValue
                   ? value.ableName
                   : value.disAbleName
               break
             case "revoke":
-              showName = value.name
+              name = value.name
               disabled = value.isEqual
                 ? item[value.key] === value.value
                 : item[value.key] !== value.value
               break
             default:
-              showName = value.name
+              name = value.name
           }
           return (
             <Button
@@ -86,7 +86,7 @@ export const MidTable = memo((props: any) => {
               {...value.btnProps}
               onClick={() => onHandle(type, item)}
             >
-              {showName}
+              {name}
             </Button>
           )
         }

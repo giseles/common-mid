@@ -62,7 +62,7 @@ export const MidBaseUpload = memo((props: any) => {
   const getContent = () => {
     const tipIcon = loading ? <LoadingOutlined /> : <PlusOutlined />
     const tipDes = loading ? "上传中" : "上传"
-    let show = (
+    let content = (
       <>
         {tipIcon}
         <div className="ant-upload-text">{tipDes}</div>
@@ -70,21 +70,21 @@ export const MidBaseUpload = memo((props: any) => {
     )
     if (isFile) {
       // 文件
-      show = (
+      content = (
         <Button>
           {loading ? <LoadingOutlined /> : <UploadOutlined />} {tipDes}
         </Button>
       )
     } else if (isImage && value) {
       // 图片
-      show = (
+      content = (
         <img src={serverUrl + value} alt="图片" style={{ width: "100%" }} />
       )
     } else if (isVideo && value) {
       // 视频
-      show = <video src={serverUrl + value} style={{ width: "100%" }} />
+      content = <video src={serverUrl + value} style={{ width: "100%" }} />
     }
-    return show
+    return content
   }
 
   return (

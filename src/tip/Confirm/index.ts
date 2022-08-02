@@ -27,11 +27,10 @@ export const MidConfirm = (
     error: "error"
   }
 
-  const showType = type || list[data?.code || "warning"]
-  const showContent: any = {
+  const content: any = {
     content: data?.data || data
   }
-  if (data.msg) showContent.title = data.msg
-  if (data.onOk) showContent.onOk = data.onOk
-  return Modal[showType](showContent)
+  if (data.msg) content.title = data.msg
+  if (data.onOk) content.onOk = data.onOk
+  return Modal[type || list[data?.code || "warning"]](content)
 }

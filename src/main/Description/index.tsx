@@ -25,17 +25,17 @@ export const MidDescription = (props: any) => {
           item.label
         )
 
-        const show = render
+        const content = render
           ? render(dataSource[dataIndex], dataSource)
           : dataSource[dataIndex]
         return (
           <Descriptions.Item key={index} {...rest} label={label}>
-            {!isNil(show) && show.length > 6 ? (
-              <Tooltip title={show} placement="topLeft">
-                {show}
+            {!isNil(content) && content.length > 6 ? (
+              <Tooltip title={content} placement="topLeft">
+                {content}
               </Tooltip>
             ) : (
-              show
+              content
             )}
           </Descriptions.Item>
         )

@@ -1,7 +1,6 @@
 import React, { useState, memo, useRef } from "react"
 import { Form, Input, Button, Select, DatePicker, Cascader } from "antd"
 import { useDeepCompareEffect } from "common-hook"
-import moment from "moment"
 import "antd/es/form/style"
 import { getFlatData } from "../../_utils"
 
@@ -79,7 +78,7 @@ export const MidForm = memo((props: any) => {
   }
 
   const disabledDate = (current: any) => {
-    return current < moment().subtract(1, "day")
+    return current < new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
   }
 
   const onValuesChange = (vs: any, values: any) => {

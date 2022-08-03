@@ -1,5 +1,4 @@
 import React, { memo } from "react"
-import { router } from "dva"
 import { Button, Layout, Result } from "antd"
 import "antd/es/button/style"
 import "antd/es/layout/style"
@@ -12,7 +11,7 @@ import "antd/es/result/style"
  * <MidEmpty className={styles.layout} />
  */
 export const MidEmpty = memo((props) => {
-  const { className } = props
+  const { className, Link } = props
   return (
     <Layout className={className}>
       <Result
@@ -28,7 +27,7 @@ export const MidEmpty = memo((props) => {
             返回上一级
           </Button>,
           <Button type="primary" size="large">
-            <router.Link to="/home">回到首页</router.Link>
+            <Link to="/home">回到首页</Link>
           </Button>
         ]}
       />

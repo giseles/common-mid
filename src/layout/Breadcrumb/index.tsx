@@ -1,9 +1,6 @@
 import React, { memo } from "react"
-import { router } from "dva"
 import { Breadcrumb as AntdBread } from "antd"
 // import "antd/es/breadcrumb/style"
-
-const { Link } = router
 
 /**
  * @name  面包屑导航
@@ -12,8 +9,8 @@ const { Link } = router
  * <MidBreadcrumb
     className={styles.antdBread}
     pathname={pathname}
-    AllPathInfo={breadcrumbList}
-    AllPathPermission={ablePathList}
+    allPathInfo={breadcrumbList}
+    allPathPermission={ablePathList}
     IconFont={IconFont}
     property={property}
     specialList={specialList}
@@ -23,8 +20,9 @@ export const MidBreadcrumb = memo((props: any) => {
   const {
     className,
     pathname,
-    AllPathInfo,
-    AllPathPermission,
+    Link,
+    allPathInfo,
+    allPathPermission,
     IconFont,
     property,
     specialList
@@ -41,16 +39,16 @@ export const MidBreadcrumb = memo((props: any) => {
     if (Object.keys(jumpList).includes(_)) {
       toUrl = jumpList[_]
     }
-    if (!AllPathInfo[url]?.name || noShowList.includes(_)) {
+    if (!allPathInfo[url]?.name || noShowList.includes(_)) {
       // 无路径名称或 不显示路径
       return ""
     }
     const content = (
       <>
-        {property.isShowIcon && AllPathInfo[url]?.icon && (
-          <IconFont type={`icon-${AllPathInfo[url]?.icon}1`} />
+        {property.isShowIcon && allPathInfo[url]?.icon && (
+          <IconFont type={`icon-${allPathInfo[url]?.icon}1`} />
         )}
-        {AllPathInfo[url]?.name}
+        {allPathInfo[url]?.name}
       </>
     )
     return (
@@ -62,13 +60,13 @@ export const MidBreadcrumb = memo((props: any) => {
 
   return (
     <AntdBread separator={property.separator} className={className}>
-      {AllPathPermission.includes(property.homeUrl) && (
+      {allPathPermission.includes(property.homeUrl) && (
         <AntdBread.Item href={property.homeUrl}>
           {property.isShowIcon && <IconFont type={property.homeIcon} />}
           首页
         </AntdBread.Item>
       )}
-      {AllPathPermission.includes(pathname) && extraBreadcrumbItems}
+      {allPathPermission.includes(pathname) && extraBreadcrumbItems}
     </AntdBread>
   )
 })

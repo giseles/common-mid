@@ -1,6 +1,15 @@
 import React, { useState, memo, useRef } from "react"
-import { Form, Input, Button, Select, DatePicker, Cascader } from "antd"
+import {
+  Form,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  Cascader,
+  TimePicker
+} from "antd"
 import { useDeepCompareEffect } from "common-hook"
+import { isNil } from "common-screw"
 import "antd/es/form/style"
 import { getFlatData } from "../../_utils"
 
@@ -26,6 +35,7 @@ export const MidForm = memo((props: any) => {
     formRules,
     formProps,
     componentProps,
+    formHandle,
     btnProps = {
       submitName: "提交",
       returnName: "返回",
@@ -33,6 +43,7 @@ export const MidForm = memo((props: any) => {
     }
   } = props
   const { BaseUpload, Encrypt, RichText } = componentProps
+  const { setValue = null, targetName = null, valuesChange = null } = formHandle
 
   const [renderItem, setRenderItem] = useState(<></>)
   const FormRef: any = useRef(null)
@@ -45,6 +56,17 @@ export const MidForm = memo((props: any) => {
   useDeepCompareEffect(() => {
     setRenderItem(toRenderItem(formList))
   }, [formList])
+  useDeepCompareEffect(() => {
+    !isNil(setValue) && form.setFieldsValue(setValue)
+  }, [formHandle])
+
+  const onValuesChange = (vs: any, values: any) => {
+    btnProps.loading && btnProps.setLoading(false)
+    targetName &&
+      valuesChange &&
+      targetName.includes(Object.keys(vs)[0]) &&
+      valuesChange(values)
+  }
 
   const onFinish = (values: any) => {
     btnProps.setLoading(true)
@@ -59,6 +81,12 @@ export const MidForm = memo((props: any) => {
           break
         case "dateAndTime":
           values[key] = value.format("YYYY-MM-DD HH:mm:ss")
+          break
+        case "timeRange":
+          values[key] = [
+            value[0].format("HH:mm:ss"),
+            value[1].format("HH:mm:ss")
+          ]
           break
         case "password":
         case "passwordAgain":
@@ -79,10 +107,6 @@ export const MidForm = memo((props: any) => {
 
   const disabledDate = (current: any) => {
     return current < new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
-  }
-
-  const onValuesChange = (vs: any, values: any) => {
-    btnProps.loading && btnProps.setLoading(false)
   }
 
   const toRenderItem = (formList: any) => {
@@ -121,9 +145,7 @@ export const MidForm = memo((props: any) => {
               placeholder={pickPlaceholder}
               allowClear
               disabled={item.disabled}
-              onChange={(e) => {
-                item.onChange && item.onChange(e)
-              }}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
             >
               {optionList.map((r: any) => {
                 return (
@@ -155,11 +177,17 @@ export const MidForm = memo((props: any) => {
               showTime
               placeholder={pickPlaceholder}
               disabledDate={disabledDate}
-              style={{ width: "100%" }}
             />
           )
           break
-
+        case "timeRange":
+          // @ts-ignore
+          ele = (
+            <TimePicker.RangePicker
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            />
+          )
+          break
         case "upload":
           ele = (
             <BaseUpload
@@ -170,18 +198,21 @@ export const MidForm = memo((props: any) => {
           )
           break
         case "cascader":
-          ele = <Cascader options={item.optionList} />
+          ele = (
+            <Cascader
+              options={item.optionList}
+              changeOnSelect={item.changeOnSelect || false}
+              // @ts-ignore
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            />
+          )
           break
         case "richText":
           ele = <RichText />
           break
         default:
           ele = (
-            <Input
-              allowClear
-              placeholder={placeholder}
-              onChange={(e) => item.onChange && item.onChange(e.target.value)}
-            />
+            <Input allowClear placeholder={placeholder} {...item.property} />
           )
       }
       return <Item {...itemProps}>{ele}</Item>

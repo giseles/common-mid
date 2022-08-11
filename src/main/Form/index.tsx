@@ -65,7 +65,7 @@ export const MidForm = memo((props: any) => {
     targetName &&
       valuesChange &&
       targetName.includes(Object.keys(vs)[0]) &&
-      valuesChange(values)
+      valuesChange(Object.keys(vs)[0], values)
   }
 
   const onFinish = (values: any) => {
@@ -73,8 +73,8 @@ export const MidForm = memo((props: any) => {
     const flatForm = getFlatData(formList)
     Object.keys(values).forEach((key) => {
       const value = values[key]
-      const formValue = flatForm[key]
-      const type = formValue.type
+      const formProps = flatForm[key]
+      const type = formProps.type
       switch (type) {
         case "date":
           values[key] = value.format("YYYY-MM-DD")
@@ -94,6 +94,16 @@ export const MidForm = memo((props: any) => {
           break
         case "richText":
           values[key] = value.toHTML ? value.toHTML() : value
+          break
+        case "cascader":
+          // 级联选择
+          const { valueName } = formProps
+          if (valueName) {
+            valueName.forEach((childItem: any, childIndex: any) => {
+              values[childItem] = value?.[childIndex] || undefined
+            })
+            delete values[key]
+          }
           break
         default:
       }

@@ -43,7 +43,11 @@ export const MidForm = memo((props: any) => {
     }
   } = props
   const { BaseUpload, Encrypt, RichText } = componentProps
-  const { setValue = null, targetName = null, valuesChange = null } = formHandle
+  const {
+    monitorList = [],
+    setFormValue = null,
+    getFormValue = null
+  } = formHandle
 
   const [renderItem, setRenderItem] = useState(<></>)
   const FormRef: any = useRef(null)
@@ -56,16 +60,17 @@ export const MidForm = memo((props: any) => {
   useDeepCompareEffect(() => {
     setRenderItem(toRenderItem(formList))
   }, [formList])
+
   useDeepCompareEffect(() => {
-    !isNil(setValue) && form.setFieldsValue(setValue)
-  }, [formHandle])
+    !isNil(setFormValue) && form.setFieldsValue(setFormValue)
+  }, [setFormValue])
 
   const onValuesChange = (vs: any, values: any) => {
     btnProps.loading && btnProps.setLoading(false)
-    targetName &&
-      valuesChange &&
-      targetName.includes(Object.keys(vs)[0]) &&
-      valuesChange(Object.keys(vs)[0], values)
+    monitorList &&
+      getFormValue &&
+      monitorList.includes(Object.keys(vs)[0]) &&
+      getFormValue(Object.keys(vs)[0], values)
   }
 
   const onFinish = (values: any) => {
@@ -219,6 +224,9 @@ export const MidForm = memo((props: any) => {
           break
         case "richText":
           ele = <RichText />
+          break
+        case "diy":
+          ele = item.show
           break
         default:
           ele = (

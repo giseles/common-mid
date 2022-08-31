@@ -2,9 +2,16 @@ import React, { memo } from "react"
 import { Button } from "antd"
 import { isNil } from "common-screw"
 
+interface Props {
+  className?: string // class名称
+  list?: object[] // 列表
+  children?: any // 子元素
+  property?: object // 属性
+}
+
 /**
  * @name  按钮群组
- * @param  {Object} config MidBtnGroup 配置
+ * @param  {Props} 配置
  * @example
  * <MidBtnGroup
     className={styles.group}
@@ -13,8 +20,8 @@ import { isNil } from "common-screw"
     property={{ size: 'large' }}
   />
  */
-export const MidBtnGroup = memo((props: any) => {
-  const { className, list, children, property } = props
+export const MidBtnGroup = memo((props: Props) => {
+  const { className, list = [], children, property } = props
   return (
     <Button.Group className={className} {...property}>
       {!isNil(list) &&

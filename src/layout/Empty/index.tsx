@@ -4,32 +4,57 @@ import "antd/es/button/style"
 import "antd/es/layout/style"
 import "antd/es/result/style"
 
+interface Props {
+  className?: string // class名称
+  Link: any // Link组件
+  tip?: { back: string; home: string } // 提示语
+  resultProps?: {
+    status: any
+    title: string
+    subTitle: string
+    [key: string]: any
+  } // Result属性
+}
+
 /**
  * @name  空状态
- * @param  {Object} 配置项
+ * @param  {Props} 配置项
  * @example
- * <MidEmpty className={styles.layout} />
+ * <MidEmpty
+ *  className={styles.layout}
+ *  Link={Link}
+ *  tip={tip}
+ *  resultProps={resultProps}
+ * />
  */
-export const MidEmpty = memo((props) => {
-  const { className, Link } = props
+export const MidEmpty = memo((props: Props) => {
+  const {
+    className,
+    Link,
+    tip = { back: "返回上一级", home: "回到首页" },
+    resultProps = {
+      status: "404",
+      title: "404",
+      subTitle: "出错啦！您访问的页面没找到！"
+    }
+  } = props
   return (
     <Layout className={className}>
       <Result
-        status="404"
-        title="404"
-        subTitle="出错啦！您访问的页面没找到！"
         extra={[
           <Button
+            key="1"
             onClick={() => window.history.back()}
             type="primary"
             size="large"
           >
-            返回上一级
+            {tip.back}
           </Button>,
-          <Button type="primary" size="large">
-            <Link to="/home">回到首页</Link>
+          <Button key="2" type="primary" size="large">
+            <Link to="/home">{tip.home}</Link>
           </Button>
         ]}
+        {...resultProps}
       />
     </Layout>
   )

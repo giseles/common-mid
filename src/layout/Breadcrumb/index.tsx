@@ -1,72 +1,89 @@
 import React, { memo } from "react"
-import { Breadcrumb as AntdBread } from "antd"
+import { Breadcrumb } from "antd"
+import { LooseObject } from "../../index"
 // import "antd/es/breadcrumb/style"
+
+interface Props {
+  className?: string // class名称
+  componentProps: { Link: any; IconFont?: any } // 组件
+  breadProps: LooseObject // 面包屑属性
+  baseProps: { isShowIcon: boolean; homeUrl: string; homeIcon: string } // 基础属性
+  specialList: {
+    noJumpList?: LooseObject
+    jumpList?: LooseObject
+    noShowList?: string[]
+  } // 需特殊处理URL信息
+  pathname: string // 当前URL
+  pathInfo: LooseObject // URL对应信息(name,icon)
+  pathShowList: string[] // 可展示的URL
+}
 
 /**
  * @name  面包屑导航
- * @param  {Object} 配置项
+ * @param  {Props} 配置项
  * @example
  * <MidBreadcrumb
     className={styles.antdBread}
-    pathname={pathname}
-    allPathInfo={breadcrumbList}
-    allPathPermission={ablePathList}
-    IconFont={IconFont}
-    property={property}
+    componentProps={componentProps}
+    breadProps={breadProps}
+    baseProps={baseProps}
     specialList={specialList}
+    pathname={pathname}
+    pathInfo={breadcrumbList}
+    pathShowList={ablePathList}
   />
  */
-export const MidBreadcrumb = memo((props: any) => {
+export const MidBreadcrumb = memo((props: Props) => {
   const {
     className,
+    componentProps: { Link, IconFont },
+    breadProps,
+    baseProps: { isShowIcon, homeUrl, homeIcon },
+    specialList: { noJumpList = {}, jumpList = {}, noShowList = [] },
     pathname,
-    Link,
-    allPathInfo,
-    allPathPermission,
-    IconFont,
-    property,
-    specialList
+    pathInfo,
+    pathShowList
   } = props
-  const pathSnippets = pathname.split("/").filter((i: any) => i)
-  const extraBreadcrumbItems = pathSnippets.map((_: any, index: any) => {
-    const { noJumpList, jumpList, noShowList } = specialList
-    if (noJumpList[_]) {
-      return <AntdBread.Item key={index}>{noJumpList[_]}</AntdBread.Item>
-    }
+  const pathSnippets: string[] = pathname?.split("/").filter((i: string) => i)
 
+  const extraBreadcrumbItems = pathSnippets.map((_: string, index: number) => {
+    if (noJumpList[_]) {
+      return <Breadcrumb.Item key={index}>{noJumpList[_]}</Breadcrumb.Item>
+    }
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`
     let toUrl = url
     if (Object.keys(jumpList).includes(_)) {
       toUrl = jumpList[_]
     }
-    if (!allPathInfo[url]?.name || noShowList.includes(_)) {
+    if (!pathInfo[url]?.name || noShowList.includes(_)) {
       // 无路径名称或 不显示路径
       return ""
     }
     const content = (
       <>
-        {property.isShowIcon && allPathInfo[url]?.icon && (
-          <IconFont type={`icon-${allPathInfo[url]?.icon}1`} />
+        {isShowIcon && IconFont && pathInfo[url]?.icon && (
+          <IconFont type={`icon-${pathInfo[url]?.icon}1`} />
         )}
-        {allPathInfo[url]?.name}
+
+        {pathInfo[url]?.name}
       </>
     )
     return (
-      <AntdBread.Item key={url}>
+      <Breadcrumb.Item key={url}>
         {toUrl ? <Link to={toUrl}>{content}</Link> : content}
-      </AntdBread.Item>
+      </Breadcrumb.Item>
     )
   })
 
   return (
-    <AntdBread separator={property.separator} className={className}>
-      {allPathPermission.includes(property.homeUrl) && (
-        <AntdBread.Item href={property.homeUrl}>
-          {property.isShowIcon && <IconFont type={property.homeIcon} />}
+    <Breadcrumb {...breadProps} className={className}>
+      {pathShowList.includes(homeUrl) && (
+        <Breadcrumb.Item href={homeUrl}>
+          {isShowIcon && IconFont && <IconFont type={homeIcon} />}
           首页
-        </AntdBread.Item>
+        </Breadcrumb.Item>
       )}
-      {allPathPermission.includes(pathname) && extraBreadcrumbItems}
-    </AntdBread>
+      {pathShowList.includes(pathname) && extraBreadcrumbItems}
+    </Breadcrumb>
   )
 })

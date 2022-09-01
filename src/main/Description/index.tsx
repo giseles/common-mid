@@ -1,16 +1,32 @@
 import React from "react"
 import { Descriptions, Tooltip } from "antd"
 import { isNil } from "common-screw"
+import { LooseObject } from "../../index"
 import "antd/es/descriptions/style"
 import "antd/es/tooltip/style"
 
+interface Props {
+  className?: string // class名称
+  descProps?: LooseObject // 描述列表属性
+  column: {
+    label: string
+    dataIndex: string
+    icon?: any
+    render?: any
+    [key: string]: any
+  }[] // 内容的描述(名称、图标等)
+  dataSource: LooseObject // 内容的数据
+  title?: string // 标题
+  extra?: any // 操作区域
+}
+
 /**
  * @name  描述列表
- * @param  {Object} 配置项
+ * @param  {Props} 配置项
  * @example
  * <MidDescription {...props} className={styles.wrap} />)
  */
-export const MidDescription = (props: any) => {
+export const MidDescription = (props: Props) => {
   const { column, dataSource, descProps, className } = props
   return (
     <Descriptions {...descProps} className={className}>

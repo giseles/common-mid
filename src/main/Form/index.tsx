@@ -11,14 +11,48 @@ import {
 import { useDeepCompareEffect } from "common-hook"
 import { isNil } from "common-screw"
 import "antd/es/form/style"
+import { LooseObject } from "../../index"
 import { getFlatData } from "../../_utils"
 
 const { Item } = Form
 const { Option } = Select
 
+interface Props {
+  formProps: { className?: string; [key: string]: any } // 表单属性
+  formRules: LooseObject // 表单验证规则
+  formList: {
+    label: string
+    name: string
+    type?: any
+    [key: string]: any
+  }[] // 表单描述
+  initialValues: LooseObject // 表单数据
+  componentProps: {
+    BaseUpload: any
+    Message: any
+    Encrypt: any
+    RichText: any
+  } // 组件
+  formHandle: {
+    monitorList: string[]
+    setFormValue: object
+    getFormValue: (vs: string, values: object) => void
+  } // 特殊操作
+  btnProps: {
+    submitName: string
+    returnName: string
+    isShowReturn: boolean
+    loading: boolean
+    setLoading: (value: boolean) => void
+    onBack: () => void
+    onSubmit: (value: object) => void
+  } // 按钮信息(名称、显示、loading、提交等)
+  children?: any // 子元素
+}
+
 /**
  * @name  表单
- * @param  {Object} 配置项
+ * @param  {Props} 配置项
  * @example
  * <MidForm
     formRules={formRules}
@@ -28,26 +62,17 @@ const { Option } = Select
     {...restProps}
   />
  */
-export const MidForm = memo((props: any) => {
+
+export const MidForm = memo((props: Props) => {
   const {
-    initialValues = {},
-    formList,
-    formRules,
     formProps,
-    componentProps,
-    formHandle,
-    btnProps = {
-      submitName: "提交",
-      returnName: "返回",
-      isShowReturn: true
-    }
+    formRules,
+    formList,
+    initialValues = {},
+    componentProps: { BaseUpload, Encrypt, RichText },
+    formHandle: { monitorList = [], setFormValue = {}, getFormValue = null },
+    btnProps
   } = props
-  const { BaseUpload, Encrypt, RichText } = componentProps
-  const {
-    monitorList = [],
-    setFormValue = null,
-    getFormValue = null
-  } = formHandle
 
   const [renderItem, setRenderItem] = useState(<></>)
   const FormRef: any = useRef(null)

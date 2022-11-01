@@ -103,7 +103,7 @@ export const MidForm = memo((props: Props) => {
     const flatForm = getFlatData(formList)
     Object.keys(values).forEach((key) => {
       const value = values[key]
-      const formProps = flatForm[key]
+      const formProps = flatForm[key] || {}
       const type = formProps.type
       switch (type) {
         case "date":
@@ -186,6 +186,7 @@ export const MidForm = memo((props: Props) => {
               allowClear
               disabled={item.disabled}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              {...item.property}
             >
               {optionList.map((r: any) => {
                 return (

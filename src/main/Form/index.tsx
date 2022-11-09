@@ -200,7 +200,7 @@ export const MidForm = memo((props: Props) => {
 
           break
         case "remark":
-          ele = <Input.TextArea allowClear placeholder={placeholder} />
+          ele = <Input.TextArea allowClear placeholder={placeholder} rows={2} />
           break
         case "date":
           ele = (

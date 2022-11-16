@@ -31,6 +31,7 @@ export const MidDescription = (props: Props) => {
   return (
     <Descriptions {...descProps} className={className}>
       {column.map((item: any, index: number) => {
+        if (item.hide) return null
         const { dataIndex, render, icon, ...rest } = item
         let label = icon ? (
           <>

@@ -44,12 +44,17 @@ export const MidTable = memo((props: any) => {
       const btnList = columns[columns.length - 1].btnList
       const specialList: any = []
       const special = btnList?.map((btnItem: any) => {
+        if (btnItem.hide) return null
         specialList.push(btnItem.type)
         return (
           <Button
             key={btnItem.type}
             {...btnProps}
             {...btnItem.btnProps}
+            disabled={
+              btnItem.disabledIsShow &&
+              item[btnItem.disabledIsShow.key] !== btnItem.disabledIsShow.value
+            }
             onClick={() => btnItem.onClick(btnItem.type, item)}
           >
             {btnItem.name}

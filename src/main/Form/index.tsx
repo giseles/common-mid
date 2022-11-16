@@ -217,7 +217,7 @@ export const MidForm = memo((props: Props) => {
             <DatePicker
               showTime
               placeholder={pickPlaceholder}
-              disabledDate={disabledDate}
+              disabledDate={item.disabledDate && disabledDate}
             />
           )
           break

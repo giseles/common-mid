@@ -222,9 +222,9 @@ export const MidForm = memo((props: Props) => {
           )
           break
         case "timeRange":
-          // @ts-ignore
           ele = (
             <TimePicker.RangePicker
+              // @ts-ignore
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
             />
           )

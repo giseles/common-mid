@@ -127,8 +127,7 @@ export const MidForm = memo((props: Props) => {
           break
         case "upload":
           const title =
-            // @ts-ignore
-            document.getElementsByClassName("ant-upload-list-item-name")[0]
+            document.getElementsByClassName("ant-upload-list-item-name")[0] // @ts-ignore
               ?.innerText || undefined
           values.fileName = title
           break

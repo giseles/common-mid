@@ -125,6 +125,13 @@ export const MidForm = memo((props: Props) => {
         case "richText":
           values[key] = value.toHTML ? value.toHTML() : value
           break
+        case "upload":
+          const title =
+            // @ts-ignore
+            document.getElementsByClassName("ant-upload-list-item-name")[0]
+              ?.innerText || undefined
+          values.fileName = title
+          break
         case "cascader":
           // 级联选择
           const { valueName } = formProps

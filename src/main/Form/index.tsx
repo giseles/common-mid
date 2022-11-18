@@ -122,6 +122,12 @@ export const MidForm = memo((props: Props) => {
         case "passwordAgain":
           values[key] = Encrypt(value)
           break
+        case "confirmPassword":
+          delete values[key]
+          break
+        case "newPassword":
+          if (values[key]) values[key] = Encrypt(value)
+          break
         case "richText":
           values[key] = value.toHTML ? value.toHTML() : value
           break
@@ -172,6 +178,7 @@ export const MidForm = memo((props: Props) => {
       switch (type) {
         case "password":
         case "newPassword":
+        case "confirmPassword":
           if (type === "newPassword")
             placeholder = placeholder + "，若不修改 请留空"
           ele = (

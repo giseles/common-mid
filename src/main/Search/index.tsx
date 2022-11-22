@@ -10,7 +10,27 @@ import {
   Cascader,
   Button
 } from "antd"
+import { isArray, isNil, isObject, toEnumArray } from "common-screw"
 import { getFlatData } from "../../_utils"
+
+// 生成 Select 的 options 属性
+const toOptions = (optionList: any, placeholder: any) => {
+  const all = { value: "", label: placeholder + " - 全部" }
+  if (isNil(optionList)) {
+    return []
+  } else if (isArray(optionList) && (optionList[0].id || optionList[0].value)) {
+    let options: any = []
+    options.push(all)
+    optionList.forEach((item: any) => {
+      options.push({ label: item.value, value: item.id })
+    })
+    return options
+  } else if (isArray(optionList) && optionList[0].label) {
+    return [all, ...optionList]
+  } else if (isObject(optionList)) {
+    return [all, ...toEnumArray(optionList, "value", "label")]
+  }
+}
 
 interface InputProps {
   name?: string | string[]
@@ -18,6 +38,7 @@ interface InputProps {
   hide?: boolean
   valueEnum?: any[]
   itemProps?: any
+  optionList?: Object
 }
 interface SearchProps {
   searchText?: string | "查询"
@@ -64,13 +85,27 @@ export const MidSearch = memo((props: SearchProps) => {
 
   const formInputRender = (item: InputProps) => {
     let elem: any = <></>
-    const { name, type, valueEnum, itemProps } = item
+    const { name, type, valueEnum, optionList, itemProps } = item
     const { defaultValue, ...restProps } = itemProps
+    // 后续可删
     let newType = type
     if (type === "text") {
       newType = valueEnum ? "select" : "search"
     }
+
     switch (newType) {
+      case "select":
+        const options = optionList || valueEnum
+        elem = (
+          <Select
+            placeholder="请选择"
+            options={toOptions(options, itemProps.placeholder)}
+            allowClear
+            onChange={onValuesChange}
+            {...itemProps}
+          />
+        )
+        break
       case "search":
         elem = (
           <Input
@@ -85,25 +120,7 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
-      case "select":
-        elem = (
-          <Select
-            placeholder="请选择"
-            allowClear
-            onChange={onValuesChange}
-            {...itemProps}
-          >
-            <Select.Option key="0" value="">
-              {itemProps.placeholder} - 全部
-            </Select.Option>
-            {valueEnum?.map((data: any) => (
-              <Select.Option key={data.id} value={data.id}>
-                {data.value}
-              </Select.Option>
-            ))}
-          </Select>
-        )
-        break
+
       case "dateRange":
         elem = (
           <DatePicker.RangePicker

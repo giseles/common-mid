@@ -6,16 +6,33 @@ import {
   Select,
   DatePicker,
   Cascader,
-  TimePicker
+  TimePicker,
+  Radio
 } from "antd"
 import { useDeepCompareEffect } from "common-hook"
-import { isNil } from "common-screw"
+import { isArray, isNil, isObject, toEnumArray } from "common-screw"
 import "antd/es/form/style"
 import { LooseObject } from "../../index"
 import { getFlatData } from "../../_utils"
 
+// 生成 Select 和 Radio 的 options 属性
+const toOptions = (optionList: any) => {
+  if (isNil(optionList)) {
+    return []
+  } else if (isArray(optionList) && (optionList[0].id || optionList[0].value)) {
+    let options: any = []
+    optionList.forEach((item: any) => {
+      options.push({ label: item.value, value: item.id })
+    })
+    return options
+  } else if (isArray(optionList) && optionList[0].label) {
+    return optionList
+  } else if (isObject(optionList)) {
+    return toEnumArray(optionList, "value", "label")
+  }
+}
+
 const { Item } = Form
-const { Option } = Select
 
 interface Props {
   formProps: { className?: string; [key: string]: any } // 表单属性
@@ -164,7 +181,12 @@ export const MidForm = memo((props: Props) => {
   const toRenderItem = (formList: any) => {
     return formList?.map((item: any) => {
       if (item.hide) return null
-      let { type, rules = [], placeholder = `请输入${item.label}` } = item
+      let {
+        type,
+        rules = [],
+        placeholder = `请输入${item.label}`,
+        optionList = null
+      } = item
 
       const itemProps = {
         key: item.name,
@@ -175,7 +197,27 @@ export const MidForm = memo((props: Props) => {
       let ele: any = <></>
       let pickPlaceholder = `请选择${item.label}`
 
+      // Select 和 Radio options
+      let options: any = toOptions(optionList)
+
       switch (type) {
+        case "select":
+        case "selectNoRequired":
+          ele = (
+            <Select
+              placeholder={pickPlaceholder}
+              allowClear
+              options={options}
+              disabled={item.disabled}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              {...item.property}
+            />
+          )
+
+          break
+        case "radio":
+          ele = <Radio.Group options={options} {...item.property} />
+          break
         case "password":
         case "newPassword":
         case "confirmPassword":
@@ -187,31 +229,8 @@ export const MidForm = memo((props: Props) => {
               autoComplete="new-password"
             />
           )
-
           break
-        case "select":
-        case "selectNoRequired":
-          const optionList = item.optionList || []
-          const keyValue = item.keyValue || ["id", "value"]
-          ele = (
-            <Select
-              placeholder={pickPlaceholder}
-              allowClear
-              disabled={item.disabled}
-              getPopupContainer={(triggerNode) => triggerNode.parentNode}
-              {...item.property}
-            >
-              {optionList.map((r: any) => {
-                return (
-                  <Option key={r[keyValue[0]]} value={r[keyValue[0]]}>
-                    {r[keyValue[1]]}
-                  </Option>
-                )
-              })}
-            </Select>
-          )
 
-          break
         case "remark":
           ele = <Input.TextArea allowClear placeholder={placeholder} rows={2} />
           break

@@ -7,7 +7,12 @@ interface Props {
   className?: string // class名称
   componentProps: { Link: any; IconFont?: any } // 组件
   breadProps: LooseObject // 面包屑属性
-  baseProps: { isShowIcon: boolean; homeUrl: string; homeIcon: string } // 基础属性
+  baseProps: {
+    isShowIcon: boolean
+    homeName: string
+    homeUrl: string
+    homeIcon: string
+  } // 基础属性
   specialList: {
     noJumpList?: LooseObject
     jumpList?: LooseObject
@@ -38,7 +43,7 @@ export const MidBreadcrumb = memo((props: Props) => {
     className,
     componentProps: { Link, IconFont },
     breadProps,
-    baseProps: { isShowIcon, homeUrl, homeIcon },
+    baseProps: { isShowIcon, homeName, homeUrl, homeIcon },
     specialList: { noJumpList = {}, jumpList = {}, noShowList = [] },
     pathname,
     pathInfo,
@@ -80,7 +85,7 @@ export const MidBreadcrumb = memo((props: Props) => {
       {pathShowList.includes(homeUrl) && (
         <Breadcrumb.Item href={homeUrl}>
           {isShowIcon && IconFont && <IconFont type={homeIcon} />}
-          首页
+          {homeName}
         </Breadcrumb.Item>
       )}
       {pathShowList.includes(pathname) && extraBreadcrumbItems}

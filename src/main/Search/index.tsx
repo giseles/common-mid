@@ -14,8 +14,8 @@ import { isArray, isNil, isObject, toEnumArray } from "common-screw"
 import { getFlatData } from "../../_utils"
 
 // 生成 Select 的 options 属性
-const toOptions = (optionList: any, placeholder: any) => {
-  const all = { value: "", label: placeholder + " - 全部" }
+const toOptions = (optionList: any, placeholder: any, allTip: any) => {
+  const all = { value: "", label: `${placeholder} - ${allTip}` }
   if (isNil(optionList)) {
     return []
   } else if (isArray(optionList) && (optionList[0].id || optionList[0].value)) {
@@ -33,6 +33,7 @@ const toOptions = (optionList: any, placeholder: any) => {
 }
 
 interface InputProps {
+  title?: string
   name?: string | string[]
   type?: any
   hide?: boolean
@@ -41,8 +42,8 @@ interface InputProps {
   optionList?: Object
 }
 interface SearchProps {
-  searchText?: string | "查询"
-  resetText?: string | "重置"
+  language?: string // 语言
+  langList?: any // 语言包
   onChange?: (values: object) => void
   search?: Array<InputProps>
   add?: string
@@ -56,6 +57,18 @@ interface SearchProps {
   searchIcon?: any
 }
 
+const DEFAULT_LANG_LIST = {
+  "zh-CN": {
+    ALL_TIP: "全部",
+    TIME_START: "开始时间",
+    TIME_END: "结束时间"
+  },
+  "en-US": {
+    ALL_TIP: "All",
+    TIME_START: "Start Time",
+    TIME_END: "End Time"
+  }
+}
 /**
  * @name  搜索栏
  * @param  {Object} 配置项
@@ -64,6 +77,8 @@ interface SearchProps {
  */
 export const MidSearch = memo((props: SearchProps) => {
   const {
+    language,
+    langList = DEFAULT_LANG_LIST,
     search,
     onChange,
     className,
@@ -74,6 +89,16 @@ export const MidSearch = memo((props: SearchProps) => {
   } = props
   const [form] = Form.useForm()
   const [renderItem, setRenderItem] = useState(<></>)
+
+  // 默认第一个语言包
+  const [LANG, setLANG] = useState(langList[Object.keys(langList)[0]])
+  useDeepCompareEffect(() => {
+    // 语言国际化 ,如果没有对应语言包，默认第一个语言包
+    const list = Object.keys(langList)
+    const e = language && list.includes(language) ? language : list[0]
+    setLANG(langList[e])
+  }, [langList, language])
+
   useDeepCompareEffect(() => {
     // 渲染search
     const content: any = search?.map((item: any, index: any) => {
@@ -85,21 +110,24 @@ export const MidSearch = memo((props: SearchProps) => {
 
   const formInputRender = (item: InputProps) => {
     let elem: any = <></>
-    const { name, type, valueEnum, optionList, itemProps } = item
+    const { name, type, valueEnum, optionList, title, itemProps = {} } = item
     const { defaultValue, ...restProps } = itemProps
     // 后续可删
     let newType = type
     if (type === "text") {
       newType = valueEnum ? "select" : "search"
     }
-
     switch (newType) {
       case "select":
         const options = optionList || valueEnum
         elem = (
           <Select
-            placeholder="请选择"
-            options={toOptions(options, itemProps.placeholder)}
+            placeholder={title}
+            options={toOptions(
+              options,
+              title || itemProps.placeholder,
+              LANG.ALL_TIP
+            )}
             allowClear
             onChange={onValuesChange}
             {...itemProps}
@@ -109,7 +137,7 @@ export const MidSearch = memo((props: SearchProps) => {
       case "search":
         elem = (
           <Input
-            placeholder="关键字"
+            placeholder={title}
             allowClear
             onChange={({ target }) => {
               !target.value && onValuesChange()
@@ -125,7 +153,7 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <DatePicker.RangePicker
             onChange={onValuesChange}
-            placeholder={["开始时间", "结束时间"]}
+            placeholder={[LANG.TIME_START, LANG.TIME_END]}
             {...restProps}
           />
         )
@@ -134,7 +162,8 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <DatePicker.MonthPicker
             onChange={onValuesChange}
-            placeholder="请选择"
+            placeholder={title}
+            showTime={false}
             {...restProps}
           />
         )
@@ -145,7 +174,7 @@ export const MidSearch = memo((props: SearchProps) => {
             options={valueEnum}
             changeOnSelect
             onChange={onValuesChange}
-            placeholder="请选择"
+            placeholder={title}
             {...restProps}
           />
         )

@@ -7,7 +7,7 @@ import "antd/es/result/style"
 interface Props {
   className?: string // class名称
   Link: any // Link组件
-  tip?: { back: string; home: string } // 提示语
+  tip?: { back: string; home: string; homeUrl: string } // 提示语
   resultProps?: {
     status: any
     title: string
@@ -31,7 +31,7 @@ export const MidEmpty = memo((props: Props) => {
   const {
     className,
     Link,
-    tip = { back: "返回上一级", home: "回到首页" },
+    tip = { back: "返回上一级", home: "回到首页", homeUrl: "/home" },
     resultProps = {
       status: "404",
       title: "404",
@@ -50,9 +50,11 @@ export const MidEmpty = memo((props: Props) => {
           >
             {tip.back}
           </Button>,
-          <Button key="2" type="primary" size="large">
-            <Link to="/home">{tip.home}</Link>
-          </Button>
+          tip.home && (
+            <Button key="2" type="primary" size="large">
+              <Link to={tip.homeUrl}>{tip.home}</Link>
+            </Button>
+          )
         ]}
         {...resultProps}
       />

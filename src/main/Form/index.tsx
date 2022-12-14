@@ -35,6 +35,8 @@ const toOptions = (optionList: any) => {
 const { Item } = Form
 
 interface Props {
+  language?: string // 语言
+  langList?: any // 语言包
   formProps: { className?: string; [key: string]: any } // 表单属性
   formRules: LooseObject // 表单验证规则
   formList: {
@@ -67,6 +69,17 @@ interface Props {
   children?: any // 子元素
 }
 
+const DEFAULT_LANG_LIST = {
+  "zh-CN": {
+    PLEASE_INPUT: (value: any) => `请输入${value}`,
+    PLEASE_SELECT: (value: any) => `请选择${value}`
+  },
+  "en-US": {
+    PLEASE_INPUT: (value: any) => `Please enter ${value}`,
+    PLEASE_SELECT: (value: any) => `Please select ${value}`
+  }
+}
+
 /**
  * @name  表单
  * @param  {Props} 配置项
@@ -82,6 +95,8 @@ interface Props {
 
 export const MidForm = memo((props: Props) => {
   const {
+    language,
+    langList = DEFAULT_LANG_LIST,
     formProps,
     formRules,
     formList,
@@ -92,8 +107,16 @@ export const MidForm = memo((props: Props) => {
   } = props
 
   const [renderItem, setRenderItem] = useState(<></>)
+  const [LANG, setLANG] = useState(langList[Object.keys(langList)[0]]) // 默认第一个语言包
   const FormRef: any = useRef(null)
   const [form] = Form.useForm()
+
+  useDeepCompareEffect(() => {
+    // 语言国际化 ,如果没有对应语言包，默认第一个语言包
+    const list = Object.keys(langList)
+    const e = language && list.includes(language) ? language : list[0]
+    setLANG(langList[e])
+  }, [langList, language])
 
   useDeepCompareEffect(() => {
     FormRef && FormRef.current && FormRef.current.resetFields()
@@ -184,8 +207,9 @@ export const MidForm = memo((props: Props) => {
       let {
         type,
         rules = [],
-        placeholder = `请输入${item.label}`,
-        optionList = null
+        placeholder = LANG.PLEASE_INPUT(item.label), // 提示语 请输入
+        optionList = null,
+        property // 自定义属性
       } = item
 
       const itemProps = {
@@ -195,7 +219,7 @@ export const MidForm = memo((props: Props) => {
         rules: [...(formRules[type] || []), ...rules]
       }
       let ele: any = <></>
-      let pickPlaceholder = `请选择${item.label}`
+      let pickPlaceholder = LANG.PLEASE_SELECT(item.label) // 提示语 请选择
 
       // Select 和 Radio options
       let options: any = toOptions(optionList)
@@ -210,29 +234,35 @@ export const MidForm = memo((props: Props) => {
               options={options}
               disabled={item.disabled}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
-              {...item.property}
+              {...property}
             />
           )
 
           break
         case "radio":
-          ele = <Radio.Group options={options} {...item.property} />
+          ele = <Radio.Group options={options} {...property} />
           break
         case "password":
         case "newPassword":
         case "confirmPassword":
-          if (type === "newPassword")
-            placeholder = placeholder + "，若不修改 请留空"
           ele = (
             <Input.Password
               placeholder={placeholder}
               autoComplete="new-password"
+              {...property}
             />
           )
           break
 
         case "remark":
-          ele = <Input.TextArea allowClear placeholder={placeholder} rows={2} />
+          ele = (
+            <Input.TextArea
+              allowClear
+              placeholder={placeholder}
+              rows={2}
+              {...property}
+            />
+          )
           break
         case "date":
           ele = (
@@ -241,6 +271,7 @@ export const MidForm = memo((props: Props) => {
               format="YYYY-MM-DD"
               disabledDate={disabledDate}
               style={{ width: "100%" }}
+              {...property}
             />
           )
           break
@@ -250,6 +281,7 @@ export const MidForm = memo((props: Props) => {
               showTime
               placeholder={pickPlaceholder}
               disabledDate={item.disabledDate && disabledDate}
+              {...property}
             />
           )
           break
@@ -258,6 +290,7 @@ export const MidForm = memo((props: Props) => {
             <TimePicker.RangePicker
               // @ts-ignore
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              {...property}
             />
           )
           break
@@ -267,6 +300,7 @@ export const MidForm = memo((props: Props) => {
               type={item.uploadType}
               limits={item.limits}
               tip={item.tip}
+              {...property}
             />
           )
           break
@@ -277,19 +311,18 @@ export const MidForm = memo((props: Props) => {
               changeOnSelect={item.changeOnSelect || false}
               // @ts-ignore
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              {...property}
             />
           )
           break
         case "richText":
-          ele = <RichText />
+          ele = <RichText {...property} />
           break
         case "diy":
           ele = item.show
           break
         default:
-          ele = (
-            <Input allowClear placeholder={placeholder} {...item.property} />
-          )
+          ele = <Input allowClear placeholder={placeholder} {...property} />
       }
       return <Item {...itemProps}>{ele}</Item>
     })

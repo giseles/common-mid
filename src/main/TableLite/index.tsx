@@ -23,7 +23,7 @@ const DEFAULT_LANG_LIST = {
   }
 }
 
-export const MidTable = memo((props: any) => {
+export const MidTableLite = memo((props: any) => {
   const {
     language,
     langList = DEFAULT_LANG_LIST,
@@ -34,11 +34,9 @@ export const MidTable = memo((props: any) => {
     permissionList,
     btnProps = {},
     pageProps = { showPage: true },
-    selectionProps = { isShow: false },
     ...restProps
   } = props
   const [newColumns, setNewColumns] = useState(columns)
-  const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   // 默认第一个语言包
   const [LANG, setLANG] = useState(langList[Object.keys(langList)[0]])
@@ -145,44 +143,8 @@ export const MidTable = memo((props: any) => {
     setNewColumns(newColumns)
   }, [permissionList, columns, tableBtnList])
 
-  useDeepCompareEffect(() => {
-    // 清空全选数据
-    selectionProps.isShow && setSelectedRowKeys([])
-  }, [restProps.dataSource, selectionProps.isShow])
-
-  const rowSelection = {
-    // 全选属性
-    selectedRowKeys,
-    onChange: (selectedRowKeys: any) => {
-      setSelectedRowKeys(selectedRowKeys)
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: tableBtnList["revoke"].isEqual
-        ? record[tableBtnList["revoke"].key] === tableBtnList["revoke"].value
-        : record[tableBtnList["revoke"].key] !== tableBtnList["revoke"].value
-    })
-  }
-
   return (
     <div className={className}>
-      {selectionProps.isShow && (
-        <div style={{ marginBottom: 16 }}>
-          <Button
-            type="primary"
-            disabled={selectedRowKeys.length <= 0}
-            onClick={() => {
-              selectionProps.onHandle(selectedRowKeys)
-            }}
-          >
-            {selectionProps.name}
-          </Button>
-          <span style={{ marginLeft: 8 }}>
-            {selectedRowKeys.length > 0
-              ? `已选择 ${selectedRowKeys.length} 项数据`
-              : ""}
-          </span>
-        </div>
-      )}
       <Table
         bordered
         pagination={
@@ -200,7 +162,6 @@ export const MidTable = memo((props: any) => {
         columns={newColumns}
         rowKey={(record) => record.id}
         scroll={{ x: true }}
-        rowSelection={selectionProps.isShow && rowSelection}
         {...restProps}
       />
     </div>

@@ -106,7 +106,7 @@ export const MidSearch = memo((props: SearchProps) => {
       return !hide && <Col key={index}>{formInputRender(item)}</Col>
     })
     setRenderItem(content)
-  }, [search])
+  }, [search, LANG])
 
   const formInputRender = (item: InputProps) => {
     let elem: any = <></>

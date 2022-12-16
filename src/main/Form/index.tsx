@@ -124,7 +124,7 @@ export const MidForm = memo((props: Props) => {
 
   useDeepCompareEffect(() => {
     setRenderItem(toRenderItem(formList))
-  }, [formList])
+  }, [formList, LANG])
 
   useDeepCompareEffect(() => {
     !isNil(setFormValue) && form.setFieldsValue(setFormValue)

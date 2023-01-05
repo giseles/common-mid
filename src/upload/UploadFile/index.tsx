@@ -1,6 +1,6 @@
-import React, { memo, useState } from "react"
-import { Upload, Button } from "antd"
-import { LoadingOutlined, UploadOutlined } from "@ant-design/icons"
+import React, { memo } from "react"
+import { Upload } from "antd"
+import { InboxOutlined } from "@ant-design/icons"
 
 /**
  * @name  上传文件等
@@ -14,6 +14,7 @@ export const MidUploadFile = memo((props: any) => {
     message,
     className,
     typeName,
+    value,
     limits,
     uploadUrl,
     headers,
@@ -21,18 +22,16 @@ export const MidUploadFile = memo((props: any) => {
     tip = null
   } = props
 
-  const [loading, setLoading] = useState(false)
-
   const beforeUpload = (file: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
       if (fileType && file.type.indexOf(fileType) < 0) {
-        message(LANG.IMG_TIP_TYPE(typeName))
-        reject()
+        message(LANG.IMG_TIP_TYPE)
+        return Upload.LIST_IGNORE
       }
       if (file.size > maxSize * 1024 * 1024) {
         message(LANG.IMG_TIP_SIZE(typeName, maxSize))
-        reject()
+        return Upload.LIST_IGNORE
       }
       resolve(true)
     })
@@ -41,35 +40,37 @@ export const MidUploadFile = memo((props: any) => {
   const handleChange = (info: any) => {
     const { file } = info
     const { status, response } = file
-    if (status === "uploading") {
-      setLoading(true)
-    } else if (status === "done") {
-      setLoading(false)
+    if (status === "done") {
       let { code, msg, data } = response
       if (code === "8001") {
-        onChange(data && data.path ? data.path : data)
+        onChange({ path: data?.path || data, name: file.name })
       } else {
         message(msg)
       }
     }
   }
-
   return (
     <div className={className}>
-      <Upload
+      <Upload.Dragger
         name="file"
-        listType="text"
         action={uploadUrl}
         headers={headers}
         maxCount={1}
-        // beforeUpload={beforeUpload}
+        // @ts-ignore
+        beforeUpload={beforeUpload}
         onChange={handleChange}
+        onRemove={(e) => onChange(null)}
       >
-        <Button>
-          {loading ? <LoadingOutlined /> : <UploadOutlined />}
-          {loading ? LANG.UPLOAD_ING : LANG.UPLOAD}
-        </Button>
-      </Upload>
+        <p className="ant-upload-drag-icon">
+          <InboxOutlined />
+        </p>
+        <p className="ant-upload-text">{LANG.UPLOAD_FILE}</p>
+        {value && (
+          <p className="ant-upload-hint">
+            {LANG.UPLOAD_FILE_TIP + (value?.name || value)}
+          </p>
+        )}
+      </Upload.Dragger>
       {tip}
     </div>
   )

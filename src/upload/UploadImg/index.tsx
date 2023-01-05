@@ -1,6 +1,6 @@
-import React, { memo, useState } from "react"
-import { Upload } from "antd"
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
+import React, { memo, useState } from 'react'
+import { Upload } from 'antd'
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 
 /**
  * @name  上传图片等
@@ -28,7 +28,7 @@ export const MidUploadImg = memo((props: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
       if (fileType && file.type.indexOf(fileType) < 0) {
-        message(LANG.IMG_TIP_TYPE(typeName))
+        message(LANG.IMG_TIP_TYPE)
         reject()
       }
       if (file.size > maxSize * 1024 * 1024) {
@@ -42,34 +42,17 @@ export const MidUploadImg = memo((props: any) => {
   const handleChange = (info: any) => {
     const { file } = info
     const { status, response } = file
-    if (status === "uploading") {
+    if (status === 'uploading') {
       setLoading(true)
-    } else if (status === "done") {
+    } else if (status === 'done') {
       setLoading(false)
       let { code, msg, data } = response
-      if (code === "8001") {
+      if (code === '8001') {
         onChange(data && data.path ? data.path : data)
       } else {
         message(msg)
       }
     }
-  }
-
-  const getContent = () => {
-    const tipIcon = loading ? <LoadingOutlined /> : <PlusOutlined />
-    const tipDes = loading ? LANG.UPLOAD_ING : LANG.UPLOAD
-    let content = (
-      <>
-        {tipIcon}
-        <div className="ant-upload-text">{tipDes}</div>
-      </>
-    )
-    if (value) {
-      content = (
-        <img src={serverUrl + value} alt={LANG.IMG} style={{ width: "100%" }} />
-      )
-    }
-    return content
   }
 
   return (
@@ -84,7 +67,13 @@ export const MidUploadImg = memo((props: any) => {
         beforeUpload={beforeUpload}
         onChange={handleChange}
       >
-        {getContent()}
+        {value && <img src={serverUrl + value} alt={LANG.IMG} style={{ width: '100%' }} />}
+        {!value && (
+          <>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div className="ant-upload-text">{loading ? LANG.UPLOAD_ING : LANG.UPLOAD}</div>
+          </>
+        )}
       </Upload>
       {tip}
     </div>

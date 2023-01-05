@@ -6,17 +6,19 @@ import {
   MidUploadImgCrop,
   MidUploadVideo
 } from "common-mid"
-// import { MidUploadFile } from "../UploadFile"
-// import { MidUploadImg } from "../UploadImg"
-// import { MidUploadImgCrop } from "../UploadImgCrop"
-// import { MidUploadVideo } from "../UploadVideo"
+// import { MidUploadFile } from '../UploadFile'
+// import { MidUploadImg } from '../UploadImg'
+// import { MidUploadImgCrop } from '../UploadImgCrop'
+// import { MidUploadVideo } from '../UploadVideo'
 
 const DEFAULT_LANG_LIST = {
   "zh-CN": {
     IMG: "图片",
     UPLOAD: "上传",
     UPLOAD_ING: "上传中",
-    IMG_TIP_TYPE: (value: any) => `${value}格式错误`,
+    UPLOAD_FILE: "单击或拖动文件到此区域上传文件",
+    UPLOAD_FILE_TIP: "文件已上传 : ",
+    IMG_TIP_TYPE: "文件格式不符合要求",
     IMG_TIP_SIZE: (value: any, size: any) => `${value}应小于${size}MB`,
     IMG_TIP_WIDTH: (value: any) => `图片宽度应大于${value}px`
   },
@@ -24,9 +26,13 @@ const DEFAULT_LANG_LIST = {
     IMG: "Image",
     UPLOAD: "Upload",
     UPLOAD_ING: "Uploading",
-    IMG_TIP_TYPE: (value: any) => `${value}格式错误`,
-    IMG_TIP_SIZE: (value: any, size: any) => `${value}应小于${size}MB`,
-    IMG_TIP_WIDTH: (value: any) => `图片宽度应大于${value}px`
+    UPLOAD_FILE: "Click or drag file to this area to upload",
+    UPLOAD_FILE_TIP: "File uploaded : ",
+    IMG_TIP_TYPE: "File Format error",
+    IMG_TIP_SIZE: (value: any, size: any) =>
+      `${value} should be less than ${size}MB`,
+    IMG_TIP_WIDTH: (value: any) =>
+      `IMAGE width should be greater than ${value}px`
   }
 }
 
@@ -56,12 +62,11 @@ export const MidUpload = memo((props: any) => {
   }, [langList, language])
 
   useDeepCompareEffect(() => {
-    setRender(toRender())
-  }, [props])
+    setRender(toRender(type, { LANG, ...restProps }))
+  }, [LANG, type, restProps])
 
-  const toRender = () => {
+  const toRender = (type: any, uploadProp: object) => {
     let content
-    const uploadProp = { LANG, ...restProps }
     switch (type) {
       case "imageCrop":
         content = <MidUploadImgCrop {...uploadProp} />

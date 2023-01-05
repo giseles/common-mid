@@ -1,20 +1,16 @@
 import React, { memo, useState } from "react"
-import { Upload, Button } from "antd"
-import {
-  LoadingOutlined,
-  PlusOutlined,
-  UploadOutlined
-} from "@ant-design/icons"
+import { Upload } from "antd"
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 /**
- * @name  上传图片、视频、文件等
+ * @name  上传视频等
  * @param  {Object} 配置项
  * @example
- * <MidBaseUpload {...props} />
+ * <MidUploadVideo {...props} />
  */
-export const MidBaseUpload = memo((props: any) => {
-  const [loading, setLoading] = useState(false)
+export const MidUploadVideo = memo((props: any) => {
   const {
+    LANG,
     message,
     className,
     typeName,
@@ -23,20 +19,21 @@ export const MidBaseUpload = memo((props: any) => {
     uploadUrl,
     serverUrl,
     headers,
-    tip = null,
-    isImage = false,
-    isVideo = false,
-    isFile = false
+    onChange,
+    tip = null
   } = props
+
+  const [loading, setLoading] = useState(false)
+
   const beforeUpload = (file: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
       if (fileType && file.type.indexOf(fileType) < 0) {
-        message(`${typeName}格式错误`)
+        message(LANG.IMG_TIP_TYPE(typeName))
         reject()
       }
       if (file.size > maxSize * 1024 * 1024) {
-        message(`${typeName}应小于${maxSize}MB`)
+        message(LANG.IMG_TIP_SIZE(typeName, maxSize))
         reject()
       }
       resolve(true)
@@ -52,7 +49,7 @@ export const MidBaseUpload = memo((props: any) => {
       setLoading(false)
       let { code, msg, data } = response
       if (code === "8001") {
-        props.onChange(data && data.path ? data.path : data)
+        onChange(data && data.path ? data.path : data)
       } else {
         message(msg)
       }
@@ -61,27 +58,14 @@ export const MidBaseUpload = memo((props: any) => {
 
   const getContent = () => {
     const tipIcon = loading ? <LoadingOutlined /> : <PlusOutlined />
-    const tipDes = loading ? "上传中" : "上传"
+    const tipDes = loading ? LANG.UPLOAD_ING : LANG.UPLOAD
     let content = (
       <>
         {tipIcon}
         <div className="ant-upload-text">{tipDes}</div>
       </>
     )
-    if (isFile) {
-      // 文件
-      content = (
-        <Button>
-          {loading ? <LoadingOutlined /> : <UploadOutlined />} {tipDes}
-        </Button>
-      )
-    } else if (isImage && value) {
-      // 图片
-      content = (
-        <img src={serverUrl + value} alt="图片" style={{ width: "100%" }} />
-      )
-    } else if (isVideo && value) {
-      // 视频
+    if (value) {
       content = <video src={serverUrl + value} style={{ width: "100%" }} />
     }
     return content
@@ -91,10 +75,10 @@ export const MidBaseUpload = memo((props: any) => {
     <div className={className}>
       <Upload
         name="file"
-        listType={isFile ? "text" : "picture-card"}
-        showUploadList={isFile}
+        listType="picture-card"
         action={uploadUrl}
         headers={headers}
+        maxCount={1}
         // @ts-ignore
         beforeUpload={beforeUpload}
         onChange={handleChange}

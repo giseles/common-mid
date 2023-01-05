@@ -14,11 +14,11 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
  * @name  裁切图片并上传
  * @param  {Object} 配置项
  * @example
- * <MidImgCrop {...props} />
+ * <MidUploadImgCrop {...props} />
  */
-export const MidImgCrop = memo((props: any) => {
-  const [loading, setLoading] = useState(false)
+export const MidUploadImgCrop = memo((props: any) => {
   let {
+    LANG,
     message,
     className,
     value,
@@ -26,13 +26,15 @@ export const MidImgCrop = memo((props: any) => {
     limits,
     headers,
     uploadUrl,
-    serverUrl
+    serverUrl,
+    onChange
   } = props
+  const [loading, setLoading] = useState(false)
 
   const beforeCrop = (file: any) => {
     const { fileType } = limits
     if (file.type.indexOf(fileType) < 0) {
-      message("图片格式错误")
+      message(LANG.IMG_TIP_TYPE(file.name, fileType))
       return false
     }
     return file
@@ -41,11 +43,11 @@ export const MidImgCrop = memo((props: any) => {
     const { maxSize, width } = limits
     // @ts-ignore
     if (width && width > (await getImageSize(file)).width) {
-      message(`图片宽度应大于${width}px`)
+      message(LANG.IMG_TIP_WIDTH(width))
       return false
     }
     if (file.size > maxSize * 1024 * 1024) {
-      message(`图片应小于${maxSize}MB`)
+      message(LANG.IMG_TIP_SIZE(maxSize))
       return false
     }
     return true
@@ -81,7 +83,7 @@ export const MidImgCrop = memo((props: any) => {
       if (code !== "8001") {
         message(msg)
       } else {
-        props.onChange(data && data.path ? data.path : data)
+        onChange(data && data.path ? data.path : data)
       }
       return
     }
@@ -93,7 +95,7 @@ export const MidImgCrop = memo((props: any) => {
         grid
         rotate
         beforeCrop={beforeCrop}
-        quality="1"
+        quality={1}
         aspect={limits.aspect}
       >
         <Upload
@@ -105,12 +107,16 @@ export const MidImgCrop = memo((props: any) => {
           onChange={handleChange}
         >
           {value ? (
-            <img src={serverUrl + value} alt="图片" style={{ width: "100%" }} />
+            <img
+              src={serverUrl + value}
+              alt={LANG.IMG}
+              style={{ width: "100%" }}
+            />
           ) : (
             <>
               {loading ? <LoadingOutlined /> : <PlusOutlined />}
               <div className="ant-upload-text">
-                {loading ? "上传中" : "上传"}
+                {loading ? LANG.UPLOAD_ING : LANG.UPLOAD}
               </div>
             </>
           )}

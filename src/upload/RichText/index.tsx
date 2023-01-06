@@ -15,6 +15,7 @@ import BraftEditor from "braft-editor"
  */
 export const MidRichText = memo((props) => {
   let {
+    language = "zh-CN",
     message,
     className,
     media: mediaSettings = {},
@@ -25,6 +26,12 @@ export const MidRichText = memo((props) => {
     ...rest
   } = props
 
+  const languageList = {
+    zh: "zh",
+    "zh-CN": "zh",
+    en: "en",
+    "en-US": "en"
+  }
   if (typeof value === "string") {
     value = BraftEditor.createEditorState(value)
   }
@@ -155,6 +162,7 @@ export const MidRichText = memo((props) => {
     className,
     media,
     value,
+    language: languageList[language],
     ...rest,
     hooks,
     controls: props.readOnly && []

@@ -11,6 +11,33 @@ import {
 // import { MidUploadImgCrop } from '../UploadImgCrop'
 // import { MidUploadVideo } from '../UploadVideo'
 
+// {
+//   type: 'upload',
+//   name: 'sort',
+//   label: '文件',
+//   uploadType: 'file',
+//   limits: { fileType: 'pdf' }
+// },
+// {
+//   type: 'upload',
+//   name: 'sort2',
+//   label: '图片',
+//   uploadType: 'image'
+// },
+// {
+//   type: 'upload',
+//   name: 'sort4',
+//   label: '图片剪裁',
+//   uploadType: 'imageCrop',
+//   limits: { width: '600' }
+// },
+// {
+//   type: 'upload',
+//   name: 'sort3',
+//   label: '视频',
+//   uploadType: 'video'
+// }
+
 const DEFAULT_LANG_LIST = {
   "zh-CN": {
     IMG: "图片",

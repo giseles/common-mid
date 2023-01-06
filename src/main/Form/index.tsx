@@ -314,7 +314,7 @@ export const MidForm = memo((props: Props) => {
           )
           break
         case "richText":
-          ele = <RichText {...property} />
+          ele = <RichText language={language} {...property} />
           break
         case "diy":
           ele = item.show

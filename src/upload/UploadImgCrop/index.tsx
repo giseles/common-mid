@@ -1,7 +1,7 @@
-import React, { memo, useState } from 'react'
-import AntdImgCrop from 'antd-img-crop'
-import { Upload } from 'antd'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import React, { memo, useState } from "react"
+import AntdImgCrop from "antd-img-crop"
+import { Upload } from "antd"
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons"
 
 // const limits = {
 //   width: 700,
@@ -64,7 +64,7 @@ export const MidUploadImgCrop = memo((props: any) => {
           resolve({ width, height })
         }
         image.onerror = () => {
-          reject('error')
+          reject("error")
         }
         image.src = src
       }
@@ -74,14 +74,14 @@ export const MidUploadImgCrop = memo((props: any) => {
   const handleChange = (info: any) => {
     const { file } = info
     const { status, response } = file
-    if (status === 'uploading') {
+    if (status === "uploading") {
       setLoading(true)
       return
     }
-    if (status === 'done') {
+    if (status === "done") {
       setLoading(false)
       let { code, msg, data } = response
-      if (code !== '8001') {
+      if (code !== "8001") {
         message(msg)
       } else {
         onChange(data && data.path ? data.path : data)
@@ -92,7 +92,14 @@ export const MidUploadImgCrop = memo((props: any) => {
 
   return (
     <div className={className}>
-      <AntdImgCrop grid rotate beforeCrop={beforeCrop} quality={1} aspect={limits.aspect}>
+      <AntdImgCrop
+        grid
+        rotate
+        beforeCrop={beforeCrop}
+        quality={1}
+        aspect={limits.aspect}
+        fillColor="transparent"
+      >
         <Upload
           listType="picture-card"
           showUploadList={false}
@@ -101,11 +108,19 @@ export const MidUploadImgCrop = memo((props: any) => {
           beforeUpload={beforeUpload}
           onChange={handleChange}
         >
-          {value && <img src={serverUrl + value} alt={LANG.IMG} style={{ width: '100%' }} />}
+          {value && (
+            <img
+              src={serverUrl + value}
+              alt={LANG.IMG}
+              style={{ width: "100%" }}
+            />
+          )}
           {!value && (
             <>
               {loading ? <LoadingOutlined /> : <PlusOutlined />}
-              <div className="ant-upload-text">{loading ? LANG.UPLOAD_ING : LANG.UPLOAD}</div>
+              <div className="ant-upload-text">
+                {loading ? LANG.UPLOAD_ING : LANG.UPLOAD}
+              </div>
             </>
           )}
         </Upload>

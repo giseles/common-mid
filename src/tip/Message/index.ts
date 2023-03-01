@@ -1,4 +1,4 @@
-import { message as AntdMessage } from "antd"
+import { message } from "antd"
 import { MessageType } from "../../index"
 // import "antd/es/message/style"
 
@@ -20,7 +20,7 @@ export const MidMessage = (
   config: any,
   successCode: number = 8001
 ) => {
-  if (config) AntdMessage.config(config)
+  if (config) message.config(config)
   const list: any = {
     [successCode]: "success",
     success: "success",
@@ -32,5 +32,5 @@ export const MidMessage = (
 
   const type: keyof MessageType = list[data?.code || "warning"]
   const msg = data?.msg || data
-  return AntdMessage[type](msg)
+  message[type](msg)
 }

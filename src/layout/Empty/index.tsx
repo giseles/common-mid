@@ -1,8 +1,8 @@
 import React, { memo } from "react"
 import { Button, Layout, Result } from "antd"
-import "antd/es/button/style"
-import "antd/es/layout/style"
-import "antd/es/result/style"
+// import "antd/es/button/style"
+// import "antd/es/layout/style"
+// import "antd/es/result/style"
 
 interface Props {
   className?: string // class名称

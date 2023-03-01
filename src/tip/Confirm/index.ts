@@ -1,6 +1,6 @@
 import { Modal } from "antd"
 import { ModalType, LooseObject } from "../../index"
-import "antd/es/modal/style"
+// import "antd/es/modal/style"
 
 /**
  * @name 统一返回信息提示框

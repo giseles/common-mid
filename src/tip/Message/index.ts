@@ -1,6 +1,6 @@
 import { message as AntdMessage } from "antd"
 import { MessageType } from "../../index"
-import "antd/es/message/style"
+// import "antd/es/message/style"
 
 /**
  *

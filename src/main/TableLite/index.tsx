@@ -2,7 +2,7 @@ import React, { memo, useState } from "react"
 import { Button, Table, Space } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isNil } from "common-screw"
-import "antd/es/table/style"
+// import "antd/es/table/style"
 
 const toTablePer = (permissionList: any, tableBtnList: any) => {
   const per: any = []

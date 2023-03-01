@@ -11,7 +11,7 @@ import {
 } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isArray, isNil, isObject, toEnumArray } from "common-screw"
-import "antd/es/form/style"
+// import "antd/es/form/style"
 import { LooseObject } from "../../index"
 import { getFlatData } from "../../_utils"
 

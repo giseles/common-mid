@@ -2,8 +2,8 @@ import React from "react"
 import { Descriptions, Tooltip } from "antd"
 import { isNil } from "common-screw"
 import { LooseObject } from "../../index"
-import "antd/es/descriptions/style"
-import "antd/es/tooltip/style"
+// import "antd/es/descriptions/style"
+// import "antd/es/tooltip/style"
 
 interface Props {
   className?: string // class名称

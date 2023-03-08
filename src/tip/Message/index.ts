@@ -32,5 +32,5 @@ export const MidMessage = (
 
   const type: keyof MessageType = list[data?.code || "warning"]
   const msg = data?.msg || data
-  message[type](msg)
+  return message[type](msg)
 }

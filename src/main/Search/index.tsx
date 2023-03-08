@@ -158,6 +158,15 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
+      case "dateRangeNoTime":
+        elem = (
+          <DatePicker.RangePicker
+            onChange={onValuesChange}
+            placeholder={[LANG.TIME_START, LANG.TIME_END]}
+            {...restProps}
+          />
+        )
+        break
       case "monthRange":
         elem = (
           <DatePicker.MonthPicker
@@ -206,6 +215,17 @@ export const MidSearch = memo((props: SearchProps) => {
               itemValue[0].format("YYYY-MM-DD") + " 00:00:00"
             result[item.name[1]] =
               itemValue[1].format("YYYY-MM-DD") + " 23:59:59"
+          } else {
+            // 没有值时，也要保留表单key
+            result[item.name[0]] = undefined
+            result[item.name[1]] = undefined
+          }
+          break
+        case "dateRangeNoTime":
+          // 日期 无时间
+          if (Array.isArray(itemValue) && itemValue.length === 2) {
+            result[item.name[0]] = itemValue[0].format("YYYY-MM-DD")
+            result[item.name[1]] = itemValue[1].format("YYYY-MM-DD")
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined

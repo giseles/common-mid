@@ -32,5 +32,5 @@ export const MidConfirm = (
   }
   if (data.msg) content.title = data.msg
   if (data.onOk) content.onOk = data.onOk
-  Modal[type || list[data?.code || "warning"]](content)
+  return Modal[type || list[data?.code || "warning"]](content)
 }

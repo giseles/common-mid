@@ -232,6 +232,7 @@ export const MidForm = memo((props: Props) => {
               options={options}
               disabled={item.disabled}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              showSearch={options.length > 10}
               filterOption={(input, option) =>
                 (option?.label ?? "")
                   .toLowerCase()

@@ -232,6 +232,11 @@ export const MidForm = memo((props: Props) => {
               options={options}
               disabled={item.disabled}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               {...property}
             />
           )
@@ -320,7 +325,19 @@ export const MidForm = memo((props: Props) => {
           ele = item.show
           break
         default:
-          ele = <Input allowClear placeholder={placeholder} {...property} />
+          const { maxLength = 0 } = item
+          if (maxLength) {
+            ele = (
+              <Input
+                showCount
+                maxLength={maxLength}
+                placeholder={placeholder}
+                {...property}
+              />
+            )
+          } else {
+            ele = <Input allowClear placeholder={placeholder} {...property} />
+          }
       }
       return <Item {...itemProps}>{ele}</Item>
     })

@@ -2,6 +2,7 @@ import React, { useState, memo, useRef } from "react"
 import {
   Form,
   Input,
+  InputNumber,
   Button,
   Select,
   DatePicker,
@@ -324,6 +325,11 @@ export const MidForm = memo((props: Props) => {
           break
         case "diy":
           ele = item.show
+          break
+        case "inputNumber":
+          ele = (
+            <InputNumber allowClear placeholder={placeholder} {...property} />
+          )
           break
         default:
           const { maxLength = 0 } = item

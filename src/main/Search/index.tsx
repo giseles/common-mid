@@ -39,7 +39,7 @@ interface InputProps {
   hide?: boolean
   valueEnum?: any[]
   itemProps?: any
-  optionList?: Object
+  optionList?: object
 }
 interface SearchProps {
   language?: string // 语言
@@ -134,6 +134,31 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
+      case "searchTags":
+        elem = (
+          <Select
+            placeholder={title}
+            options={toOptions(
+              optionList,
+              title || itemProps.placeholder,
+              LANG.ALL_TIP
+            )}
+            allowClear
+            onChange={onValuesChange}
+            mode="tags"
+            showSearch={true}
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            {...itemProps}
+          />
+        )
+        break
       case "search":
         elem = (
           <Input
@@ -206,8 +231,10 @@ export const MidSearch = memo((props: SearchProps) => {
       const item = searchData[name]
       const type = item.type
       const itemValue = values[name]
-
       switch (type) {
+        case "searchTags":
+          result[name] = itemValue.join(",")
+          break
         case "dateRange":
           // 日期
           if (Array.isArray(itemValue) && itemValue.length === 2) {

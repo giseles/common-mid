@@ -134,7 +134,7 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
-      case "searchTags":
+      case "selectMul":
         elem = (
           <Select
             placeholder={title}
@@ -143,17 +143,12 @@ export const MidSearch = memo((props: SearchProps) => {
               title || itemProps.placeholder,
               LANG.ALL_TIP
             )}
+            mode="multiple"
             allowClear
             onChange={onValuesChange}
-            mode="tags"
             showSearch={true}
             filterOption={(input, option) =>
-              (option?.label ?? "").includes(input)
-            }
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
             {...itemProps}
           />
@@ -232,9 +227,6 @@ export const MidSearch = memo((props: SearchProps) => {
       const type = item.type
       const itemValue = values[name]
       switch (type) {
-        case "searchTags":
-          result[name] = itemValue.join(",")
-          break
         case "dateRange":
           // 日期
           if (Array.isArray(itemValue) && itemValue.length === 2) {

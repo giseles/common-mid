@@ -32,6 +32,28 @@ const toOptions = (optionList: any, placeholder: any, allTip: any) => {
   }
 }
 
+const toOptionsV2 = (
+  optionList: any,
+  placeholder: any,
+  allTip: any,
+  isAll: boolean = true
+) => {
+  const arr: any = []
+  isAll && arr.push({ value: "", label: `${placeholder} - ${allTip}` })
+  if (isNil(optionList)) {
+    return []
+  } else if (
+    isArray(optionList) &&
+    optionList[0].label &&
+    optionList[0].value
+  ) {
+    arr.push(...optionList)
+  } else if (isObject(optionList)) {
+    arr.push(...toEnumArray(optionList, "value", "label"))
+  }
+  return arr
+}
+
 interface InputProps {
   title?: string
   name?: string | string[]
@@ -138,10 +160,11 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <Select
             placeholder={title}
-            options={toOptions(
+            options={toOptionsV2(
               optionList,
               title || itemProps.placeholder,
-              LANG.ALL_TIP
+              LANG.ALL_TIP,
+              false
             )}
             mode="multiple"
             allowClear

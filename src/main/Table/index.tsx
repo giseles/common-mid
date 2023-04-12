@@ -16,10 +16,12 @@ const toTablePer = (permissionList: any, tableBtnList: any) => {
 }
 const DEFAULT_LANG_LIST = {
   "zh-CN": {
-    TOTAL: (value: any) => `共 ${value} 条记录`
+    TOTAL: (value: any) => `共 ${value} 条记录`,
+    SELECT_TIP: (value: any) => `已选择 ${value} 项数据`
   },
   "en-US": {
-    TOTAL: (value: any) => `Total ${value} items`
+    TOTAL: (value: any) => `Total ${value} items`,
+    SELECT_TIP: (value: any) => `Selected ${value} items`
   }
 }
 
@@ -177,9 +179,8 @@ export const MidTable = memo((props: any) => {
             {selectionProps.name}
           </Button>
           <span style={{ marginLeft: 8 }}>
-            {selectedRowKeys.length > 0
-              ? `已选择 ${selectedRowKeys.length} 项数据`
-              : ""}
+            {selectedRowKeys.length > 0 &&
+              LANG.SELECT_TIP(selectedRowKeys.length)}
           </span>
         </div>
       )}

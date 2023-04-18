@@ -27,7 +27,7 @@ interface Props {
  * <MidDescription {...props} className={styles.wrap} />)
  */
 export const MidDescription = (props: Props) => {
-  const { column, dataSource, descProps, className } = props
+  const { column = [], dataSource, descProps, className } = props
   return (
     <Descriptions {...descProps} className={className}>
       {column.map((item: any, index: number) => {

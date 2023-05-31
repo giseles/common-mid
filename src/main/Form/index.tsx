@@ -313,6 +313,7 @@ export const MidForm = memo((props: Props) => {
           ele = (
             <Cascader
               options={item.optionList}
+              placeholder={pickPlaceholder}
               changeOnSelect={item.changeOnSelect || false}
               // @ts-ignore
               getPopupContainer={(triggerNode) => triggerNode.parentNode}

@@ -58,10 +58,18 @@ export const MidTable = memo((props: any) => {
     let newColumns: any = []
 
     columns.forEach((item: any) => {
-      !item.hide && newColumns.push(item)
+      const { label, name, hide, ...rest } = item
+
+      !hide &&
+        newColumns.push({
+          title: label,
+          dataIndex: name,
+          key: name,
+          ...rest
+        })
     })
 
-    if (columns[columns.length - 1].key !== "operate") {
+    if (columns[columns.length - 1].name !== "operate") {
       // 表格中最后一列key不为operate
       setNewColumns(newColumns)
       return

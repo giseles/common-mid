@@ -55,13 +55,12 @@ const toOptionsV2 = (
 }
 
 interface InputProps {
-  title?: string
+  label?: string
   name?: string | string[]
   type?: any
   hide?: boolean
-  valueEnum?: any[]
   itemProps?: any
-  optionList?: object
+  optionList?: any
 }
 interface SearchProps {
   language?: string // 语言
@@ -132,22 +131,17 @@ export const MidSearch = memo((props: SearchProps) => {
 
   const formInputRender = (item: InputProps) => {
     let elem: any = <></>
-    const { name, type, valueEnum, optionList, title, itemProps = {} } = item
+    const { name, type, optionList, label, itemProps = {} } = item
     const { defaultValue, ...restProps } = itemProps
-    // 后续可删
-    let newType = type
-    if (type === "text") {
-      newType = valueEnum ? "select" : "search"
-    }
-    switch (newType) {
+
+    switch (type) {
       case "select":
-        const options = optionList || valueEnum
         elem = (
           <Select
-            placeholder={title}
+            placeholder={label}
             options={toOptions(
-              options,
-              title || itemProps.placeholder,
+              optionList,
+              label || itemProps.placeholder,
               LANG.ALL_TIP
             )}
             allowClear
@@ -159,10 +153,10 @@ export const MidSearch = memo((props: SearchProps) => {
       case "selectMul":
         elem = (
           <Select
-            placeholder={title}
+            placeholder={label}
             options={toOptionsV2(
               optionList,
-              title || itemProps.placeholder,
+              label || itemProps.placeholder,
               LANG.ALL_TIP,
               false
             )}
@@ -180,7 +174,7 @@ export const MidSearch = memo((props: SearchProps) => {
       case "search":
         elem = (
           <Input
-            placeholder={title}
+            placeholder={label}
             allowClear
             onChange={({ target }) => {
               !target.value && onValuesChange()
@@ -214,7 +208,7 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <DatePicker.MonthPicker
             onChange={onValuesChange}
-            placeholder={title}
+            placeholder={label}
             showTime={false}
             {...restProps}
           />
@@ -223,10 +217,10 @@ export const MidSearch = memo((props: SearchProps) => {
       case "cascader":
         elem = (
           <Cascader
-            options={valueEnum}
+            options={optionList}
             changeOnSelect
             onChange={onValuesChange}
-            placeholder={title}
+            placeholder={label}
             {...restProps}
           />
         )
@@ -286,8 +280,8 @@ export const MidSearch = memo((props: SearchProps) => {
           break
         case "cascader":
           // 级联选择
-          const { valueName } = item
-          valueName.forEach((childItem: any, childIndex: any) => {
+          const { optionName } = item
+          optionName.forEach((childItem: any, childIndex: any) => {
             result[childItem] = itemValue?.[childIndex] || undefined
           })
           break

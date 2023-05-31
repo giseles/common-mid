@@ -1,6 +1,6 @@
 {
   "name": "common-mid",
-  "version": "0.5.21",
+  "version": "1.0.1",
   "description": "提供一系列组件可快速高效的搭建高质量中后台应用",
   "main": "es/index.js",
   "module": "es/index.js",
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/giseles/common-mid#readme",
   "dependencies": {
-    "braft-editor": "2.3.9",
-    "antd-img-crop": "4.6.0"
+    "braft-editor": "^2.3.9",
+    "antd-img-crop": "^4.6.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.3",

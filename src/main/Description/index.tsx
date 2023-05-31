@@ -10,7 +10,7 @@ interface Props {
   descProps?: LooseObject // 描述列表属性
   column: {
     label: string
-    dataIndex: string
+    name: string
     icon?: any
     render?: any
     [key: string]: any
@@ -32,7 +32,7 @@ export const MidDescription = (props: Props) => {
     <Descriptions {...descProps} className={className}>
       {column.map((item: any, index: number) => {
         if (item.hide) return null
-        const { dataIndex, render, icon, ...rest } = item
+        const { name, render, icon, ...rest } = item
         let label = icon ? (
           <>
             {icon}
@@ -43,8 +43,8 @@ export const MidDescription = (props: Props) => {
         )
 
         const content = render
-          ? render(dataSource[dataIndex], dataSource)
-          : dataSource[dataIndex]
+          ? render(dataSource[name], dataSource)
+          : dataSource[name]
         return (
           <Descriptions.Item key={index} {...rest} label={label}>
             {!isNil(content) && content.length > 6 ? (

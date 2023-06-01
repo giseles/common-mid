@@ -8,11 +8,11 @@ import {
   DatePicker,
   Cascader,
   TimePicker,
-  Radio
+  Radio,
+  Space
 } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isArray, isNil, isObject, toEnumArray } from "common-screw"
-// import "antd/es/form/style"
 import { LooseObject } from "../../index"
 import { getFlatData } from "../../_utils"
 
@@ -362,18 +362,15 @@ export const MidForm = memo((props: Props) => {
     >
       {renderItem}
       {props.children}
-      <Item
-        style={{ textAlign: "center" }}
-        wrapperCol={{
-          span: formProps.labelCol.span + formProps.wrapperCol.span
-        }}
-      >
-        {btnProps.isShowReturn && (
-          <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
-        )}
-        <Button type="primary" htmlType="submit" loading={btnProps.loading}>
-          {btnProps.submitName}
-        </Button>
+      <Item style={{ textAlign: "center" }}>
+        <Space size="large">
+          {btnProps.isShowReturn && (
+            <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
+          )}
+          <Button type="primary" htmlType="submit" loading={btnProps.loading}>
+            {btnProps.submitName}
+          </Button>
+        </Space>
       </Item>
     </Form>
   )

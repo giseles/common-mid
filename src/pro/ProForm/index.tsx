@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from "react"
+import React, { memo } from "react"
 
 /**
  * @name  高阶表单
@@ -33,9 +33,9 @@ export const ProForm = memo((props: any) => {
       {headerProps.subTitle && <Header {...headerProps} />}
       <Form
         {...formProps}
-        onSubmit={useCallback(onSubmit, [])}
+        onSubmit={onSubmit}
         onBack={onBack}
-        setLoading={useCallback(setLoading, [])}
+        setLoading={setLoading}
       >
         {props.children}
       </Form>

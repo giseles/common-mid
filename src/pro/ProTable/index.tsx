@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from "react"
+import React, { memo } from "react"
 
 /**
  * @name  高阶表格
@@ -36,15 +36,11 @@ export const ProTable = memo((props: any) => {
       {searchProps.search && (
         <Search
           {...searchProps}
-          onChange={useCallback(searchChange, [])}
-          addClick={useCallback(searchHandle, [])}
+          onChange={searchChange}
+          addClick={searchHandle}
         />
       )}
-      <Table
-        {...tableProps}
-        onChange={useCallback(tableChange, [])}
-        onHandle={useCallback(tableHandle, [])}
-      />
+      <Table {...tableProps} onChange={tableChange} onHandle={tableHandle} />
     </div>
   )
 })

@@ -35,7 +35,7 @@ export const MidTable = memo((props: any) => {
     tableBtnList,
     permissionList,
     btnProps = {},
-    pageProps = { showPage: true },
+    pageProps = { showPage: true, props: {} },
     selectionProps = { isShow: false },
     ...restProps
   } = props
@@ -203,7 +203,8 @@ export const MidTable = memo((props: any) => {
             showTotal: (total: any) => LANG.TOTAL(total),
             current: pageProps.current,
             pageSize: pageProps.pageSize,
-            total: pageProps.total
+            total: pageProps.total,
+            ...pageProps
           }
         }
         columns={newColumns}

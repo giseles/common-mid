@@ -99,7 +99,7 @@ export const MidForm = memo((props: Props) => {
   const {
     language,
     langList = DEFAULT_LANG_LIST,
-    formProps,
+    formProps: { spinning = false, ...formProps },
     formRules,
     formList,
     initialValues = {},
@@ -352,7 +352,7 @@ export const MidForm = memo((props: Props) => {
     })
   }
   return (
-    <Spin spinning={formProps.spinning}>
+    <Spin spinning={spinning}>
       <Form
         form={form}
         ref={FormRef}

@@ -1,9 +1,7 @@
 import React from "react"
-import { Descriptions, Tooltip } from "antd"
+import { Descriptions, Tooltip, Spin } from "antd"
 import { isNil } from "common-screw"
 import { LooseObject } from "../../index"
-// import "antd/es/descriptions/style"
-// import "antd/es/tooltip/style"
 
 interface Props {
   className?: string // class名称
@@ -18,6 +16,7 @@ interface Props {
   dataSource: LooseObject // 内容的数据
   title?: string // 标题
   extra?: any // 操作区域
+  spinning?: boolean // 加载中
 }
 
 /**
@@ -27,36 +26,44 @@ interface Props {
  * <MidDescription {...props} className={styles.wrap} />)
  */
 export const MidDescription = (props: Props) => {
-  const { column = [], dataSource, descProps, className } = props
+  const {
+    column = [],
+    dataSource,
+    descProps,
+    className,
+    spinning = false
+  } = props
   return (
-    <Descriptions {...descProps} className={className}>
-      {column.map((item: any, index: number) => {
-        if (item.hide) return null
-        const { name, render, icon, ...rest } = item
-        let label = icon ? (
-          <>
-            {icon}
-            {item.label}
-          </>
-        ) : (
-          item.label
-        )
+    <Spin spinning={spinning}>
+      <Descriptions {...descProps} className={className}>
+        {column.map((item: any, index: number) => {
+          if (item.hide) return null
+          const { name, render, icon, ...rest } = item
+          let label = icon ? (
+            <>
+              {icon}
+              {item.label}
+            </>
+          ) : (
+            item.label
+          )
 
-        const content = render
-          ? render(dataSource[name], dataSource)
-          : dataSource[name]
-        return (
-          <Descriptions.Item key={index} {...rest} label={label}>
-            {!isNil(content) && content.length > 6 ? (
-              <Tooltip title={content} placement="topLeft">
-                {content}
-              </Tooltip>
-            ) : (
-              content
-            )}
-          </Descriptions.Item>
-        )
-      })}
-    </Descriptions>
+          const content = render
+            ? render(dataSource[name], dataSource)
+            : dataSource[name]
+          return (
+            <Descriptions.Item key={index} {...rest} label={label}>
+              {!isNil(content) && content.length > 6 ? (
+                <Tooltip title={content} placement="topLeft">
+                  {content}
+                </Tooltip>
+              ) : (
+                content
+              )}
+            </Descriptions.Item>
+          )
+        })}
+      </Descriptions>
+    </Spin>
   )
 }

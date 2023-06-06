@@ -9,7 +9,8 @@ import {
   Cascader,
   TimePicker,
   Radio,
-  Space
+  Space,
+  Spin
 } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isArray, isNil, isObject, toEnumArray } from "common-screw"
@@ -38,7 +39,7 @@ const { Item } = Form
 interface Props {
   language?: string // 语言
   langList?: any // 语言包
-  formProps: { className?: string; [key: string]: any } // 表单属性
+  formProps: { className?: string; spinning?: boolean; [key: string]: any } // 表单属性
   formRules: LooseObject // 表单验证规则
   formList: {
     label: string
@@ -351,27 +352,29 @@ export const MidForm = memo((props: Props) => {
     })
   }
   return (
-    <Form
-      form={form}
-      ref={FormRef}
-      initialValues={initialValues}
-      onValuesChange={onValuesChange}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      {...formProps}
-    >
-      {renderItem}
-      {props.children}
-      <Item style={{ textAlign: "center" }}>
-        <Space size="large">
-          {btnProps.isShowReturn && (
-            <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
-          )}
-          <Button type="primary" htmlType="submit" loading={btnProps.loading}>
-            {btnProps.submitName}
-          </Button>
-        </Space>
-      </Item>
-    </Form>
+    <Spin spinning={formProps.spinning}>
+      <Form
+        form={form}
+        ref={FormRef}
+        initialValues={initialValues}
+        onValuesChange={onValuesChange}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        {...formProps}
+      >
+        {renderItem}
+        {props.children}
+        <Item style={{ textAlign: "center" }}>
+          <Space size="large">
+            {btnProps.isShowReturn && (
+              <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
+            )}
+            <Button type="primary" htmlType="submit" loading={btnProps.loading}>
+              {btnProps.submitName}
+            </Button>
+          </Space>
+        </Item>
+      </Form>
+    </Spin>
   )
 })

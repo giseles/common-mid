@@ -1,6 +1,5 @@
 import React, { memo } from "react"
 import { PageHeader } from "antd"
-// import "antd/es/page-header/style"
 
 interface Props {
   className?: string // class名称

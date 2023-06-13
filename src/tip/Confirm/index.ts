@@ -1,6 +1,12 @@
 import { Modal } from "antd"
-import { ModalType, LooseObject } from "../../index"
-// import "antd/es/modal/style"
+import { LooseObject } from "common-screw"
+
+interface ModalType {
+  success: "success"
+  info: "info"
+  warning: "warning"
+  error: "error"
+}
 
 /**
  * @name 统一返回信息提示框

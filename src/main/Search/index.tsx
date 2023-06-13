@@ -11,7 +11,7 @@ import {
   Button
 } from "antd"
 import { isArray, isNil, isObject, toEnumArray } from "common-screw"
-import { getFlatData } from "../../_utils"
+import { getFlatData } from "common-mid"
 
 // 生成 Select 的 options 属性
 const toOptions = (optionList: any, placeholder: any, allTip: any) => {

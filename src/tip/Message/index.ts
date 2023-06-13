@@ -1,6 +1,12 @@
 import { message } from "antd"
-import { MessageType } from "../../index"
-// import "antd/es/message/style"
+
+interface MessageType {
+  success: "success"
+  loading: "loading"
+  info: "info"
+  warning: "warning"
+  error: "error"
+}
 
 /**
  *

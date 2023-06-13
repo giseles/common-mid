@@ -1,7 +1,6 @@
 import React, { memo } from "react"
 import { Breadcrumb } from "antd"
-import { LooseObject } from "../../index"
-// import "antd/es/breadcrumb/style"
+import { LooseObject } from "common-screw"
 
 interface Props {
   className?: string // class名称

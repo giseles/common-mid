@@ -12,10 +12,15 @@ import {
   Space,
   Spin
 } from "antd"
+import {
+  isArray,
+  isNil,
+  isObject,
+  toEnumArray,
+  LooseObject
+} from "common-screw"
 import { useDeepCompareEffect } from "common-hook"
-import { isArray, isNil, isObject, toEnumArray } from "common-screw"
-import { LooseObject } from "../../index"
-import { getFlatData } from "../../_utils"
+import { getFlatData } from "common-mid"
 
 // 生成 Select 和 Radio 的 options 属性
 const toOptions = (optionList: any) => {

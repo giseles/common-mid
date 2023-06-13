@@ -1,11 +1,18 @@
 import React from "react"
 import { Descriptions, Tooltip, Spin } from "antd"
 import { isNil } from "common-screw"
-import { LooseObject } from "../../index"
 
 interface Props {
   className?: string // class名称
-  descProps?: LooseObject // 描述列表属性
+  dataSource: { [key: string]: any } // 内容的数据
+  spinning?: boolean // 加载中
+  property?: {
+    bordered?: boolean // 边框
+    colon?: boolean // 冒号
+    title?: string // 标题
+    extra?: any // 操作区域
+    [key: string]: any
+  } // 描述列表属性
   column: {
     label: string
     name: string
@@ -13,10 +20,6 @@ interface Props {
     render?: any
     [key: string]: any
   }[] // 内容的描述(名称、图标等)
-  dataSource: LooseObject // 内容的数据
-  title?: string // 标题
-  extra?: any // 操作区域
-  spinning?: boolean // 加载中
 }
 
 /**
@@ -29,13 +32,13 @@ export const MidDescription = (props: Props) => {
   const {
     column = [],
     dataSource,
-    descProps,
+    property,
     className,
     spinning = false
   } = props
   return (
     <Spin spinning={spinning}>
-      <Descriptions {...descProps} className={className}>
+      <Descriptions {...property} className={className}>
         {column.map((item: any, index: number) => {
           if (item.hide) return null
           const { name, render, icon, ...rest } = item

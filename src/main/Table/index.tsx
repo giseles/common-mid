@@ -36,6 +36,7 @@ export const MidTable = memo((props: any) => {
     btnProps = {},
     pageProps = { showPage: true, props: {} },
     selectionProps = { isShow: false },
+    toHref,
     ...restProps
   } = props
   const [newColumns, setNewColumns] = useState(columns)
@@ -129,6 +130,7 @@ export const MidTable = memo((props: any) => {
               key={type}
               disabled={disabled}
               {...btnProps}
+              href={toHref[type] && toHref[type](item)}
               onClick={() => onHandle(type, item)}
               {...value.btnProps}
             >
@@ -152,7 +154,7 @@ export const MidTable = memo((props: any) => {
       ...newColumns[newColumns.length - 1]
     }
     setNewColumns(newColumns)
-  }, [permissionList, columns, tableBtnList])
+  }, [permissionList, columns, tableBtnList, toHref])
 
   useDeepCompareEffect(() => {
     // 清空全选数据

@@ -4,7 +4,7 @@ export * from "./_utils"
 // Common 类组件: 发送网络请求 按钮群组 自定义icon字体
 export * from "./common"
 
-// Layout 类组件: 面包屑导航 空状态 页头
+// Layout 类组件: 面包屑导航 卡片 空状态 页头 标签页
 export * from "./layout"
 
 // Main 类组件: 描述列表 表单 搜索栏 表格

@@ -1,15 +1,14 @@
 import React, { memo } from "react"
-import { PageHeader } from "antd"
+import { Space, Button } from "antd"
+import { ArrowLeftOutlined } from "@ant-design/icons"
 
 interface Props {
   className?: string // class名称
-  onBack?: any // 返回按钮的点击事件
+  style?: any // 样式
   title: string // 主标题
   subTitle?: string // 副标题
+  href?: any // 返回链接
   extra?: any // 操作区
-  avatar?: any // 标题栏旁的头像
-  style?: any // 样式
-  tags?: any // title旁的tag
 }
 
 /**
@@ -17,9 +16,26 @@ interface Props {
  * @param  {Props} 配置项
  * @example
  * <MidPageHeader
-    {...restProps}
-    className={border ? styles.header : styles.headerNoBorder}
-    onBack={onBack || commonBack}
-  />
+      className={styles.wrap}
+      style={style}
+      title={title}
+      href={href}
+      subTitle={subTitle}
+      extra={extra}
+    />
  */
-export const MidPageHeader = memo((props: Props) => <PageHeader {...props} />)
+export const MidPageHeader = memo((props: Props) => {
+  const { className, style, title, subTitle, href, extra } = props
+  return (
+    <div className={className} style={style}>
+      <Space size="small">
+        {href && (
+          <Button type="text" icon={<ArrowLeftOutlined />} href={href} />
+        )}
+        {title}
+        {subTitle && <span>{subTitle}</span>}
+      </Space>
+      {extra}
+    </div>
+  )
+})

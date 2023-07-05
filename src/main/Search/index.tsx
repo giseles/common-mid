@@ -1,38 +1,12 @@
 import React, { useState, memo } from "react"
 import { useDeepCompareEffect } from "common-hook"
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  DatePicker,
-  Select,
-  Cascader,
-  Button
-} from "antd"
+import { Form, Input, DatePicker, Select, Cascader } from "antd"
 import { isArray, isNil, isObject, toEnumArray } from "common-screw"
 import { getFlatData } from "common-mid"
 
 // 生成 Select 的 options 属性
-const toOptions = (optionList: any, placeholder: any, allTip: any) => {
-  const all = { value: "", label: `${placeholder} - ${allTip}` }
-  if (isNil(optionList)) {
-    return []
-  } else if (isArray(optionList) && (optionList[0].id || optionList[0].value)) {
-    let options: any = []
-    options.push(all)
-    optionList.forEach((item: any) => {
-      options.push({ label: item.value, value: item.id })
-    })
-    return options
-  } else if (isArray(optionList) && optionList[0].label) {
-    return [all, ...optionList]
-  } else if (isObject(optionList)) {
-    return [all, ...toEnumArray(optionList, "value", "label")]
-  }
-}
 
-const toOptionsV2 = (
+const toOptions = (
   optionList: any,
   placeholder: any,
   allTip: any,
@@ -67,15 +41,12 @@ interface SearchProps {
   langList?: any // 语言包
   onChange?: (values: object) => void
   search?: Array<InputProps>
-  add?: string
-  addClick?: any
-  addBtn?: any
-  addHandle?: any
   style?: any
   className?: any
-  addProps?: any
   children?: any
   searchIcon?: any
+  itemStyle?: any
+  extra?: any
 }
 
 const DEFAULT_LANG_LIST = {
@@ -94,7 +65,7 @@ const DEFAULT_LANG_LIST = {
  * @name  搜索栏
  * @param  {Object} 配置项
  * @example
- * <MidSearch className={styles.section} addProps={addProps} searchIcon={searchIcon} {...props} />
+ * <MidSearch className={styles.section} searchIcon={searchIcon} {...props} />
  */
 export const MidSearch = memo((props: SearchProps) => {
   const {
@@ -104,9 +75,9 @@ export const MidSearch = memo((props: SearchProps) => {
     onChange,
     className,
     style = {},
-    children,
     searchIcon,
-    addProps
+    itemStyle,
+    extra
   } = props
   const [form] = Form.useForm()
   const [renderItem, setRenderItem] = useState(<></>)
@@ -124,12 +95,12 @@ export const MidSearch = memo((props: SearchProps) => {
     // 渲染search
     const content: any = search?.map((item: any, index: any) => {
       const { hide = false } = item
-      return !hide && <Col key={index}>{formInputRender(item)}</Col>
+      return !hide && formInputRender(item, itemStyle, index)
     })
     setRenderItem(content)
-  }, [search, LANG])
+  }, [search, LANG, itemStyle])
 
-  const formInputRender = (item: InputProps) => {
+  const formInputRender = (item: InputProps, itemStyle, index) => {
     let elem: any = <></>
     const { name, type, optionList, label, itemProps = {} } = item
     const { defaultValue, ...restProps } = itemProps
@@ -139,14 +110,10 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <Select
             placeholder={label}
-            options={toOptions(
-              optionList,
-              label || itemProps.placeholder,
-              LANG.ALL_TIP
-            )}
+            options={toOptions(optionList, label, LANG.ALL_TIP)}
             allowClear
             onChange={onValuesChange}
-            {...itemProps}
+            {...restProps}
           />
         )
         break
@@ -154,12 +121,7 @@ export const MidSearch = memo((props: SearchProps) => {
         elem = (
           <Select
             placeholder={label}
-            options={toOptionsV2(
-              optionList,
-              label || itemProps.placeholder,
-              LANG.ALL_TIP,
-              false
-            )}
+            options={toOptions(optionList, label, LANG.ALL_TIP, false)}
             mode="multiple"
             allowClear
             onChange={onValuesChange}
@@ -167,7 +129,7 @@ export const MidSearch = memo((props: SearchProps) => {
             filterOption={(input, option) =>
               (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
-            {...itemProps}
+            {...restProps}
           />
         )
         break
@@ -191,6 +153,7 @@ export const MidSearch = memo((props: SearchProps) => {
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
@@ -200,6 +163,7 @@ export const MidSearch = memo((props: SearchProps) => {
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
@@ -210,6 +174,7 @@ export const MidSearch = memo((props: SearchProps) => {
             onChange={onValuesChange}
             placeholder={label}
             showTime={false}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
@@ -229,7 +194,12 @@ export const MidSearch = memo((props: SearchProps) => {
     }
 
     return (
-      <Form.Item initialValue={defaultValue} name={String(name)}>
+      <Form.Item
+        initialValue={defaultValue}
+        name={String(name)}
+        key={index}
+        style={itemStyle}
+      >
         {elem}
       </Form.Item>
     )
@@ -298,19 +268,12 @@ export const MidSearch = memo((props: SearchProps) => {
   }
 
   return (
-    <section className={className} style={style}>
-      <Form autoComplete="off" form={form}>
-        <Row gutter={24} justify="start">
-          {renderItem}
-        </Row>
-        {children}
+    <div className={className} style={style}>
+      <Form autoComplete="off" layout="inline" form={form}>
+        {renderItem}
       </Form>
-      {/* 添加按钮 */}
-      {addProps.isShow && (
-        <Button onClick={addProps.onClick} icon={addProps.icon}>
-          {addProps.name}
-        </Button>
-      )}
-    </section>
+      {/* 右侧操作区域 */}
+      {extra}
+    </div>
   )
 })

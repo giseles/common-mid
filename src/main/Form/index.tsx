@@ -3,7 +3,6 @@ import {
   Form,
   Input,
   InputNumber,
-  Button,
   Select,
   DatePicker,
   Cascader,
@@ -58,6 +57,7 @@ interface Props {
     Message: any
     Encrypt: any
     RichText: any
+    Button: any
   } // 组件
   formHandle: {
     monitorList: string[]
@@ -73,7 +73,6 @@ interface Props {
     onBack: () => void
     onSubmit: (value: object) => void
   } // 按钮信息(名称、显示、loading、提交等)
-  children?: any // 子元素
 }
 
 const DEFAULT_LANG_LIST = {
@@ -108,7 +107,7 @@ export const MidForm = memo((props: Props) => {
     formRules,
     formList,
     initialValues = {},
-    componentProps: { BaseUpload, Encrypt, RichText },
+    componentProps: { BaseUpload, Encrypt, RichText, Button },
     formHandle: { monitorList = [], setFormValue = {}, getFormValue = null },
     btnProps
   } = props
@@ -211,17 +210,21 @@ export const MidForm = memo((props: Props) => {
       if (item.hide) return null
       let {
         type,
+        name,
+        label,
         rules = [],
         placeholder = LANG.PLEASE_INPUT(item.label), // 提示语 请输入
         optionList = null,
-        property // 自定义属性
+        property, // 自定义属性
+        itemProperty // FormItem属性
       } = item
 
       const itemProps = {
-        key: item.name,
-        label: item.label,
-        name: item.name,
-        rules: [...(formRules[type] || []), ...rules]
+        key: name,
+        label,
+        name,
+        rules: [...(formRules[type] || []), ...rules],
+        ...itemProperty
       }
       let ele: any = <></>
       let pickPlaceholder = LANG.PLEASE_SELECT(item.label) // 提示语 请选择
@@ -368,15 +371,21 @@ export const MidForm = memo((props: Props) => {
         {...formProps}
       >
         {renderItem}
-        {props.children}
         <Item style={{ textAlign: "center" }}>
           <Space size="large">
             {btnProps.isShowReturn && (
-              <Button onClick={btnProps.onBack}>{btnProps.returnName}</Button>
+              <Button
+                type="formReturn"
+                onClick={btnProps.onBack}
+                name={btnProps.returnName}
+              />
             )}
-            <Button type="primary" htmlType="submit" loading={btnProps.loading}>
-              {btnProps.submitName}
-            </Button>
+            <Button
+              type="formSubmit"
+              htmlType="submit"
+              loading={btnProps.loading}
+              name={btnProps.submitName}
+            />
           </Space>
         </Item>
       </Form>

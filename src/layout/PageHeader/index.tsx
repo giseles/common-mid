@@ -1,10 +1,11 @@
 import React, { memo } from "react"
-import { Space, Button } from "antd"
+import { Space } from "antd"
 import { ArrowLeftOutlined } from "@ant-design/icons"
 
 interface Props {
   className?: string // class名称
   style?: any // 样式
+  Button?: any // 按钮组件
   title: string // 主标题
   subTitle?: string // 副标题
   href?: any // 返回链接
@@ -18,6 +19,7 @@ interface Props {
  * <MidPageHeader
       className={styles.wrap}
       style={style}
+      Button={Button}
       title={title}
       href={href}
       subTitle={subTitle}
@@ -25,7 +27,7 @@ interface Props {
     />
  */
 export const MidPageHeader = memo((props: Props) => {
-  const { className, style, title, subTitle, href, extra } = props
+  const { className, style, Button, title, subTitle, href, extra } = props
   return (
     <div className={className} style={style}>
       <Space size="small">

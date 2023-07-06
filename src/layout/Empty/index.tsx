@@ -1,9 +1,9 @@
 import React, { memo } from "react"
-import { Button, Layout, Result } from "antd"
+import { Layout, Result } from "antd"
 
 interface Props {
   className?: string // class名称
-  Link: any // Link组件
+  Button: any // 按钮组件
   tip?: { back: string; home: string; homeUrl: string } // 提示语
   resultProps?: {
     status: any
@@ -19,7 +19,7 @@ interface Props {
  * @example
  * <MidEmpty
  *  className={styles.layout}
- *  Link={Link}
+ *  Button={Button}
  *  tip={tip}
  *  resultProps={resultProps}
  * />
@@ -27,7 +27,7 @@ interface Props {
 export const MidEmpty = memo((props: Props) => {
   const {
     className,
-    Link,
+    Button,
     tip = { back: "返回上一级", home: "回到首页", homeUrl: "/home" },
     resultProps = {
       status: "404",
@@ -41,16 +41,19 @@ export const MidEmpty = memo((props: Props) => {
         extra={[
           <Button
             key="1"
-            onClick={() => window.history.back()}
             type="primary"
             size="large"
-          >
-            {tip.back}
-          </Button>,
+            name={tip.back}
+            onClick={() => window.history.back()}
+          />,
           tip.home && (
-            <Button key="2" type="primary" size="large">
-              <Link to={tip.homeUrl}>{tip.home}</Link>
-            </Button>
+            <Button
+              key="2"
+              type="primary"
+              size="large"
+              name={tip.home}
+              href={tip.homeUrl}
+            />
           )
         ]}
         {...resultProps}

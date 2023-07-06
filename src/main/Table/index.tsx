@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react"
-import { Button, Table, Space } from "antd"
+import { Table, Space } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isNil } from "common-screw"
 
@@ -29,6 +29,7 @@ export const MidTable = memo((props: any) => {
     language,
     langList = DEFAULT_LANG_LIST,
     className,
+    Button,
     columns,
     onHandle,
     tableBtnList,
@@ -97,10 +98,9 @@ export const MidTable = memo((props: any) => {
               item[btnItem.disabledIsShow.key] !== btnItem.disabledIsShow.value
             }
             onClick={() => btnItem.onClick(btnItem.type, item)}
+            name={btnItem.name}
             {...btnItem.btnProps}
-          >
-            {btnItem.name}
-          </Button>
+          />
         )
       })
       const res = tablePermission.map((type: any) => {
@@ -132,10 +132,9 @@ export const MidTable = memo((props: any) => {
               {...btnProps}
               href={toHref[type] && toHref[type](item)}
               onClick={() => onHandle(type, item)}
+              name={name}
               {...value.btnProps}
-            >
-              {name}
-            </Button>
+            />
           )
         }
         return null
@@ -184,9 +183,9 @@ export const MidTable = memo((props: any) => {
             onClick={() => {
               selectionProps.onHandle(selectedRowKeys)
             }}
-          >
-            {selectionProps.name}
-          </Button>
+            name={selectionProps.name}
+          />
+
           <span style={{ marginLeft: 8 }}>
             {selectedRowKeys.length > 0 &&
               LANG.SELECT_TIP(selectedRowKeys.length)}

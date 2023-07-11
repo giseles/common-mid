@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react"
-import { Table, Space } from "antd"
+import { Space, Table } from "antd"
 import { useDeepCompareEffect } from "common-hook"
 import { isNil } from "common-screw"
 
@@ -106,25 +106,10 @@ export const MidTable = memo((props: any) => {
       const res = tablePermission.map((type: any) => {
         if (!specialList.includes(type)) {
           const value = tableBtnList[type]
-          let name = ""
-          let disabled = false
 
-          switch (value.type) {
-            case "able":
-              name =
-                item[value.key] === value.ableValue
-                  ? value.ableName
-                  : value.disAbleName
-              break
-            case "revoke":
-              name = value.name
-              disabled = value.isEqual
-                ? item[value.key] === value.value
-                : item[value.key] !== value.value
-              break
-            default:
-              name = value.name
-          }
+          const disabled = value.toDisable?.(item) || false
+          const name = value.name || value.toName?.(item)
+
           return (
             <Button
               key={type}

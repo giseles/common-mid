@@ -40,7 +40,7 @@ export const MidTable = memo((props: any) => {
     toHref,
     ...restProps
   } = props
-  const [newColumns, setNewColumns] = useState(columns)
+  const [col, setCol] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
   // 默认第一个语言包
@@ -56,13 +56,12 @@ export const MidTable = memo((props: any) => {
   useDeepCompareEffect(() => {
     // 修改表格列表
     if (columns.length === 0) return
-    let newColumns: any = []
+    let col: any = []
 
     columns.forEach((item: any) => {
       const { label, name, hide, ...rest } = item
-
       !hide &&
-        newColumns.push({
+        col.push({
           title: label,
           dataIndex: name,
           key: name,
@@ -70,16 +69,17 @@ export const MidTable = memo((props: any) => {
         })
     })
 
-    if (columns[columns.length - 1].name !== "operate") {
-      // 表格中最后一列key不为operate
-      setNewColumns(newColumns)
+    const lastOne = col.length - 1
+    if (col[lastOne].dataIndex !== "operate") {
+      // 表格中最后一列不是operate
+      setCol(col)
       return
     }
     const tablePermission = toTablePer(permissionList, tableBtnList)
     if (isNil(tablePermission)) {
       // 表格无操作权限
-      newColumns.pop()
-      setNewColumns(newColumns)
+      col.pop()
+      setCol(col)
       return
     }
 
@@ -131,13 +131,13 @@ export const MidTable = memo((props: any) => {
         </Space>
       )
     }
-    newColumns[newColumns.length - 1] = {
+    col[lastOne] = {
       width: 50,
       render,
       fixed: "right",
-      ...newColumns[newColumns.length - 1]
+      ...col[lastOne]
     }
-    setNewColumns(newColumns)
+    setCol(col)
   }, [permissionList, columns, tableBtnList, toHref])
 
   useDeepCompareEffect(() => {
@@ -192,7 +192,7 @@ export const MidTable = memo((props: any) => {
             ...pageProps
           }
         }
-        columns={newColumns}
+        columns={col}
         rowKey={(record) => record.id}
         scroll={{ x: true }}
         rowSelection={selectionProps.isShow && rowSelection}

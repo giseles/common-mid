@@ -38,6 +38,7 @@ export const MidTable = memo((props: any) => {
     pageProps = { showPage: true, props: {} },
     selectionProps = { isShow: false },
     toHref,
+    refresh,
     ...restProps
   } = props
   const [col, setCol] = useState([])
@@ -143,7 +144,7 @@ export const MidTable = memo((props: any) => {
   useDeepCompareEffect(() => {
     // 清空全选数据
     selectionProps.isShow && setSelectedRowKeys([])
-  }, [restProps.dataSource, selectionProps.isShow])
+  }, [restProps.dataSource, selectionProps.isShow, refresh])
 
   const rowSelection = {
     // 全选属性
@@ -151,32 +152,37 @@ export const MidTable = memo((props: any) => {
     onChange: (selectedRowKeys: any) => {
       setSelectedRowKeys(selectedRowKeys)
     },
-    getCheckboxProps: (record: any) => ({
-      disabled: tableBtnList["revoke"].isEqual
-        ? record[tableBtnList["revoke"].key] === tableBtnList["revoke"].value
-        : record[tableBtnList["revoke"].key] !== tableBtnList["revoke"].value
-    })
+    ...selectionProps.rowSelection
   }
 
-  return (
-    <div className={className}>
-      {selectionProps.isShow && (
+  const selectionDiv = (selectionProps, selectedRowKeys) => (
+    <>
+      {selectionProps.isShow && selectionProps.btn && (
         <div style={{ marginBottom: 16 }}>
-          <Button
-            type="primary"
-            disabled={selectedRowKeys.length <= 0}
-            onClick={() => {
-              selectionProps.onHandle(selectedRowKeys)
-            }}
-            name={selectionProps.name}
-          />
-
+          <Space>
+            {selectionProps.btn.map((_) => (
+              <Button
+                type="primary"
+                disabled={selectedRowKeys.length <= 0}
+                onClick={() => {
+                  selectionProps.onHandle(_.type, selectedRowKeys)
+                }}
+                name={_.name}
+                key={_.type}
+              />
+            ))}
+          </Space>
           <span style={{ marginLeft: 8 }}>
             {selectedRowKeys.length > 0 &&
               LANG.SELECT_TIP(selectedRowKeys.length)}
           </span>
         </div>
       )}
+    </>
+  )
+  return (
+    <div className={className}>
+      {selectionDiv(selectionProps, selectedRowKeys)}
       <Table
         bordered
         pagination={

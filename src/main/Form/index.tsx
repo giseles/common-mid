@@ -1,25 +1,25 @@
-import React, { useState, memo, useRef } from "react"
+import React, { memo, useRef, useState } from "react"
 import {
+  Cascader,
+  DatePicker,
   Form,
   Input,
   InputNumber,
-  Select,
-  DatePicker,
-  Cascader,
-  TimePicker,
   Radio,
+  Select,
   Space,
-  Spin
+  Spin,
+  TimePicker
 } from "antd"
+import { useDeepCompareEffect } from "common-hook"
+import { getFlatData } from "common-mid"
 import {
+  LooseObject,
   isArray,
   isNil,
   isObject,
-  toEnumArray,
-  LooseObject
+  toEnumArray
 } from "common-screw"
-import { useDeepCompareEffect } from "common-hook"
-import { getFlatData } from "common-mid"
 
 // 生成 Select 和 Radio 的 options 属性
 const toOptions = (optionList: any) => {
@@ -158,6 +158,9 @@ export const MidForm = memo((props: Props) => {
         case "dateAndTime":
           values[key] = value.format("YYYY-MM-DD HH:mm:ss")
           break
+        case "time":
+          values[key] = value.format("HH:mm:ss")
+          break
         case "timeRange":
           values[key] = [
             value[0].format("HH:mm:ss"),
@@ -295,6 +298,16 @@ export const MidForm = memo((props: Props) => {
               showTime
               placeholder={pickPlaceholder}
               disabledDate={item.disabledDate && disabledDate}
+              {...property}
+            />
+          )
+          break
+        case "time":
+          ele = (
+            <TimePicker
+              style={{ width: "100%" }}
+              // @ts-ignore
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
               {...property}
             />
           )

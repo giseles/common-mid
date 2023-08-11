@@ -209,7 +209,7 @@ export const MidForm = memo((props: Props) => {
   }
 
   const toRenderItem = (formList: any) => {
-    return formList?.map((item: any) => {
+    return formList?.map((item: any, index) => {
       if (item.hide) return null
       let {
         type,
@@ -223,7 +223,7 @@ export const MidForm = memo((props: Props) => {
       } = item
 
       const itemProps = {
-        key: name,
+        key: index,
         label,
         name,
         rules: [...(formRules[type] || []), ...rules],
@@ -305,8 +305,8 @@ export const MidForm = memo((props: Props) => {
         case "time":
           ele = (
             <TimePicker
-              style={{ width: "100%" }}
               // @ts-ignore
+              style={{ width: "100%" }}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               {...property}
             />

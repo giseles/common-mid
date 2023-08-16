@@ -1,29 +1,20 @@
-import React, { useState, memo } from "react"
-import { useDeepCompareEffect } from "common-hook"
-import { Form, Input, DatePicker, Select, Cascader } from "antd"
-import { isArray, isNil, isObject, toEnumArray } from "common-screw"
-import { getFlatData } from "common-mid"
+import React, { memo, useRef, useState } from 'react'
+import { Cascader, DatePicker, Form, Input, Select } from 'antd'
+import { useDeepCompareEffect } from 'common-hook'
+import { getFlatData } from 'common-mid'
+import { isArray, isNil, isObject, toEnumArray } from 'common-screw'
 
 // 生成 Select 的 options 属性
 
-const toOptions = (
-  optionList: any,
-  placeholder: any,
-  allTip: any,
-  isAll: boolean = true
-) => {
+const toOptions = (optionList: any, placeholder: any, allTip: any, isAll: boolean = true) => {
   const arr: any = []
-  isAll && arr.push({ value: "", label: `${placeholder} - ${allTip}` })
+  isAll && arr.push({ value: '', label: `${placeholder} - ${allTip}` })
   if (isNil(optionList)) {
     return []
-  } else if (
-    isArray(optionList) &&
-    optionList[0].label &&
-    optionList[0].value
-  ) {
+  } else if (isArray(optionList) && optionList[0].label && optionList[0].value) {
     arr.push(...optionList)
   } else if (isObject(optionList)) {
-    arr.push(...toEnumArray(optionList, "value", "label"))
+    arr.push(...toEnumArray(optionList, 'value', 'label'))
   }
   return arr
 }
@@ -43,6 +34,7 @@ interface SearchProps {
   search?: Array<InputProps>
   style?: any
   className?: any
+  initialValues?: any
   children?: any
   searchIcon?: any
   itemStyle?: any
@@ -50,15 +42,15 @@ interface SearchProps {
 }
 
 const DEFAULT_LANG_LIST = {
-  "zh-CN": {
-    ALL_TIP: "全部",
-    TIME_START: "开始时间",
-    TIME_END: "结束时间"
+  'zh-CN': {
+    ALL_TIP: '全部',
+    TIME_START: '开始时间',
+    TIME_END: '结束时间'
   },
-  "en-US": {
-    ALL_TIP: "All",
-    TIME_START: "Start Time",
-    TIME_END: "End Time"
+  'en-US': {
+    ALL_TIP: 'All',
+    TIME_START: 'Start Time',
+    TIME_END: 'End Time'
   }
 }
 /**
@@ -75,11 +67,14 @@ export const MidSearch = memo((props: SearchProps) => {
     onChange,
     className,
     style = {},
+    initialValues = {},
     searchIcon,
     itemStyle,
     extra
   } = props
   const [form] = Form.useForm()
+  const FormRef: any = useRef(null)
+
   const [renderItem, setRenderItem] = useState(<></>)
 
   // 默认第一个语言包
@@ -90,6 +85,10 @@ export const MidSearch = memo((props: SearchProps) => {
     const e = language && list.includes(language) ? language : list[0]
     setLANG(langList[e])
   }, [langList, language])
+
+  useDeepCompareEffect(() => {
+    FormRef && FormRef.current && FormRef.current.resetFields()
+  }, [initialValues])
 
   useDeepCompareEffect(() => {
     // 渲染search
@@ -104,9 +103,8 @@ export const MidSearch = memo((props: SearchProps) => {
     let elem: any = <></>
     const { name, type, optionList, label, itemProps = {} } = item
     const { defaultValue, ...restProps } = itemProps
-
     switch (type) {
-      case "select":
+      case 'select':
         elem = (
           <Select
             placeholder={label}
@@ -117,7 +115,7 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
-      case "selectMul":
+      case 'selectMul':
         elem = (
           <Select
             placeholder={label}
@@ -127,13 +125,13 @@ export const MidSearch = memo((props: SearchProps) => {
             onChange={onValuesChange}
             showSearch={true}
             filterOption={(input, option) =>
-              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
             }
             {...restProps}
           />
         )
         break
-      case "search":
+      case 'search':
         elem = (
           <Input
             placeholder={label}
@@ -148,38 +146,38 @@ export const MidSearch = memo((props: SearchProps) => {
         )
         break
 
-      case "dateRange":
+      case 'dateRange':
         elem = (
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             {...restProps}
           />
         )
         break
-      case "dateRangeNoTime":
+      case 'dateRangeNoTime':
         elem = (
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             {...restProps}
           />
         )
         break
-      case "monthRange":
+      case 'monthRange':
         elem = (
           <DatePicker.MonthPicker
             onChange={onValuesChange}
             placeholder={label}
             showTime={false}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             {...restProps}
           />
         )
         break
-      case "cascader":
+      case 'cascader':
         elem = (
           <Cascader
             options={optionList}
@@ -192,14 +190,8 @@ export const MidSearch = memo((props: SearchProps) => {
         break
       default:
     }
-
     return (
-      <Form.Item
-        initialValue={defaultValue}
-        name={String(name)}
-        key={index}
-        style={itemStyle}
-      >
+      <Form.Item name={String(name)} key={index} style={itemStyle}>
         {elem}
       </Form.Item>
     )
@@ -214,44 +206,41 @@ export const MidSearch = memo((props: SearchProps) => {
       const type = item.type
       const itemValue = values[name]
       switch (type) {
-        case "dateRange":
+        case 'dateRange':
           // 日期
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] =
-              itemValue[0].format("YYYY-MM-DD") + " 00:00:00"
-            result[item.name[1]] =
-              itemValue[1].format("YYYY-MM-DD") + " 23:59:59"
+            result[item.name[0]] = itemValue[0].format('YYYY-MM-DD') + ' 00:00:00'
+            result[item.name[1]] = itemValue[1].format('YYYY-MM-DD') + ' 23:59:59'
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case "dateRangeNoTime":
+        case 'dateRangeNoTime':
           // 日期 无时间
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] = itemValue[0].format("YYYY-MM-DD")
-            result[item.name[1]] = itemValue[1].format("YYYY-MM-DD")
+            result[item.name[0]] = itemValue[0].format('YYYY-MM-DD')
+            result[item.name[1]] = itemValue[1].format('YYYY-MM-DD')
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case "monthRange":
+        case 'monthRange':
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] = itemValue[0].format("YYYY-MM")
-            result[item.name[1]] = itemValue[1].format("YYYY-MM")
+            result[item.name[0]] = itemValue[0].format('YYYY-MM')
+            result[item.name[1]] = itemValue[1].format('YYYY-MM')
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case "cascader":
+        case 'cascader':
           // 级联选择
-          const { optionName } = item
-          optionName.forEach((childItem: any, childIndex: any) => {
+          item.name?.forEach((childItem: any, childIndex: any) => {
             result[childItem] = itemValue?.[childIndex] || undefined
           })
           break
@@ -269,7 +258,13 @@ export const MidSearch = memo((props: SearchProps) => {
 
   return (
     <div className={className} style={style}>
-      <Form autoComplete="off" layout="inline" form={form}>
+      <Form
+        autoComplete="off"
+        layout="inline"
+        initialValues={initialValues}
+        ref={FormRef}
+        form={form}
+      >
         {renderItem}
       </Form>
       {/* 右侧操作区域 */}

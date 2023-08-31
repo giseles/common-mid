@@ -43,6 +43,7 @@ const { Item } = Form
 interface Props {
   language?: string // 语言
   langList?: any // 语言包
+  disabled?: any // 是否禁止操作
   formProps: { className?: string; spinning?: boolean; [key: string]: any } // 表单属性
   formRules: LooseObject // 表单验证规则
   formList: {
@@ -103,6 +104,7 @@ export const MidForm = memo((props: Props) => {
   const {
     language,
     langList = DEFAULT_LANG_LIST,
+    disabled = false,
     formProps: { spinning = false, ...formProps },
     formRules,
     formList,
@@ -251,6 +253,7 @@ export const MidForm = memo((props: Props) => {
                   .toLowerCase()
                   .includes(input.toLowerCase())
               }
+              // mode="multiple" // 多选
               {...property}
             />
           )
@@ -376,6 +379,7 @@ export const MidForm = memo((props: Props) => {
     <Spin spinning={spinning}>
       <Form
         form={form}
+        disabled={disabled}
         ref={FormRef}
         initialValues={initialValues}
         onValuesChange={onValuesChange}

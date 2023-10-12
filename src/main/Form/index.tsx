@@ -319,6 +319,7 @@ export const MidForm = memo((props: Props) => {
           ele = (
             <TimePicker.RangePicker
               // @ts-ignore
+              style={{ width: "100%" }}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               {...property}
             />

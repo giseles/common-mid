@@ -164,10 +164,9 @@ export const MidForm = memo((props: Props) => {
           values[key] = value.format("HH:mm:ss")
           break
         case "timeRange":
-          values[key] = [
-            value[0].format("HH:mm:ss"),
-            value[1].format("HH:mm:ss")
-          ]
+          values[key] = value
+            ? [value[0].format("HH:mm:ss"), value[1].format("HH:mm:ss")]
+            : undefined
           break
         case "password":
         case "passwordAgain":

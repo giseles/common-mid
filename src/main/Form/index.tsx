@@ -259,7 +259,13 @@ export const MidForm = memo((props: Props) => {
 
           break
         case "radio":
-          ele = <Radio.Group options={options} {...property} />
+          ele = (
+            <Radio.Group
+              placeholder={pickPlaceholder}
+              options={options}
+              {...property}
+            />
+          )
           break
         case "password":
         case "newPassword":
@@ -308,6 +314,7 @@ export const MidForm = memo((props: Props) => {
           ele = (
             <TimePicker
               // @ts-ignore
+              placeholder={pickPlaceholder}
               style={{ width: "100%" }}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               {...property}
@@ -318,6 +325,7 @@ export const MidForm = memo((props: Props) => {
           ele = (
             <TimePicker.RangePicker
               // @ts-ignore
+              placeholder={pickPlaceholder}
               style={{ width: "100%" }}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               {...property}
@@ -327,6 +335,7 @@ export const MidForm = memo((props: Props) => {
         case "upload":
           ele = (
             <BaseUpload
+              placeholder={pickPlaceholder}
               type={item.uploadType}
               limits={item.limits}
               tip={item.tip}
@@ -347,7 +356,13 @@ export const MidForm = memo((props: Props) => {
           )
           break
         case "richText":
-          ele = <RichText language={language} {...property} />
+          ele = (
+            <RichText
+              placeholder={placeholder}
+              language={language}
+              {...property}
+            />
+          )
           break
         case "diy":
           ele = item.show

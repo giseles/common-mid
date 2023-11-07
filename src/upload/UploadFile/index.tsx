@@ -1,6 +1,6 @@
 import React, { memo } from "react"
-import { Upload } from "antd"
 import { InboxOutlined } from "@ant-design/icons"
+import { Upload } from "antd"
 
 /**
  * @name  上传文件等
@@ -19,9 +19,9 @@ export const MidUploadFile = memo((props: any) => {
     uploadUrl,
     headers,
     onChange,
+    formData = false,
     tip = null
   } = props
-
   const beforeUpload = (file: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
@@ -31,6 +31,10 @@ export const MidUploadFile = memo((props: any) => {
       }
       if (file.size > maxSize * 1024 * 1024) {
         message(LANG.IMG_TIP_SIZE(typeName, maxSize))
+        return Upload.LIST_IGNORE
+      }
+      if (formData) {
+        onChange({ file, name: file.name })
         return Upload.LIST_IGNORE
       }
       resolve(true)

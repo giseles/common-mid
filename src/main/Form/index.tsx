@@ -183,7 +183,7 @@ export const MidForm = memo((props: Props) => {
           break
         case "upload":
           values[key + "Name"] = value?.name || undefined
-          values[key] = value?.path || value?.file || undefined
+          values[key] = value?.path || value?.file || value
           break
         case "cascader":
           // 级联选择

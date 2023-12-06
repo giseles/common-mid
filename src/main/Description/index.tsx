@@ -7,6 +7,7 @@ interface Props {
   dataSource: { [key: string]: any } // 内容的数据
   spinning?: boolean // 加载中
   property?: {
+    column?: number // 一行的数量
     bordered?: boolean // 边框
     colon?: boolean // 冒号
     title?: string // 标题

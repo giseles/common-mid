@@ -216,7 +216,7 @@ export const MidForm = memo((props: Props) => {
         type,
         name,
         label,
-        rules = [],
+        rules,
         placeholder = LANG.PLEASE_INPUT(item.label), // 提示语 请输入
         optionList = null,
         property, // 自定义属性
@@ -227,7 +227,7 @@ export const MidForm = memo((props: Props) => {
         key: index,
         label,
         name,
-        rules: [...(formRules[type] || []), ...rules],
+        rules: rules || formRules[type] || [],
         ...itemProperty
       }
       let ele: any = <></>

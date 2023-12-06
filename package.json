@@ -1,6 +1,6 @@
 {
   "name": "common-mid",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "提供一系列组件可快速高效的搭建高质量中后台应用",
   "main": "es/index.js",
   "module": "es/index.js",

@@ -1,20 +1,29 @@
-import React, { memo, useRef, useState } from 'react'
-import { Cascader, DatePicker, Form, Input, Select } from 'antd'
-import { useDeepCompareEffect } from 'common-hook'
-import { getFlatData } from 'common-mid'
-import { isArray, isNil, isObject, toEnumArray } from 'common-screw'
+import React, { memo, useRef, useState } from "react"
+import { Cascader, DatePicker, Form, Input, Select } from "antd"
+import { useDeepCompareEffect } from "common-hook"
+import { getFlatData } from "common-mid"
+import { isArray, isNil, isObject, toEnumArray } from "common-screw"
 
 // 生成 Select 的 options 属性
 
-const toOptions = (optionList: any, placeholder: any, allTip: any, isAll: boolean = true) => {
+const toOptions = (
+  optionList: any,
+  placeholder: any,
+  allTip: any,
+  isAll: boolean = true
+) => {
   const arr: any = []
-  isAll && arr.push({ value: '', label: `${placeholder} - ${allTip}` })
+  isAll && arr.push({ value: "", label: `${placeholder} - ${allTip}` })
   if (isNil(optionList)) {
     return []
-  } else if (isArray(optionList) && optionList[0].label && optionList[0].value) {
+  } else if (
+    isArray(optionList) &&
+    optionList[0].label &&
+    optionList[0].value
+  ) {
     arr.push(...optionList)
   } else if (isObject(optionList)) {
-    arr.push(...toEnumArray(optionList, 'value', 'label'))
+    arr.push(...toEnumArray(optionList, "value", "label"))
   }
   return arr
 }
@@ -42,15 +51,15 @@ interface SearchProps {
 }
 
 const DEFAULT_LANG_LIST = {
-  'zh-CN': {
-    ALL_TIP: '全部',
-    TIME_START: '开始时间',
-    TIME_END: '结束时间'
+  "zh-CN": {
+    ALL_TIP: "全部",
+    TIME_START: "开始时间",
+    TIME_END: "结束时间"
   },
-  'en-US': {
-    ALL_TIP: 'All',
-    TIME_START: 'Start Time',
-    TIME_END: 'End Time'
+  "en-US": {
+    ALL_TIP: "All",
+    TIME_START: "Start Time",
+    TIME_END: "End Time"
   }
 }
 /**
@@ -104,7 +113,7 @@ export const MidSearch = memo((props: SearchProps) => {
     const { name, type, optionList, label, itemProps = {} } = item
     const { defaultValue, ...restProps } = itemProps
     switch (type) {
-      case 'select':
+      case "select":
         elem = (
           <Select
             placeholder={label}
@@ -115,7 +124,7 @@ export const MidSearch = memo((props: SearchProps) => {
           />
         )
         break
-      case 'selectMul':
+      case "selectMul":
         elem = (
           <Select
             placeholder={label}
@@ -125,13 +134,13 @@ export const MidSearch = memo((props: SearchProps) => {
             onChange={onValuesChange}
             showSearch={true}
             filterOption={(input, option) =>
-              (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
             }
             {...restProps}
           />
         )
         break
-      case 'search':
+      case "search":
         elem = (
           <Input
             placeholder={label}
@@ -146,38 +155,38 @@ export const MidSearch = memo((props: SearchProps) => {
         )
         break
 
-      case 'dateRange':
+      case "dateRange":
         elem = (
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
         break
-      case 'dateRangeNoTime':
+      case "dateRangeNoTime":
         elem = (
           <DatePicker.RangePicker
             onChange={onValuesChange}
             placeholder={[LANG.TIME_START, LANG.TIME_END]}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
         break
-      case 'monthRange':
+      case "monthRange":
         elem = (
           <DatePicker.MonthPicker
             onChange={onValuesChange}
             placeholder={label}
             showTime={false}
-            style={{ width: '100%' }}
+            style={{ width: "100%" }}
             {...restProps}
           />
         )
         break
-      case 'cascader':
+      case "cascader":
         elem = (
           <Cascader
             options={optionList}
@@ -206,39 +215,41 @@ export const MidSearch = memo((props: SearchProps) => {
       const type = item.type
       const itemValue = values[name]
       switch (type) {
-        case 'dateRange':
+        case "dateRange":
           // 日期
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] = itemValue[0].format('YYYY-MM-DD') + ' 00:00:00'
-            result[item.name[1]] = itemValue[1].format('YYYY-MM-DD') + ' 23:59:59'
+            result[item.name[0]] =
+              itemValue[0].format("YYYY-MM-DD") + " 00:00:00"
+            result[item.name[1]] =
+              itemValue[1].format("YYYY-MM-DD") + " 23:59:59"
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case 'dateRangeNoTime':
+        case "dateRangeNoTime":
           // 日期 无时间
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] = itemValue[0].format('YYYY-MM-DD')
-            result[item.name[1]] = itemValue[1].format('YYYY-MM-DD')
+            result[item.name[0]] = itemValue[0].format("YYYY-MM-DD")
+            result[item.name[1]] = itemValue[1].format("YYYY-MM-DD")
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case 'monthRange':
+        case "monthRange":
           if (Array.isArray(itemValue) && itemValue.length === 2) {
-            result[item.name[0]] = itemValue[0].format('YYYY-MM')
-            result[item.name[1]] = itemValue[1].format('YYYY-MM')
+            result[item.name[0]] = itemValue[0].format("YYYY-MM")
+            result[item.name[1]] = itemValue[1].format("YYYY-MM")
           } else {
             // 没有值时，也要保留表单key
             result[item.name[0]] = undefined
             result[item.name[1]] = undefined
           }
           break
-        case 'cascader':
+        case "cascader":
           // 级联选择
           item.name?.forEach((childItem: any, childIndex: any) => {
             result[childItem] = itemValue?.[childIndex] || undefined

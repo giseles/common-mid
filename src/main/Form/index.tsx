@@ -1,6 +1,7 @@
 import React, { memo, useRef, useState } from "react"
 import {
   Cascader,
+  Checkbox,
   DatePicker,
   Form,
   Input,
@@ -59,6 +60,7 @@ interface Props {
     Encrypt: any
     RichText: any
     Button: any
+    Tree: any
   } // 组件
   formHandle: {
     monitorList: string[]
@@ -109,7 +111,7 @@ export const MidForm = memo((props: Props) => {
     formRules,
     formList,
     initialValues = {},
-    componentProps: { BaseUpload, Encrypt, RichText, Button },
+    componentProps: { BaseUpload, Encrypt, RichText, Button, Tree },
     formHandle: { monitorList = [], setFormValue = {}, getFormValue = null },
     btnProps
   } = props
@@ -216,7 +218,7 @@ export const MidForm = memo((props: Props) => {
         type,
         name,
         label,
-        rules,
+        rules = [],
         placeholder = LANG.PLEASE_INPUT(item.label), // 提示语 请输入
         optionList = null,
         property, // 自定义属性
@@ -227,7 +229,7 @@ export const MidForm = memo((props: Props) => {
         key: index,
         label,
         name,
-        rules: rules || formRules[type] || [],
+        rules: [...(formRules[type] || []), ...rules],
         ...itemProperty
       }
       let ele: any = <></>
@@ -259,13 +261,10 @@ export const MidForm = memo((props: Props) => {
 
           break
         case "radio":
-          ele = (
-            <Radio.Group
-              placeholder={pickPlaceholder}
-              options={options}
-              {...property}
-            />
-          )
+          ele = <Radio.Group options={options} {...property} />
+          break
+        case "checkbox":
+          ele = <Checkbox.Group options={options} {...property} />
           break
         case "password":
         case "newPassword":
@@ -364,6 +363,9 @@ export const MidForm = memo((props: Props) => {
             />
           )
           break
+        case "tree":
+          ele = <Tree language={language} {...property} />
+          break
         case "diy":
           ele = item.show
           break
@@ -373,19 +375,15 @@ export const MidForm = memo((props: Props) => {
           )
           break
         default:
-          const { maxLength = 0 } = item
-          if (maxLength) {
-            ele = (
-              <Input
-                showCount
-                maxLength={maxLength}
-                placeholder={placeholder}
-                {...property}
-              />
-            )
-          } else {
-            ele = <Input allowClear placeholder={placeholder} {...property} />
-          }
+          ele = (
+            <Input
+              showCount={item.maxLength || false}
+              allowClear
+              maxLength={item.maxLength}
+              placeholder={placeholder}
+              {...property}
+            />
+          )
       }
       return <Item {...itemProps}>{ele}</Item>
     })

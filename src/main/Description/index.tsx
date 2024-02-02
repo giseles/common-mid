@@ -67,7 +67,7 @@ export const MidDescription = (props: Props) => {
 
       let _ = value
       if (optionList) {
-        _ = getObjKey(optionList, "value", nullShow)
+        _ = getObjKey(optionList, value, nullShow)
       } else if (render) {
         _ = render(value, dataSource)
       }

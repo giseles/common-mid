@@ -25,9 +25,18 @@ export const MidUploadFile = memo((props: any) => {
   const beforeUpload = (file: any) => {
     return new Promise((resolve, reject) => {
       const { maxSize, fileType } = limits
-      if (fileType && !fileType.includes(file.type)) {
-        message(LANG.IMG_TIP_TYPE)
-        return Upload.LIST_IGNORE
+      if (fileType) {
+        let pass = false
+        for (let i = 0, len = fileType.length; i < len; i++) {
+          if (file.type.indexOf(fileType[i]) > 0) {
+            pass = true
+            break
+          }
+        }
+        if (!pass) {
+          message(LANG.IMG_TIP_TYPE)
+          return Upload.LIST_IGNORE
+        }
       }
       if (file.size > maxSize * 1024 * 1024) {
         message(LANG.IMG_TIP_SIZE(typeName, maxSize))
